@@ -14,9 +14,7 @@ export default function Home() {
       <h1 style={{ fontSize: "2.5rem", fontWeight: 700 }}>
         Mike&apos;s Vibe Coder HQ 🌀
       </h1>
-      <p style={{ fontSize: "1.25rem" }}>
-        Day 1: I installed Node, spun up Next.js, and I&apos;m running this locally.
-      </p>
+      <p style={{ fontSize: "1.25rem" }}>Day 1 is officially DONE 🚀</p>
     </main>
   );
 }

@@ -1,15 +1,34 @@
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import Link from "next/link";
 import "./globals.css";
-import { ReactNode } from "react";
 
-export const metadata = {
-  title: "My Vibe App",
-  description: "Mike Willey's Day 1 Vibe Coder App",
+const inter = Inter({ subsets: ["latin"] });
+
+export const metadata: Metadata = {
+  title: "Mike's Vibe App",
+  description: "Built by Mike Willey",
 };
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className={inter.className}>
+        <nav className="bg-white border-b shadow-sm px-6 py-3 flex gap-6">
+          <Link href="/" className="font-semibold hover:text-blue-600">
+            Home
+          </Link>
+          <Link href="/about" className="font-semibold hover:text-blue-600">
+            About
+          </Link>
+        </nav>
+
+        {children}
+      </body>
     </html>
   );
 }

@@ -1,15 +1,9 @@
-// TEMPORARILY DISABLED CONTACT API
-// This placeholder prevents build failures on Vercel.
+import { NextResponse } from "next/server";
 
-export async function POST() {
-  return new Response(
-    JSON.stringify({
-      ok: true,
-      message: "Contact API temporarily disabled on Vercel.",
-    }),
-    {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    }
-  );
+export async function POST(req: Request) {
+  const body = await req.json();
+
+  console.log("CONTACT FORM SUBMISSION:", body);
+
+  return NextResponse.json({ ok: true, message: "Form received!" });
 }

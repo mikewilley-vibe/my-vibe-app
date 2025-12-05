@@ -1,9 +1,15 @@
-// import { Resend } from "resend";
+// TEMPORARILY DISABLED CONTACT API
+// This placeholder prevents build failures on Vercel.
 
-export async function POST(request: Request) {
-  // Temporarily disable email sending for Vercel
-  return new Response(JSON.stringify({ ok: true }), {
-    status: 200,
-    headers: { "Content-Type": "application/json" },
-  });
+export async function POST() {
+  return new Response(
+    JSON.stringify({
+      ok: true,
+      message: "Contact API temporarily disabled on Vercel.",
+    }),
+    {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    }
+  );
 }

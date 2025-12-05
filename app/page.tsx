@@ -1,6 +1,14 @@
 import VibeCard from "./components/vibecard";
 
-export default function Home() {
+const baseUrl =
+  process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : "http://localhost:3000";
+
+export default async function Home() {
+  const res = await fetch(`${baseUrl}/api/vibe`, { cache: "no-store" });
+  const vibe: { message: string; mood: string; date: string } = await res.json();
+
   return (
     <main className="flex-1 flex flex-col items-center justify-center px-4 py-12">
       {/* HERO SECTION */}
@@ -8,9 +16,16 @@ export default function Home() {
         <h1 className="text-4xl md:text-5xl font-bold mb-3">
           Mike&apos;s Vibe Coder HQ 🌐
         </h1>
+
+        {/* Vibe of the Day */}
+        <p className="text-sm text-gray-500 mb-2">
+          Vibe of the Day:{" "}
+          <span className="font-semibold text-gray-800">{vibe.message}</span>
+        </p>
+
         <p className="text-gray-600 mb-6">
-          Day 2: Turning this into a real app with components, pages, and
-          smooth navigation.
+          Day 3: You&apos;re now using real data, API routes, and full-stack
+          muscle. This is no longer a toy project.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -34,22 +49,22 @@ export default function Home() {
         <VibeCard
           title="Today's Mission"
           emoji="🎯"
-          message="Use reusable components, clean layouts, and Tailwind to level up your UI."
+          message="Use reusable components, clean layouts, and API routes to level up your UI."
         />
         <VibeCard
           title="Your Superpower"
           emoji="⚡"
-          message="You can now create pages, components, and navigation like a real frontend dev."
+          message="You can now create pages, components, navigation, and APIs like a real frontend dev."
         />
         <VibeCard
           title="What&apos;s Next"
           emoji="🚀"
-          message="Add a Projects page, animations, and data as you go."
+          message="More data, more pages, and maybe some forms or a small dashboard."
         />
         <VibeCard
           title="Vibe Reminder"
           emoji="🧘‍♂️"
-          message="Tiny daily moves > huge one-time pushes. You're building skill, not just pages."
+          message="Tiny daily moves > huge one-time pushes. You’re building skill, not just pages."
         />
       </section>
     </main>

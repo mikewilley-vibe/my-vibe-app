@@ -29,10 +29,11 @@ export default function RootLayout({
               <Link href="/" className="hover:text-blue-600">
                 Home
               </Link>
-              <Link href="/about" className="hover:text-blue-600">
+              <Link href="/about" className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors duration-150 underline-offset-4 hover:underline">
                 About
               </Link>
-              <Link href="/projects" className="hover:text-blue-600">
+              <Link href="/projects" className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors duration-150"
+>
                 Projects
               </Link>
               <Link href="/contact" className="hover:text-gray-900">

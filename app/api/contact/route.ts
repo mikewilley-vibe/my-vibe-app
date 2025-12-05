@@ -1,11 +1,34 @@
-import { NextResponse } from "next/server";
+import { Resend } from "resend";
 
-export async function POST(req: Request) {
-  const body = await req.json();
-  const { name, email, message } = body;
+const resend = new Resend(process.env.RESEND_API_KEY);
 
-  console.log("📥 New contact message:", { name, email, message });
+export async function POST(request: Request) {
+  try {
+    const { name, email, message } = await request.json();
 
-  // In the future you could send an email here using Resend, SES, etc.
-  return NextResponse.json({ ok: true });
+    if (!message || !email) {
+      return new Response("Missing required fields", { status: 400 });
+    }
+
+    await resend.emails.send({
+      from: process.env.CONTACT_FROM_EMAIL || "no-reply@example.com",
+      to: process.env.CONTACT_TO_EMAIL || "you@example.com",
+      subject: name
+        ? `New message from ${name} via Mike's Vibe Coder HQ`
+        : "New contact form message",
+      reply_to: email,
+      text: `
+From: ${name || "Unknown"}
+Email: ${email}
+
+Message:
+${message}
+      `.trim(),
+    });
+
+    return Response.json({ success: true });
+  } catch (error) {
+    console.error("Contact API error:", error);
+    return new Response("Error sending email", { status: 500 });
+  }
 }

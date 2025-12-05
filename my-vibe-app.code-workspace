@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"path": "my-vibe-app"
+		},
+		{
+			"path": "my-vibe-app/projects.ts"
+		}
+	],
+	"settings": {}
+}

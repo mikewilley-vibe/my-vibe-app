@@ -4,35 +4,37 @@ export type Project = {
   emoji: string;
   message: string;
   longDescription: string;
+  image?: string;
 };
 
 export const projects: Project[] = [
   {
-    slug: "dmv-pods-temp-tags",
-    title: "DMV PODS – Dealer Temp Tags",
+    slug: "buick-enclave",
+    title: "Selling Buick Enclave",
     emoji: "🚗",
     message:
-      "Project manager for the DMV Print-On-Demand temporary tags solution.",
+      "Have a 2016 Buick Enclave for Sale",
     longDescription:
-      "Served as project manager for the DMV Print-On-Demand temporary tags (PODS) solution. Coordinated developers, DMV business owners, and support teams to improve dealer workflows, reduce manual processing, and ensure compliance with state regulations.",
+      "If you are interested in stealing it, then by all means, the keys on in it.",
   },
   {
-    slug: "vdacs-agriculture-consumer",
-    title: "VDACS – Agriculture & Consumer Services Sites",
-    emoji: "🌾",
+    slug: "uva-football",
+    title: "GATOR BOWL BOUND!",
+    emoji: "🏉",
     message:
-      "Led web projects for VDACS programs like VA Grown / VA Finest.",
+      "Cavaliers are headed to the TaxSlayer Gator Bowl!",
     longDescription:
-      "Led multiple VDACS web initiatives, including VA Grown / VA Finest and licensing/registration portals. Managed requirements, content structure, accessibility needs, and rollout planning while coordinating with internal stakeholders and external partners.",
+      "No. 19 Virginia Cavaliers vs. Missouri Tigers",
+      image: "/images/cam-fb.jpeg"
   },
   {
-    slug: "cardinal-drupal-accessibility",
-    title: "Cardinal – Drupal Enhancements & Accessibility",
+    slug: "Fairfax Community Revitalization Migration",
+    title: "Fairfax Community Revitalization Migration",
     emoji: "📊",
     message:
-      "Managed Drupal enhancements and accessibility remediation for Cardinal.",
+      "Migrating the Current https://www.fcrevite.org/ site to be included in Fairfax County's Planning and Development",
     longDescription:
-      "Managed Drupal-based enhancements and accessibility remediation for the statewide Cardinal financial system. Balanced VITA standards, timelines, dependency management, and cross-team communication to deliver stable, compliant releases.",
+      "Still seeking Fairfax County email address to allow us to have access",
   },
   {
     slug: "local-government-portals-payments",

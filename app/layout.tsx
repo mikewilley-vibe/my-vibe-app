@@ -36,8 +36,15 @@ export default function RootLayout({
 >
                 Projects
               </Link>
-              <Link href="/contact" className="hover:text-gray-900">
+              <Link href="/contact" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors border-b-2 border-transparent hover:border-blue-500 pb-1">
   Contact
+</Link>
+<Link href="/uva">UVA</Link>
+<Link
+  href="/vibes"
+  className="hover:text-blue-600 transition-colors border-b-2 border-transparent hover:border-blue-500 pb-1"
+>
+  Vibe Log
 </Link>
             </div>
           </nav>

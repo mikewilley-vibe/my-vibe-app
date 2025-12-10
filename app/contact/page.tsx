@@ -1,116 +1,128 @@
 "use client";
 
-import { useState, FormEvent } from "react";
+import { useState } from "react";
+
+type FormState = "idle" | "submitting" | "success" | "error";
 
 export default function ContactPage() {
-  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">(
-    "idle"
-  );
-  const [errorMessage, setErrorMessage] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [formState, setFormState] = useState<FormState>("idle");
 
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  const isSubmitting = formState === "submitting";
+  const isSuccess = formState === "success";
+
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setStatus("sending");
-    setErrorMessage("");
+    setError(null);
 
-    const form = e.currentTarget;
-    const formData = new FormData(form);
-
-    const body = {
-      name: formData.get("name") as string,
-      email: formData.get("email") as string,
-      message: formData.get("message") as string,
-    };
+    // basic client-side validation
+    if (!name.trim() || !email.trim() || !message.trim()) {
+      setError("Please fill out all fields before sending.");
+      return;
+    }
 
     try {
+      setFormState("submitting");
+
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
+        body: JSON.stringify({ name, email, message }),
       });
 
       if (!res.ok) {
-        throw new Error(await res.text());
+        throw new Error("Request failed");
       }
 
-      setStatus("success");
-      form.reset();
-    } catch (err: any) {
+      setFormState("success");
+      setMessage("");
+    } catch (err) {
       console.error(err);
-      setStatus("error");
-      setErrorMessage(err?.message || "Something went wrong.");
+      setFormState("error");
+      setError("Hmm, something went wrong. Please try again in a moment.");
+    } finally {
+      setFormState((prev) => (prev === "submitting" ? "idle" : prev));
     }
   }
 
   return (
-    <main className="flex-1 flex flex-col items-center px-4 py-12">
-      <section className="w-full max-w-xl bg-white rounded-2xl shadow-md p-8">
-        <h1 className="text-3xl font-bold mb-2">Contact Mike</h1>
-        <p className="text-gray-600 mb-6">
-          Want to talk about a project, public-sector digital work, or vibes &amp;
-          coding? Drop a note below.
+    <main className="min-h-screen bg-slate-50">
+      <section className="max-w-2xl mx-auto px-4 py-20">
+        <h1 className="text-4xl font-bold tracking-tight mb-3">
+          Let&apos;s connect 👋
+        </h1>
+        <p className="text-gray-600 mb-8">
+          Got a project idea, accessibility question, or just want to talk
+          vibes, public-sector tech, or finance? Drop a note here and I&apos;ll
+          get back to you.
         </p>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Name
-            </label>
-            <input
-              name="name"
-              type="text"
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="Mike Willey"
-            />
+        <form
+          onSubmit={handleSubmit}
+          className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 space-y-6"
+        >
+          <div className="grid gap-4 md:grid-cols-2">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Name
+              </label>
+              <input
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Mike Willey"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Email
+              </label>
+              <input
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                type="email"
+                className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="you@example.com"
+              />
+            </div>
           </div>
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Email <span className="text-red-500">*</span>
-            </label>
-            <input
-              name="email"
-              type="email"
-              required
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="you@example.com"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Message <span className="text-red-500">*</span>
+              How can I help?
             </label>
             <textarea
-              name="message"
-              required
-              rows={4}
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="Tell me what you&apos;re thinking..."
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              rows={5}
+              className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
+              placeholder="Tell me a little about your project, idea, or question…"
             />
           </div>
+
+          {error && (
+            <p className="text-sm text-red-600 bg-red-50 border border-red-100 rounded-xl px-3 py-2">
+              {error}
+            </p>
+          )}
+
+          {isSuccess && (
+            <p className="text-sm text-green-700 bg-green-50 border border-green-100 rounded-xl px-3 py-2">
+              Thanks{name ? `, ${name}` : ""}! Your message was sent.
+            </p>
+          )}
 
           <button
             type="submit"
-            disabled={status === "sending"}
-            className="w-full rounded-lg bg-blue-600 text-white font-semibold py-2.5 transition-transform duration-150 hover:bg-blue-700 hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed"
+            disabled={isSubmitting}
+            className="inline-flex items-center justify-center rounded-xl bg-blue-600 text-white text-sm font-semibold px-4 py-2 shadow-sm hover:bg-blue-700 disabled:opacity-70 disabled:cursor-not-allowed transition-transform duration-150 hover:-translate-y-0.5 active:translate-y-0"
           >
-            {status === "sending" ? "Sending..." : "Send Message"}
+            {isSubmitting ? "Sending…" : "Send message"}
           </button>
         </form>
-
-        {status === "success" && (
-          <p className="mt-4 text-green-600 text-sm">
-            ✅ Message sent! I&apos;ll get back to you soon.
-          </p>
-        )}
-
-        {status === "error" && (
-          <p className="mt-4 text-red-600 text-sm">
-            ⚠️ There was a problem sending your message.{" "}
-            {errorMessage && <span>({errorMessage})</span>}
-          </p>
-        )}
       </section>
     </main>
   );

@@ -15,7 +15,7 @@ export default async function ProjectsPage() {
 
       <section className="max-w-4xl w-full grid grid-cols-1 md:grid-cols-2 gap-6">
         {projects.map((p) => (
-          <Link key={p.slug} href={`/projects/${p.slug}`} className="block">
+          <Link key={p.slug} href={`/projects/${p.slug}`} className="block transform transition-transform duration-150 hover:-translate-y-1 hover:shadow-lg">
             <VibeCard title={p.title} emoji={p.emoji} message={p.message} />
           </Link>
         ))}

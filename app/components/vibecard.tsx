@@ -4,18 +4,20 @@ type VibeCardProps = {
   message: string;
 };
 
-export default function VibeCard(props: { title: string; emoji: string; message: string }) {
+export default function VibeCard({ title, emoji, message }: VibeCardProps) {
   return (
-    <article
-      className="
-        bg-white rounded-2xl shadow-md p-6
-        transition-transform transition-shadow duration-150
-        hover:-translate-y-1 hover:shadow-lg
-      "
-    >
-      <div className="text-3xl mb-2">{props.emoji}</div>
-      <h3 className="text-lg font-semibold mb-1">{props.title}</h3>
-      <p className="text-gray-600 text-sm">{props.message}</p>
+    <article className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-800">
+      <div className="flex items-center gap-3">
+        <span className="text-2xl" aria-hidden="true">
+          {emoji}
+        </span>
+        <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-50">
+          {title}
+        </h3>
+      </div>
+      <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
+        {message}
+      </p>
     </article>
   );
 }

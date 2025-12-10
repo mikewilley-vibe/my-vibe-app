@@ -3,6 +3,19 @@
 const UVA_ORANGE = "#F84C1E";
 const UVA_BLUE = "#232D4B";
 
+const getBaseUrl = () => {
+  if (process.env.NEXT_PUBLIC_BASE_URL) {
+    return process.env.NEXT_PUBLIC_BASE_URL;
+  }
+
+  // Fallbacks for local dev
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL}`;
+  }
+
+  return "http://localhost:3000";
+};
+
 type UvaGame = {
   sport: "football" | "basketball" | string;
   opponent: string;
@@ -168,9 +181,22 @@ function GameCard({ game }: { game: UvaGame }) {
 }
 
 export default async function UvaPage() {
-  const res = await fetch("/api/uva", { cache: "no-store" });
+  const baseUrl =
+    process.env.NEXT_PUBLIC_BASE_URL ||
+    (process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : "http://localhost:3000");
+
+  const res = await fetch(`${baseUrl}/api/uva`, { cache: "no-store" });
+
+  if (!res.ok) {
+    // optional: fail gracefully instead of hard-crashing
+    throw new Error("Failed to load UVA data");
+  }
+
   const data = (await res.json()) as UvaApiResponse;
   const games = data.games;
+  // ...everything else stays the same
 
   const now = new Date();
   const pastGames = games

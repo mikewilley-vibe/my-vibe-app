@@ -1,61 +1,69 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import Link from "next/link";
 import "./globals.css";
+import type { Metadata } from "next";
+import Link from "next/link";
+import TransitionProvider from "@/components/motion/TransitionProvider";
+import { Inter } from "next/font/google";
+
+export const metadata: Metadata = {
+  title: {
+    default: "Mike’s Vibe Coder HQ",
+    template: "%s · Mike’s Vibe Coder HQ",
+  },
+  description:
+    "Portfolio + dev journal built with Next.js, TypeScript, and Tailwind.",
+};
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-  title: "Mike's Vibe App",
-  description: "Built by Mike Willey",
-};
-
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="min-h-screen flex flex-col bg-gray-100 text-gray-900">
+        <div className="min-h-screen flex flex-col bg-slate-50">
           {/* NAVBAR */}
-          <nav className="bg-white border-b shadow-sm px-6 py-3 flex items-center justify-between">
-            <Link href="/" className="text-lg font-bold hover:text-blue-600">
-              Mike&apos;s Vibe Coder HQ
-            </Link>
+          <header className="border-b bg-white">
+            <nav className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
+              <Link href="/" className="font-semibold text-slate-900">
+                Mike’s Vibe Coder HQ
+              </Link>
 
-            <div className="flex gap-4 text-sm font-semibold">
-              <Link href="/" className="hover:text-blue-600">
-                Home
-              </Link>
-              <Link href="/about" className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors duration-150 underline-offset-4 hover:underline">
-                About
-              </Link>
-              <Link href="/projects" className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors duration-150"
->
-                Projects
-              </Link>
-              <Link href="/contact" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors border-b-2 border-transparent hover:border-blue-500 pb-1">
-  Contact
-</Link>
-<Link href="/uva">UVA</Link>
-<Link
-  href="/vibes"
-  className="hover:text-blue-600 transition-colors border-b-2 border-transparent hover:border-blue-500 pb-1"
->
-  Vibe Log
-</Link>
-            </div>
-          </nav>
+              <div className="flex flex-wrap items-center gap-4 text-sm font-medium">
+  <Link href="/about" className="text-slate-700 hover:text-blue-700">
+    About
+  </Link>
+  <Link href="/projects" className="text-slate-700 hover:text-blue-700">
+    Projects
+  </Link>
+  <Link href="/vibes" className="text-slate-700 hover:text-blue-700">
+    Vibes
+  </Link>
+  <Link href="/shows" className="text-slate-700 hover:text-blue-700">
+    Shows
+  </Link>
+  <Link href="/uva" className="text-slate-700 hover:text-blue-700">
+    UVA
+  </Link>
+  <Link href="/contact" className="text-slate-700 hover:text-blue-700">
+    Contact
+  </Link>
+</div>
+            </nav>
+          </header>
 
           {/* PAGE CONTENT */}
-          <main className="flex-1 flex flex-col">{children}</main>
+          <main className="flex-1">
+  <TransitionProvider>{children}</TransitionProvider>
+</main>
 
           {/* FOOTER */}
-          <footer className="bg-white border-t text-xs text-gray-500 px-6 py-3 flex justify-between">
-            <span>© {new Date().getFullYear()} Mike Willey</span>
-            <span>Built with Next.js + vibes ⚡</span>
+          <footer className="border-t bg-white">
+            <div className="mx-auto max-w-5xl px-4 py-4 text-xs text-slate-500">
+              © {new Date().getFullYear()} Mike’s Vibe Coder HQ
+            </div>
           </footer>
         </div>
       </body>

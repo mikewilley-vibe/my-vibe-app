@@ -1,25 +1,50 @@
 import Link from "next/link";
-import VibeCard from "../components/vibecard";
-import { projects } from "../data/projects";
+import {
+  Card,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import FadeIn from "@/components/motion/FadeIn";
+import { projects } from "@/app/data/projects";
 
-export default async function ProjectsPage() {
+export default function ProjectsPage() {
   return (
-    <main className="flex-1 flex flex-col items-center px-4 py-12">
-      <section className="max-w-3xl w-full text-center mb-10">
-        <h1 className="text-4xl font-bold mb-3">Projects &amp; Experience 🚀</h1>
-        <p className="text-gray-600">
-          A snapshot of the real work behind Mike&apos;s Vibe Coder HQ – blending
-          public-sector digital projects, accessibility, and financial chops.
-        </p>
-      </section>
+    <main className="min-h-screen bg-slate-50 px-4 py-12">
+      <div className="mx-auto w-full max-w-5xl">
+        <header className="mb-8 text-center">
+          <h1 className="text-4xl font-bold">Projects &amp; Experience 🚀</h1>
+          <p className="mt-2 text-slate-600">
+            A snapshot of real work behind Mike&apos;s Vibe Coder HQ.
+          </p>
+        </header>
 
-      <section className="max-w-4xl w-full grid grid-cols-1 md:grid-cols-2 gap-6">
-        {projects.map((p) => (
-          <Link key={p.slug} href={`/projects/${p.slug}`} className="block transform transition-transform duration-150 hover:-translate-y-1 hover:shadow-lg">
-            <VibeCard title={p.title} emoji={p.emoji} message={p.message} />
-          </Link>
-        ))}
-      </section>
+        <section className="grid grid-cols-1 gap-6 md:grid-cols-2">
+          {projects.map((p, index) => (
+            <FadeIn key={p.slug} delay={index * 0.05}>
+              <Card className="flex h-full flex-col transition-all hover:-translate-y-1 hover:shadow-xl">
+                <CardHeader className="space-y-2">
+                  <CardTitle className="flex items-center gap-2">
+                    <span className="text-xl">{p.emoji ?? "📁"}</span>
+                    <span>{p.title}</span>
+                  </CardTitle>
+                  <CardDescription>{p.message}</CardDescription>
+                </CardHeader>
+
+                <div className="flex-1" />
+
+                <CardFooter>
+                  <Button asChild className="w-full">
+                    <Link href={`/projects/${p.slug}`}>View project</Link>
+                  </Button>
+                </CardFooter>
+              </Card>
+            </FadeIn>
+          ))}
+        </section>
+      </div>
     </main>
   );
 }

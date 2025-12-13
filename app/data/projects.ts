@@ -28,7 +28,7 @@ export const projects: Project[] = [
       image: "/images/cam-fb.jpeg"
   },
   {
-    slug: "Fairfax Community Revitalization Migration",
+    slug: "fairfax-community-revitalization-migration",
     title: "Fairfax Community Revitalization Migration",
     emoji: "📊",
     message:

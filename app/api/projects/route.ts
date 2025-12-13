@@ -1,6 +1,12 @@
 import { NextResponse } from "next/server";
-import { projects } from "../../data/projects";
 
 export async function GET() {
-  return NextResponse.json(projects);
+  const apiKey = process.env.JAMBASE_API_KEY;
+
+  const url = `https://www.jambase.com/jb-api/v1/events?apikey=${apiKey}&location=Richmond,VA`;
+
+  const resp = await fetch(url);
+  const data = await resp.json();
+
+  return NextResponse.json(data);
 }

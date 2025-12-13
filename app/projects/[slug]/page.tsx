@@ -1,47 +1,75 @@
+// app/projects/[slug]/page.tsx
+
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { projects, getProjectBySlug } from "@/app/data/projects";
 
-type Props = {
-  params: Promise<{ slug: string }>;
-};
+type Params = { slug: string };
 
 export async function generateStaticParams() {
   return projects.map((p) => ({ slug: p.slug }));
 }
 
-export default async function ProjectDetailPage({ params }: Props) {
-  const { slug } = await params;  // ✅ FIXES THE PROMISE ISSUE
+export default async function ProjectDetailPage({
+  params,
+}: {
+  params: Promise<Params>;
+}) {
+  const { slug } = await params;
 
-  const project = getProjectBySlug(slug);
+  // NOTE: Next already gives you a decoded string most of the time.
+  // decodeURIComponent is safe here, but we’ll guard it just in case.
+  let decodedSlug = slug;
+  try {
+    decodedSlug = decodeURIComponent(slug);
+  } catch {}
 
-  if (!project) return notFound();
+  const project = getProjectBySlug(decodedSlug);
+
+  // debug (shows in your terminal, not the browser)
+  console.log("PROJECT SLUG:", decodedSlug);
+  console.log("KNOWN SLUGS:", projects.map((p) => p.slug));
+
+  if (!project) notFound();
 
   return (
-    <main className="flex-1 flex flex-col items-center px-4 py-12">
-      <article className="max-w-3xl w-full bg-white rounded-2xl shadow-md p-8">
-        {project.image && (
-  <div className="mb-6 overflow-hidden rounded-2xl border border-slate-100">
-    <Image
-      src={project.image}
-      alt={project.title}
-      width={1200}
-      height={630}
-      className="h-48 w-full object-cover md:h-64"
-    />
-  </div>
-)}
-        <div className="flex items-center gap-2 mb-4">
-          <span className="text-3xl">{project.emoji}</span>
-          <h1 className="text-2xl font-bold">{project.title}</h1>
-        </div>
-
-        <p className="text-gray-700 mb-6">{project.longDescription}</p>
-
-        <Link href="/projects" className="text-blue-600 font-semibold">
+    <main className="min-h-screen bg-slate-50 px-4 py-12">
+      <article className="mx-auto w-full max-w-3xl rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
+        <Link href="/projects" className="text-sm text-blue-600 hover:underline">
           ← Back to Projects
         </Link>
+
+        {project.image ? (
+          <div className="mt-6 overflow-hidden rounded-2xl border border-slate-100">
+            <Image
+              src={project.image}
+              alt={project.title}
+              width={1200}
+              height={630}
+              className="h-56 w-full object-cover md:h-72"
+              priority
+            />
+          </div>
+        ) : null}
+
+        <header className="mt-6">
+          <div className="flex items-center gap-3">
+            <span className="text-3xl">{project.emoji ?? "📁"}</span>
+            <h1 className="text-3xl font-bold text-slate-900">
+              {project.title ?? "Untitled project"}
+            </h1>
+          </div>
+
+          <p className="mt-3 text-slate-600">{project.message ?? "No summary yet."}</p>
+        </header>
+
+        <section className="mt-6 space-y-3">
+          <h2 className="text-lg font-semibold text-slate-900">Details</h2>
+          <p className="whitespace-pre-line leading-relaxed text-slate-700">
+            {project.longDescription ?? "No longDescription provided."}
+          </p>
+        </section>
       </article>
     </main>
   );

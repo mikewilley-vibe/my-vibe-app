@@ -11,7 +11,6 @@ export type VibePost = {
   tags: string[];
   image?: string;
 };
-
 export const vibePosts: VibePost[] = [
   {
     id: 1,
@@ -80,8 +79,23 @@ export const vibePosts: VibePost[] = [
       "This breakthrough makes me excited about what I can build next.",
     tags: ["routing", "bugfix", "next.js", "learning", "win"],
   },
-];
-
+  {
+  id: 6, 
+  slug: "day-6-framer-motion-win",
+  title: "Framer Motion Win",
+  date: "2025-12-11",
+  emoji: "✨",
+  summary: "Cards now animate in cleanly.",
+  message: "...",
+  tags: ["animation", "framer-motion", "win"],
+},
+];  
 export function getVibeBySlug(slug: string): VibePost | undefined {
   return vibePosts.find((post) => post.slug === slug);
+}
+
+export function getVibesNewestFirst(): VibePost[] {
+  return [...vibePosts].sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  );
 }

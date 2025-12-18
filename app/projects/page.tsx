@@ -1,14 +1,9 @@
 import Link from "next/link";
-import {
-  Card,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import FadeIn from "@/components/motion/FadeIn";
+import { Card, CardDescription, CardFooter, CardHeader,CardTitle } from "@/app/components/ui/card";
+import { Button } from "@/app/components/ui/button";
+import FadeIn from "@/app/components/motion/FadeIn";
 import { projects } from "@/app/data/projects";
+import TwoColumnSection from "@/app/components/ui/TwoColumnSection";
 
 export default function ProjectsPage() {
   return (
@@ -21,29 +16,29 @@ export default function ProjectsPage() {
           </p>
         </header>
 
-        <section className="grid grid-cols-1 gap-6 md:grid-cols-2">
-          {projects.map((p, index) => (
-            <FadeIn key={p.slug} delay={index * 0.05}>
-              <Card className="flex h-full flex-col transition-all hover:-translate-y-1 hover:shadow-xl">
-                <CardHeader className="space-y-2">
-                  <CardTitle className="flex items-center gap-2">
-                    <span className="text-xl">{p.emoji ?? "📁"}</span>
-                    <span>{p.title}</span>
-                  </CardTitle>
-                  <CardDescription>{p.message}</CardDescription>
-                </CardHeader>
+       <TwoColumnSection>
+  {projects.map((p, index) => (
+    <FadeIn key={p.slug} delay={index * 0.05}>
+      <Card className="flex h-full flex-col transition-all hover:-translate-y-1 hover:shadow-xl">
+        <CardHeader className="space-y-2">
+          <CardTitle className="flex items-center gap-2">
+            <span className="text-xl">{p.emoji ?? "📁"}</span>
+            <span>{p.title}</span>
+          </CardTitle>
+          <CardDescription>{p.message}</CardDescription>
+        </CardHeader>
 
-                <div className="flex-1" />
+        <div className="flex-1" />
 
-                <CardFooter>
-                  <Button asChild className="w-full">
-                    <Link href={`/projects/${p.slug}`}>View project</Link>
-                  </Button>
-                </CardFooter>
-              </Card>
-            </FadeIn>
-          ))}
-        </section>
+        <CardFooter>
+          <Button asChild className="w-full">
+            <Link href={`/projects/${p.slug}`}>View project</Link>
+          </Button>
+        </CardFooter>
+      </Card>
+    </FadeIn>
+  ))}
+</TwoColumnSection>
       </div>
     </main>
   );

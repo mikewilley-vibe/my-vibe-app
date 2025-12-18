@@ -1,12 +1,13 @@
 import Link from "next/link";
 import Image from "next/image";
+import FamilySection from "../components/content/FamilySection";
 
 export default function AboutPage() {
   return (
     <main className="min-h-screen bg-slate-50">
-      <section className="mx-auto flex max-w-5xl flex-col gap-10 px-4 py-16 md:flex-row md:items-start md:gap-16">
-        {/* Left column – intro + story */}
-        <div className="flex-1 space-y-6">
+      <div className="mx-auto max-w-3xl px-6 py-12 space-y-12">
+        {/* Intro */}
+        <section className="space-y-6">
           <h1 className="text-4xl font-bold tracking-tight text-slate-900">
             About Mike
           </h1>
@@ -39,14 +40,15 @@ export default function AboutPage() {
               Finance &amp; Analytics
             </span>
           </div>
-        </div>
+        </section>
 
-        {/* Right column – contact summary card */}
-        <aside className="w-full max-w-sm flex-shrink-0">
+<FamilySection />
+
+        {/* Contact card */}
+        <section>
           <div className="overflow-hidden rounded-2xl bg-white shadow-lg ring-1 ring-slate-900/5">
             <div className="flex items-center gap-4 border-b border-slate-100 px-5 py-4">
               <div className="relative h-12 w-12 overflow-hidden rounded-full bg-slate-200">
-                {/* Placeholder avatar – swap later if you want */}
                 <Image
                   src="/images/mike-headshot.jpeg"
                   alt="Mike Willey avatar"
@@ -105,8 +107,8 @@ export default function AboutPage() {
               </div>
             </div>
           </div>
-        </aside>
-      </section>
+        </section>
+      </div>
     </main>
   );
 }

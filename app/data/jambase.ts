@@ -2,7 +2,7 @@
 
 export type JamBaseResult = {
   fetchedAt: string;
-  raw: any | null;
+  raw: unknown; // was any | null
 };
 
 function yyyymmdd(d: Date) {
@@ -11,10 +11,10 @@ function yyyymmdd(d: Date) {
 }
 
 export async function fetchJamBaseData(): Promise<JamBaseResult> {
-  const apiKey = process.env.JAMBASE_API_KEY;
+  const apiKey = process.env.JAMBASE_APIKEY;
 
   if (!apiKey) {
-    console.error("Missing JAMBASE_API_KEY in environment");
+    console.error("Missing JAMBASE_APIKEY in environment");
     return { fetchedAt: new Date().toISOString(), raw: null };
   }
 
@@ -25,7 +25,7 @@ export async function fetchJamBaseData(): Promise<JamBaseResult> {
 
   const params = new URLSearchParams({
     apikey: apiKey,
-    zipCode: "23219",        // change if you want
+    zipCode: "23505",        // change if you want
     radius: "50",            // miles
     startDate: yyyymmdd(start),
     endDate: yyyymmdd(end),

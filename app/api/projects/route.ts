@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 export async function GET() {
-  const apiKey = process.env.JAMBASE_API_KEY;
+  const apiKey = process.env.JAMBASE_APIKEY;
 
   const url = `https://www.jambase.com/jb-api/v1/events?apikey=${apiKey}&location=Richmond,VA`;
 

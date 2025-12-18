@@ -1,8 +1,9 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import Link from "next/link";
-import TransitionProvider from "@/components/motion/TransitionProvider";
+import TransitionProvider from "@/app/components/motion/TransitionProvider";
 import { Inter } from "next/font/google";
+import { CommandPalette } from "@/app/components/ui";
 
 export const metadata: Metadata = {
   title: {
@@ -58,7 +59,6 @@ export default function RootLayout({
           <main className="flex-1">
   <TransitionProvider>{children}</TransitionProvider>
 </main>
-
           {/* FOOTER */}
           <footer className="border-t bg-white">
             <div className="mx-auto max-w-5xl px-4 py-4 text-xs text-slate-500">
@@ -66,6 +66,7 @@ export default function RootLayout({
             </div>
           </footer>
         </div>
+        <CommandPalette />
       </body>
     </html>
   );

@@ -1,114 +1,78 @@
-// app/api/jambase/route.ts
 import { NextResponse } from "next/server";
+import { myJamBaseArtistIds } from "@/app/data/myArtists";
 
-export const dynamic = "force-dynamic";
+const JAMBASE_BASE = "https://www.jambase.com/jb-api/v1";
+const KEY_PARAM = "apikey"; // keep this if your working calls use it
 
-function yyyymmdd(d: Date) {
-  return d.toISOString().slice(0, 10);
-}
+export async function GET(req: Request) {
+  const apiKey = process.env.JAMBASE_API_KEY;
+  if (!apiKey) {
+    return NextResponse.json({ error: "Missing JAMBASE_API_KEY" }, { status: 500 });
+  }
 
-export async function GET() {
+  const { searchParams } = new URL(req.url);
+
+  // ✅ If URL has ?artist=... use those; otherwise default to your personal list
+  const artistIds =
+    searchParams.getAll("artist").filter(Boolean).length > 0
+      ? searchParams.getAll("artist").filter(Boolean)
+      : myJamBaseArtistIds;
+
+  const zip = searchParams.get("zip") ?? "23505";
+  const radius = searchParams.get("radius") ?? "50";
+
+  // If still empty, tell yourself what to do
+  if (artistIds.length === 0) {
+    return NextResponse.json(
+      { error: "No artists configured. Add IDs in app/data/myArtists.ts" },
+      { status: 400 }
+    );
+  }
+
   try {
-    const apiKey = process.env.JAMBASE_API_KEY;
+    const results = await Promise.all(
+      artistIds.map(async (artistId) => {
+        const url =
+          `${JAMBASE_BASE}/events` +
+          `?${KEY_PARAM}=${encodeURIComponent(apiKey)}` +
+          `&artistId=${encodeURIComponent(artistId)}` +
+          `&zipCode=${encodeURIComponent(zip)}` +
+          `&radius=${encodeURIComponent(radius)}`;
 
-    if (!apiKey) {
-      return NextResponse.json(
-        { error: "Missing JAMBASE_API_KEY in environment" },
-        { status: 500 }
-      );
-    }
+        const res = await fetch(url, { cache: "no-store" });
+        const json = await res.json();
 
-    // 🔧 tweak these defaults anytime
-    const zipCode = process.env.JAMBASE_ZIP ?? "23219"; // Richmond
-    const radius = process.env.JAMBASE_RADIUS ?? "50";
-    const perPage = process.env.JAMBASE_PER_PAGE ?? "50";
-    const page = process.env.JAMBASE_PAGE ?? "1";
+        return { artistId, ok: res.ok, status: res.status, data: json };
+      })
+    );
 
-    const start = new Date();
-    const end = new Date();
-    end.setDate(end.getDate() + 30);
+    const allEvents = results.flatMap((r) => r.data?.events ?? []);
 
-    const params = new URLSearchParams({
-      apikey: apiKey,
-      zipCode,
-      radius,
-      startDate: yyyymmdd(start),
-      endDate: yyyymmdd(end),
-      perPage,
-      page,
+    const deduped = Array.from(
+      new Map(allEvents.map((e: any) => [e.id ?? e.url ?? JSON.stringify(e), e])).values()
+    );
+
+    deduped.sort((a: any, b: any) => {
+      const ad = new Date(a.date ?? a.startDate ?? a.startsAt ?? 0).getTime();
+      const bd = new Date(b.date ?? b.startDate ?? b.startsAt ?? 0).getTime();
+      return ad - bd;
     });
-
-    // ✅ JamBase JSON API (NOT /concerts/finder)
-    const url = `https://www.jambase.com/jb-api/v1/events?${params.toString()}`;
-
-    const res = await fetch(url, {
-      cache: "no-store",
-      headers: { Accept: "application/json" },
-    });
-
-    const contentType = res.headers.get("content-type") || "";
-    const text = await res.text();
-
-    if (!res.ok) {
-      return NextResponse.json(
-        {
-          error: "JamBase request failed",
-          status: res.status,
-          statusText: res.statusText,
-          contentType,
-          preview: text.slice(0, 300),
-          url,
-        },
-        { status: 502 }
-      );
-    }
-
-    // If JamBase gives back HTML, this will help you see it instantly
-    if (!contentType.includes("application/json")) {
-      return NextResponse.json(
-        {
-          error: "JamBase response was not JSON",
-          contentType,
-          preview: text.slice(0, 300),
-          url,
-        },
-        { status: 502 }
-      );
-    }
-
-    let raw: any = null;
-    try {
-      raw = JSON.parse(text);
-    } catch {
-      return NextResponse.json(
-        {
-          error: "JamBase JSON parse failed",
-          contentType,
-          preview: text.slice(0, 300),
-          url,
-        },
-        { status: 502 }
-      );
-    }
 
     return NextResponse.json({
-      fetchedAt: new Date().toISOString(),
-      query: {
-        zipCode,
-        radius,
-        startDate: yyyymmdd(start),
-        endDate: yyyymmdd(end),
-        perPage,
-        page,
-      },
-      raw,
+      artists: artistIds,
+      zip,
+      radius,
+      count: deduped.length,
+      events: deduped,
+      debug: results.map((r) => ({
+        artistId: r.artistId,
+        ok: r.ok,
+        status: r.status,
+      })),
     });
-  } catch (err) {
+  } catch (err: any) {
     return NextResponse.json(
-      {
-        error: "Server error calling JamBase",
-        message: (err as Error).message,
-      },
+      { error: "JamBase fetch failed", details: String(err?.message ?? err) },
       { status: 500 }
     );
   }

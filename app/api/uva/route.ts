@@ -1,182 +1,159 @@
 // app/api/uva/route.ts
 import { NextResponse } from "next/server";
 
-const API_BASE = "https://www.thesportsdb.com/api/v1/json";
-const API_KEY = process.env.THESPORTSDB_API_KEY || "123";
+const SCHEDULE_URL = "https://virginiasports.com/sports/mbball/schedule/";
 
-// UVA team IDs from TheSportsDB
-const UVA_FOOTBALL_ID = "136971";
-const UVA_MBB_ID = "138622";
+// NOTE: VirginiaSports JSON-LD uses @graph / ItemList wrappers
 
-type RawEvent = {
-  idEvent: string;
-  dateEvent: string | null;
-  strTime: string | null;
-  strHomeTeam: string | null;
-  strAwayTeam: string | null;
-  intHomeScore: string | null;
-  intAwayScore: string | null;
-  strSeason: string | null;
-  strSport: string | null;
-};
-type RawTeam = {
-  strTeam: string | null;
-  strTeamBadge: string | null;
-  strTeamLogo: string | null;
-  strEquipment: string | null;
-};
-
-async function fetchTeamArt(teamId: string) {
-  const url = `${API_BASE}/${API_KEY}/lookupteam.php?id=${teamId}`;
-  const res = await fetch(url, { cache: "force-cache" });
-
-  if (!res.ok) {
-    console.error("Failed to fetch team art", teamId, res.status);
-    return { teamBadge: undefined, teamLogo: undefined, equipmentArt: undefined };
-  }
-
-  const data = (await res.json()) as { teams?: RawTeam[] | null };
-  const team = data.teams?.[0];
-
-  if (!team) {
-    return { teamBadge: undefined, teamLogo: undefined, equipmentArt: undefined };
-  }
-
-  return {
-    teamBadge: team.strTeamBadge || undefined,
-    teamLogo: team.strTeamLogo || undefined,
-    equipmentArt: team.strEquipment || undefined,
+type JsonLdEvent = {
+  "@type"?: string;
+  startDate?: string;
+  endDate?: string;
+  name?: string;
+  url?: string;
+  location?: {
+    name?: string;
+    address?: {
+      name?: string;
+      addressLocality?: string;
+      addressRegion?: string;
+    };
   };
-}
+};
+
 type UvaGame = {
   id: string;
-  sport: "football" | "basketball";
+  sport: "basketball";
   opponent: string;
-  date: string;          // ISO
-  location: "home" | "away";
-  result: "win" | "loss" | "pending";
+  date: string; // ISO-ish
+  location: "home" | "away" | "neutral";
+  result: "pending"; // we’ll add results later if you want
   score?: string;
   note?: string;
-  teamBadge?: string;
-  teamLogo?: string;
-  equipmentArt?: string;
+  sourceUrl?: string;
 };
 
-async function fetchEvents(
-  endpoint: "eventslast" | "eventsnext",
-  teamId: string,
-  sport: "football" | "basketball"
-): Promise<UvaGame[]> {
-  const url = `${API_BASE}/${API_KEY}/${endpoint}.php?id=${teamId}`;
+function normalizeOpponent(name?: string) {
+  const n = (name ?? "").trim();
+  // VirginiaSports names look like "Virginia vs. Duke" / "Virginia at Duke"
+  const lower = n.toLowerCase();
 
-  const res = await fetch(url, { cache: "no-store" });
-  if (!res.ok) {
-    console.error(`Failed to fetch ${endpoint} for ${teamId}`, res.status);
-    return [];
+  if (lower.includes(" vs. ")) {
+    return { opponent: n.split(/ vs\. /i)[1]?.trim() || "Opponent TBA", location: "home" as const };
   }
-
-  const data = (await res.json()) as { results?: RawEvent[] | null; events?: RawEvent[] | null };
-
-  // eventslast returns `results`, eventsnext returns `events`
-  const events = data.results ?? data.events ?? [];
-  if (!events) return [];
-
-  return events
-    .filter((event) => event.dateEvent)
-    .map((event) => {
-      const homeTeam = event.strHomeTeam ?? "";
-      const awayTeam = event.strAwayTeam ?? "";
-
-      const isHome = homeTeam.toLowerCase().includes("virginia");
-      const opponent = isHome ? awayTeam : homeTeam;
-
-      const homeScore = event.intHomeScore
-        ? parseInt(event.intHomeScore, 10)
-        : null;
-      const awayScore = event.intAwayScore
-        ? parseInt(event.intAwayScore, 10)
-        : null;
-
-      let result: UvaGame["result"] = "pending";
-      let score: string | undefined;
-
-      if (homeScore !== null && awayScore !== null) {
-        score = `${homeScore}-${awayScore}`;
-
-        const uvaScore = isHome ? homeScore : awayScore;
-        const oppScore = isHome ? awayScore : homeScore;
-
-        if (uvaScore > oppScore) result = "win";
-        else if (uvaScore < oppScore) result = "loss";
-      }
-
-      const dateIso =
-        event.dateEvent && event.strTime
-          ? `${event.dateEvent}T${event.strTime}:00Z`
-          : event.dateEvent
-          ? `${event.dateEvent}T00:00:00Z`
-          : new Date().toISOString();
-
-      return {
-        id: `${sport}-${event.idEvent}`,
-        sport,
-        opponent: opponent || "Opponent TBA",
-        date: dateIso,
-        location: isHome ? "home" : "away",
-        result,
-        score,
-        note: `${homeTeam || "UVA"} vs ${awayTeam || "Opponent"}`,
-      };
-    });
+  if (lower.includes(" at ")) {
+    return { opponent: n.split(/ at /i)[1]?.trim() || "Opponent TBA", location: "away" as const };
+  }
+  // fallback
+  return { opponent: n || "Opponent TBA", location: "neutral" as const };
 }
 
-async function fetchTeamAll(
-  teamId: string,
-  sport: "football" | "basketball"
-): Promise<UvaGame[]> {
-  const [lastGames, nextGames, art] = await Promise.all([
-    fetchEvents("eventslast", teamId, sport),
-    fetchEvents("eventsnext", teamId, sport),
-    fetchTeamArt(teamId),
-  ]);
-
-  const sortedLast = lastGames.sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-  );
-  const lastFive = sortedLast.slice(0, 5);
-
-  const map = new Map<string, UvaGame>();
-  for (const g of [...lastFive, ...nextGames]) {
-    map.set(g.id, {
-      ...g,
-      teamBadge: art.teamBadge,
-      teamLogo: art.teamLogo,
-      equipmentArt: art.equipmentArt,
-    });
-  }
-
-  return Array.from(map.values());
+function pickCityState(ev: JsonLdEvent) {
+  const loc =
+    ev.location?.address?.addressLocality ||
+    ev.location?.address?.name ||
+    ev.location?.name ||
+    "";
+  return String(loc).trim();
 }
 
 export async function GET() {
   try {
-    const [footballGames, basketballGames] = await Promise.all([
-      fetchTeamAll(UVA_FOOTBALL_ID, "football"),
-      fetchTeamAll(UVA_MBB_ID, "basketball"),
-    ]);
+    const res = await fetch(SCHEDULE_URL, {
+      cache: "no-store",
+      headers: {
+        "user-agent":
+          "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36",
+        accept: "text/html",
+      },
+    });
 
-    const games = [...footballGames, ...basketballGames].sort(
-      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+    const html = await res.text();
+
+    // Pull JSON-LD scripts
+const blocks = Array.from(
+  html.matchAll(
+    /<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi
+  )
+).map((m) => m[1]);
+
+const events: JsonLdEvent[] = [];
+
+function pushPossibleEvents(node: any) {
+  if (!node) return;
+
+  // If it's an array, recurse into each item
+  if (Array.isArray(node)) {
+    node.forEach(pushPossibleEvents);
+    return;
+  }
+
+  // Common JSON-LD wrappers
+  if (Array.isArray(node["@graph"])) {
+    node["@graph"].forEach(pushPossibleEvents);
+  }
+
+  if (Array.isArray(node.itemListElement)) {
+    // itemListElement can be objects with `.item`
+    node.itemListElement.forEach((el: any) => pushPossibleEvents(el?.item ?? el));
+  }
+
+  // If it looks like an event-ish object, keep it
+  if (node.startDate || node.name || node["@type"]) {
+    events.push(node);
+  }
+}
+
+for (const raw of blocks) {
+  try {
+    const parsed = JSON.parse(raw.trim());
+    pushPossibleEvents(parsed);
+  } catch {
+    // ignore unparseable block
+  }
+}
+
+    // Keep only Event/SportsEvent-ish items with startDate
+    const eventItems = events.filter(
+      (e) =>
+        (e?.["@type"] === "Event" || e?.["@type"] === "SportsEvent" || !!e?.startDate) &&
+        !!e?.startDate &&
+        !!e?.name
+    );
+
+    const games: UvaGame[] = eventItems.map((ev) => {
+      const { opponent, location } = normalizeOpponent(ev.name);
+      const dateIso = ev.startDate ? new Date(ev.startDate).toISOString() : new Date().toISOString();
+      const place = pickCityState(ev);
+
+      return {
+        id: `uva-mbb-${dateIso}-${opponent.replace(/\s+/g, "-").toLowerCase()}`,
+        sport: "basketball",
+        opponent,
+        date: dateIso,
+        location,
+        result: "pending",
+        note: place ? `Location: ${place}` : undefined,
+        sourceUrl: ev.url || undefined,
+      };
+    });
+
+    // Dedup + sort
+    const deduped = Array.from(new Map(games.map((g) => [g.id, g])).values()).sort(
+      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
     );
 
     return NextResponse.json({
+      ok: res.ok,
+      status: res.status,
       updatedAt: new Date().toISOString(),
-      games,
+      games: deduped,
+      count: deduped.length,
+      source: SCHEDULE_URL,
     });
-  } catch (err) {
-    console.error("Error building UVA games", err);
+  } catch (err: any) {
     return NextResponse.json(
-      { error: "Failed to fetch UVA games" },
+      { ok: false, error: String(err?.message ?? err) },
       { status: 500 }
     );
   }

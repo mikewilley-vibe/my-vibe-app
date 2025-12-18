@@ -1,238 +1,179 @@
 // app/uva/page.tsx
+import { getBaseUrl } from "@/lib/baseUrl";
+import TwoColumnSection from "@/app/components/ui/TwoColumnSection";
+import ScoresBanner from "@/app/components/sports/ScoresBanner";
 
 const UVA_ORANGE = "#F84C1E";
 const UVA_BLUE = "#232D4B";
 
-const getBaseUrl = () => {
-  if (process.env.NEXT_PUBLIC_BASE_URL) {
-    return process.env.NEXT_PUBLIC_BASE_URL;
-  }
+type ApiUvaGame = {
+  id?: string;
+  sport?: string;
 
-  // Fallbacks for local dev
-  if (process.env.VERCEL_URL) {
-    return `https://${process.env.VERCEL_URL}`;
-  }
+  date?: string;
+  startTime?: string;
 
-  return "http://localhost:3000";
-};
+  opponent?: string;
+  location?: string;
 
-type UvaGame = {
-  sport: "football" | "basketball" | string;
-  opponent: string;
-  date: string;
-  location: string;
-  result: string;
-  score?: string;
+  home?: string;
+  away?: string;
+
   note?: string;
-  teamBadge?: string;
-  teamLogo?: string;
-  equipmentArt?: string;
+  sourceUrl?: string;
 };
 
 type UvaApiResponse = {
   updatedAt: string;
-  games: UvaGame[];
+  games: ApiUvaGame[];
 };
 
-function formatDate(dateStr: string) {
-  const d = new Date(dateStr);
-  return d.toLocaleDateString("en-US", {
-    month: "numeric",
-    day: "numeric",
-    year: "numeric",
-  });
+function isBasketballSport(sport: unknown) {
+  return String(sport ?? "").toLowerCase().includes("basketball");
 }
 
-function sportIcon(sport: string) {
-  if (sport.toLowerCase() === "football") return "🏈";
-  if (sport.toLowerCase() === "basketball") return "🏀";
-  return "🎽";
+function getGameDate(g: ApiUvaGame): Date | null {
+  const raw = (g.date ?? g.startTime ?? "").toString().trim();
+  if (!raw) return null;
+  if (raw.toLowerCase().includes("tbd")) return null;
+
+  const d = new Date(raw);
+  return Number.isNaN(d.getTime()) ? null : d;
 }
 
-function resultBadge(result: string) {
-  const r = result.toLowerCase();
-
-  if (r === "win") {
-    return (
-      <span className="rounded-full px-3 py-1 text-xs font-semibold"
-        style={{ backgroundColor: "#E6F4EA", color: "#0F8A3B" }}>
-        WIN
-      </span>
-    );
+function gameTitle(g: ApiUvaGame) {
+  if (g.opponent) {
+    return `vs ${String(g.opponent)
+      .replace(/^vs\.?\s+/i, "")
+      .replace(/^at\s+/i, "")
+      .trim()}`;
   }
-  if (r === "loss") {
-    return (
-      <span className="rounded-full px-3 py-1 text-xs font-semibold"
-        style={{ backgroundColor: "#FCE8E6", color: "#D93025" }}>
-        LOSS
-      </span>
-    );
-  }
-
-  return (
-    <span className="rounded-full px-3 py-1 text-xs font-semibold"
-      style={{ backgroundColor: "#FFF4D6", color: "#B15C00" }}>
-      PENDING
-    </span>
-  );
+  if (g.away || g.home) return `${g.away ?? "TBD"} @ ${g.home ?? "TBD"}`;
+  return "Opponent TBA";
 }
 
-function computeRecord(games: UvaGame[]) {
-  let wins = 0, losses = 0, pending = 0;
-  for (const g of games) {
-    const r = g.result.toLowerCase();
-    if (r === "win") wins++;
-    else if (r === "loss") losses++;
-    else pending++;
-  }
-  return { wins, losses, pending };
+function locationChip(g: ApiUvaGame) {
+  const l = String(g.location ?? "").toLowerCase();
+  if (l === "home") return "HOME";
+  if (l === "away") return "AWAY";
+  return "";
 }
 
-function RecordPill({
-  label,
-  wins,
-  losses,
-  pending,
+function fmtDate(d: Date | null) {
+  if (!d) return "TBD";
+  return d.toLocaleDateString("en-US", { month: "numeric", day: "numeric", year: "numeric" });
+}
+
+function GameList({
+  title,
+  games,
+  emptyText,
 }: {
-  label: string;
-  wins: number;
-  losses: number;
-  pending: number;
+  title: string;
+  games: ApiUvaGame[];
+  emptyText: string;
 }) {
   return (
-    <div
-      className="flex items-center gap-2 rounded-xl px-4 py-2 shadow-sm border"
-      style={{
-        backgroundColor: "white",
-        borderColor: UVA_BLUE + "33",
-      }}
-    >
-      <span
-        className="text-[11px] font-semibold uppercase tracking-wide"
-        style={{ color: UVA_BLUE }}
-      >
-        {label}
-      </span>
-      <span className="text-sm font-bold" style={{ color: UVA_ORANGE }}>
-        {wins}-{losses}
-      </span>
-      {pending > 0 && (
-        <span className="text-[11px]" style={{ color: UVA_BLUE }}>
-          ({pending} pending)
-        </span>
+    <div>
+      <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide" style={{ color: UVA_BLUE }}>
+        {title}
+      </h2>
+
+      {games.length === 0 ? (
+        <p className="text-sm text-slate-600">{emptyText}</p>
+      ) : (
+        <div className="space-y-3">
+          {games.map((g, idx) => {
+            const d = getGameDate(g);
+            const chip = locationChip(g);
+
+            return (
+              <div
+                key={g.id ?? `${title}-${idx}`}
+                className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm"
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <div className="text-xs font-semibold text-slate-500">
+                      {fmtDate(d)}
+                      {chip ? ` • ${chip}` : ""}
+                    </div>
+
+                    <div className="mt-1 text-sm font-semibold text-slate-900">{gameTitle(g)}</div>
+
+                    {g.note ? <div className="mt-1 text-xs text-slate-500">{g.note}</div> : null}
+
+                    {g.sourceUrl ? (
+                      <a
+                        href={g.sourceUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="mt-2 inline-block text-xs font-semibold text-blue-600 hover:text-blue-700"
+                      >
+                        Game details →
+                      </a>
+                    ) : null}
+                  </div>
+
+                  <div className="text-xl">🏀</div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
       )}
     </div>
   );
 }
 
-function GameCard({ game }: { game: UvaGame }) {
-  return (
-    <div
-      className="flex items-center justify-between rounded-2xl px-5 py-4 shadow-sm border"
-      style={{
-        backgroundColor: "white",
-        borderColor: UVA_BLUE + "33",
-      }}
-    >
-      <div className="flex items-center gap-4">
-        <div
-          className="flex h-10 w-10 items-center justify-center rounded-full text-xl font-bold"
-          style={{ backgroundColor: UVA_BLUE, color: "white" }}
-        >
-          {sportIcon(game.sport)}
-        </div>
-
-        <div>
-          <div
-            className="text-[11px] font-semibold uppercase tracking-wide flex gap-2"
-            style={{ color: UVA_BLUE }}
-          >
-            <span>{game.sport}</span>•<span>{game.location.toUpperCase()}</span>
-          </div>
-
-          <div
-            className="mt-1 text-sm font-semibold"
-            style={{ color: UVA_BLUE }}
-          >
-            vs {game.opponent}
-          </div>
-
-          <div className="text-xs text-slate-500">{formatDate(game.date)}</div>
-
-          {game.note && (
-            <div className="mt-1 text-xs text-slate-500">{game.note}</div>
-          )}
-        </div>
-      </div>
-
-      <div className="flex flex-col items-end gap-2">
-        {game.score && (
-          <div
-            className="text-sm font-bold"
-            style={{ color: UVA_ORANGE }}
-          >
-            {game.score}
-          </div>
-        )}
-        {resultBadge(game.result)}
-      </div>
-    </div>
-  );
-}
-
 export default async function UvaPage() {
-  const baseUrl =
-    process.env.NEXT_PUBLIC_BASE_URL ||
-    (process.env.VERCEL_URL
-      ? `https://${process.env.VERCEL_URL}`
-      : "http://localhost:3000");
-
+  const baseUrl = await getBaseUrl();
   const res = await fetch(`${baseUrl}/api/uva`, { cache: "no-store" });
-
-  if (!res.ok) {
-    // optional: fail gracefully instead of hard-crashing
-    throw new Error("Failed to load UVA data");
-  }
+  if (!res.ok) throw new Error(`Failed to load UVA data: ${res.status}`);
 
   const data = (await res.json()) as UvaApiResponse;
-  const games = data.games;
-  // ...everything else stays the same
+  const updatedAt = new Date(data.updatedAt);
+
+  const all = data.games ?? [];
+
+  // 1) Try basketball filter...
+  const basketball = all.filter((g) => isBasketballSport(g.sport));
+
+  // 2) ...but if that yields 0, fall back to showing whatever we got
+  const pool = basketball.length > 0 ? basketball : all;
 
   const now = new Date();
-  const pastGames = games
-    .filter((g) => new Date(g.date) <= now || g.result !== "pending")
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  const withDates = pool.map((g) => ({ g, d: getGameDate(g) }));
 
-  const upcoming = games
-    .filter((g) => new Date(g.date) > now && g.result === "pending")
-    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+  // Past = only games with a real date <= now
+  const past = withDates
+    .filter((x) => x.d && x.d <= now)
+    .sort((a, b) => b.d!.getTime() - a.d!.getTime())
+    .map((x) => x.g)
+    .slice(0, 5);
 
-  const recent = pastGames;
-  const next = upcoming;
-
-
-  const overall = computeRecord(games);
-  const fb = computeRecord(games.filter((g) => g.sport === "football"));
-  const bb = computeRecord(games.filter((g) => g.sport === "basketball"));
-
-  const updatedAt = new Date(data.updatedAt);
+  // Upcoming = future-dated games PLUS TBD/unknown dates (TBD last)
+  const upcoming = withDates
+    .filter((x) => !x.d || x.d > now) // <-- keeps TBD
+    .sort((a, b) => {
+      if (!a.d && !b.d) return 0;
+      if (!a.d) return 1; // TBD last
+      if (!b.d) return -1;
+      return a.d.getTime() - b.d.getTime();
+    })
+    .map((x) => x.g)
+    .slice(0, 5);
 
   return (
     <main
       className="min-h-screen"
-      style={{
-        background: `linear-gradient(135deg, ${UVA_BLUE}11, ${UVA_ORANGE}11)`,
-      }}
+      style={{ background: `linear-gradient(135deg, ${UVA_BLUE}11, ${UVA_ORANGE}11)` }}
     >
       <section className="mx-auto max-w-4xl px-4 py-12">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="mb-8 flex items-center justify-between">
           <div>
-            <h1
-              className="text-3xl font-extrabold tracking-tight"
-              style={{ color: UVA_BLUE }}
-            >
-              UVA Scoreboard
+            <h1 className="text-3xl font-extrabold tracking-tight" style={{ color: UVA_BLUE }}>
+              UVA Basketball
             </h1>
             <p className="mt-2 text-xs text-slate-600">
               Last updated{" "}
@@ -246,9 +187,8 @@ export default async function UvaPage() {
             </p>
           </div>
 
-          {/* Shield-style UVA badge */}
           <div
-            className="h-16 w-16 rounded-lg flex items-center justify-center text-3xl font-bold shadow-md"
+            className="flex h-16 w-16 items-center justify-center rounded-lg text-3xl font-bold shadow-md"
             style={{
               backgroundColor: UVA_BLUE,
               color: UVA_ORANGE,
@@ -258,70 +198,13 @@ export default async function UvaPage() {
             V⚔️
           </div>
         </div>
-
-        {/* Record Bar */}
-        <div
-          className="rounded-2xl p-4 mb-10"
-          style={{
-            background: `linear-gradient(90deg, ${UVA_BLUE}22, ${UVA_ORANGE}22)`,
-            border: `1px solid ${UVA_BLUE}33`,
-          }}
-        >
-          <p
-            className="text-xs font-semibold uppercase tracking-wide mb-3"
-            style={{ color: UVA_BLUE }}
-          >
-            Season Record
-          </p>
-
-          <div className="flex flex-wrap gap-3">
-            <RecordPill label="Football" {...fb} />
-            <RecordPill label="Basketball" {...bb} />
-          </div>
-        </div>
-
-        {/* Two columns */}
-        <div className="grid gap-10 md:grid-cols-2">
-          {/* Recent */}
-          <div>
-            <h2
-              className="text-sm font-semibold uppercase tracking-wide mb-3"
-              style={{ color: UVA_BLUE }}
-            >
-              Recent Games
-            </h2>
-
-            {recent.length === 0 ? (
-              <p className="text-sm text-slate-600">No games yet.</p>
-            ) : (
-              <div className="space-y-3">
-                {recent.map((g, i) => (
-                  <GameCard key={i} game={g} />
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Upcoming */}
-          <div>
-            <h2
-              className="text-sm font-semibold uppercase tracking-wide mb-3"
-              style={{ color: UVA_BLUE }}
-            >
-              Upcoming Games
-            </h2>
-
-            {next.length === 0 ? (
-              <p className="text-sm text-slate-600">No upcoming games.</p>
-            ) : (
-              <div className="space-y-3">
-                {next.map((g, i) => (
-                  <GameCard key={i} game={g} />
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
+<div className="mb-6">
+  <ScoresBanner />
+</div>
+        <TwoColumnSection className="gap-10">
+          <GameList title="Recent Games" games={past} emptyText="No recent games yet." />
+          <GameList title="Upcoming Games" games={upcoming} emptyText="No upcoming games." />
+        </TwoColumnSection>
       </section>
     </main>
   );

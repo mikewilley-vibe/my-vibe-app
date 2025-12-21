@@ -1,7 +1,10 @@
 // lib/ticketmaster.ts
 import type { Concert } from "@/lib/concerts/types";
+
 const TM_BASE = "https://app.ticketmaster.com/discovery/v2/events.json";
-const DEBUG = true;
+
+// Keep logs/dev noise down in Vercel builds
+const DEBUG = process.env.NODE_ENV === "development";
 
 export type FetchTMArgs = {
   // location-based search (optional)
@@ -13,17 +16,15 @@ export type FetchTMArgs = {
   keyword?: string;
 
   // shared
-  sort?: string;
-  startDateTime?: string;
+  sort?: string; // e.g. "date,asc"
+  startDateTime?: string; // e.g. "2025-12-19T19:05:36Z"
   endDateTime?: string;
   size?: string;
 };
 
-
+// ---------- Normalization ----------
 function pickImage(images: any[] | undefined): string | undefined {
   if (!Array.isArray(images) || images.length === 0) return undefined;
-
-  // try to pick something wide-ish and not tiny
   const sorted = [...images].sort((a, b) => (b.width ?? 0) - (a.width ?? 0));
   return sorted.find((img) => (img.width ?? 0) >= 800)?.url ?? sorted[0]?.url;
 }
@@ -37,7 +38,9 @@ export function normalizeTMEvent(ev: any): Concert {
     name: String(ev?.name ?? "Untitled show"),
     dateTime:
       ev?.dates?.start?.dateTime ||
-      (ev?.dates?.start?.localDate ? `${ev.dates.start.localDate}T20:00:00` : new Date().toISOString()),
+      (ev?.dates?.start?.localDate
+        ? `${ev.dates.start.localDate}T20:00:00`
+        : new Date().toISOString()),
     venue: String(venue?.name ?? "Venue TBA"),
     city: String(venue?.city?.name ?? ""),
     state: venue?.state?.stateCode ? String(venue.state.stateCode) : undefined,
@@ -48,60 +51,144 @@ export function normalizeTMEvent(ev: any): Concert {
   };
 }
 
-export function normalizeTMResponse(json: any): Concert[] {
+function normalizeTMResponse(json: any): Concert[] {
   const events = json?._embedded?.events ?? [];
-  return events.map(normalizeTMEvent).filter((e: Concert) => !!e.id && !!e.url);
+  return (events as any[])
+    .map(normalizeTMEvent)
+    .filter((e) => !!e.id && !!e.url);
 }
-export async function fetchTMEvents(args: FetchTMArgs) {
+
+// ---------- Small cache + in-flight de-dupe ----------
+type CacheEntry = { at: number; data: Concert[] };
+const CACHE_TTL_MS = 30_000; // 30s (enough to prevent “burst” 429s)
+const cache = new Map<string, CacheEntry>();
+const inflight = new Map<string, Promise<Concert[]>>();
+
+function stableKey(args: FetchTMArgs) {
+  // Build a stable cache key WITHOUT apikey
+  const o: Record<string, string> = {};
+  if (args.latlong) o.latlong = args.latlong;
+  if (args.radius) o.radius = args.radius;
+  if (args.unit) o.unit = args.unit;
+  if (args.keyword) o.keyword = args.keyword;
+  if (args.sort) o.sort = args.sort;
+  if (args.startDateTime) o.startDateTime = args.startDateTime;
+  if (args.endDateTime) o.endDateTime = args.endDateTime;
+  if (args.size) o.size = args.size;
+
+  // stable stringify
+  return Object.keys(o)
+    .sort()
+    .map((k) => `${k}=${encodeURIComponent(o[k])}`)
+    .join("&");
+}
+
+function getCached(key: string) {
+  const hit = cache.get(key);
+  if (!hit) return null;
+  if (Date.now() - hit.at > CACHE_TTL_MS) return null;
+  return hit.data;
+}
+
+function setCached(key: string, data: Concert[]) {
+  cache.set(key, { at: Date.now(), data });
+}
+
+// Optional: tiny “spacing” between TM calls to reduce spike arrest
+let lastCallAt = 0;
+async function spaceCalls(minGapMs = 220) {
+  const now = Date.now();
+  const wait = lastCallAt + minGapMs - now;
+  if (wait > 0) await new Promise((r) => setTimeout(r, wait));
+  lastCallAt = Date.now();
+}
+
+// ---------- Public fetch ----------
+export async function fetchTMEvents(args: FetchTMArgs): Promise<Concert[]> {
   const key = process.env.TICKETMASTER_API_KEY;
-
   if (!key) {
-    console.error("Missing TICKETMASTER_API_KEY in server env");
+    if (DEBUG) console.warn("[TM] Missing TICKETMASTER_API_KEY");
     return [];
   }
 
-  const params = new URLSearchParams({
-  apikey: key,
-  countryCode: "US",
-  classificationName: "music",
-  size: args.size ?? "20",
-  sort: args.sort ?? "date,asc",
-});
+  const cacheKey = stableKey(args);
 
-if (args.latlong) params.set("latlong", args.latlong);
-if (args.radius) params.set("radius", args.radius);
-if (args.unit) params.set("unit", args.unit);
+  // 1) serve warm cache
+  const cached = getCached(cacheKey);
+  if (cached) return cached;
 
-if (args.keyword) params.set("keyword", args.keyword);
-if (args.startDateTime) params.set("startDateTime", args.startDateTime);
-if (args.endDateTime) params.set("endDateTime", args.endDateTime);
-  
+  // 2) de-dupe identical in-flight calls
+  const existing = inflight.get(cacheKey);
+  if (existing) return existing;
 
-  const requestUrl = `${TM_BASE}?${params.toString()}`;
+  const run = (async () => {
+    try {
+      await spaceCalls(); // reduce TM spike arrest
 
-  const res = await fetch(requestUrl, { cache: "no-store" });
-  const text = await res.text();
+      const params = new URLSearchParams({
+        apikey: key,
+        countryCode: "US",
+        classificationName: "music",
+        size: args.size ?? "20",
+        sort: args.sort ?? "date,asc",
+      });
 
-  let json: any;
-  try {
-    json = JSON.parse(text);
-  } catch {
-    console.error("Ticketmaster returned non-JSON:", text.slice(0, 300));
-    return [];
-  }
+      if (args.latlong) params.set("latlong", args.latlong);
+      if (args.radius) params.set("radius", args.radius);
+      if (args.unit) params.set("unit", args.unit);
 
-  if (DEBUG) {
-    console.log("TM status:", res.status);
-    console.log("TM page:", json?.page);
-    console.log("TM errors:", json?.errors ?? json?.fault ?? null);
-    console.log("TM embedded keys:", Object.keys(json?._embedded ?? {}));
-    // Don’t log requestUrl (it includes your apikey)
-  }
+      if (args.keyword) params.set("keyword", args.keyword);
+      if (args.startDateTime) params.set("startDateTime", args.startDateTime);
+      if (args.endDateTime) params.set("endDateTime", args.endDateTime);
 
-  if (!res.ok) {
-    console.error("Ticketmaster non-OK:", res.status, json?.errors ?? json?.fault ?? json);
-    return [];
-  }
+      const requestUrl = `${TM_BASE}?${params.toString()}`;
 
-  return normalizeTMResponse(json);
+      const res = await fetch(requestUrl, { cache: "no-store" });
+
+      // If rate-limited, return cache if we have anything older (even expired) as a fallback
+      if (res.status === 429) {
+        const anyHit = cache.get(cacheKey)?.data;
+        if (DEBUG) console.warn("[TM] 429 rate-limited; returning cached:", !!anyHit);
+        return anyHit ?? [];
+      }
+
+      const text = await res.text();
+      let json: any = null;
+
+      try {
+        json = JSON.parse(text);
+      } catch {
+        if (DEBUG) console.error("[TM] Non-JSON response:", text.slice(0, 200));
+        return [];
+      }
+
+      if (!res.ok) {
+        if (DEBUG) {
+          console.error("[TM] Non-OK:", res.status, json?.errors ?? json?.fault ?? json);
+        }
+        return [];
+      }
+
+      const concerts = normalizeTMResponse(json);
+
+      if (DEBUG) {
+        console.log("[TM] ok:", {
+          page: json?.page,
+          count: concerts.length,
+          embeddedKeys: Object.keys(json?._embedded ?? {}),
+        });
+      }
+
+      setCached(cacheKey, concerts);
+      return concerts;
+    } catch (e) {
+      if (DEBUG) console.error("[TM] fetch failed:", e);
+      return [];
+    } finally {
+      inflight.delete(cacheKey);
+    }
+  })();
+
+  inflight.set(cacheKey, run);
+  return run;
 }

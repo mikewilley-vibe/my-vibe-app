@@ -124,12 +124,27 @@ useEffect(() => {
 }, [preset, date]); // 👈 state drives URL[dateOverride]);
 
   const top = useMemo(() => {
-  const list = games ?? [];
-  const pinned = list.filter((g) => (g.league === "NCAAM" || g.league === "NCAAF") && isUvaGame(g));
-  const rest = list.filter((g) => !(g.league === "NCAAM" || g.league === "NCAAF") || !isUvaGame(g));
+  const list: ScoreGame[] = games ?? [];
 
-  // Pinned first, then rest. Keep within limit.
-  return uniqById([...pinned, ...rest]).slice(0, limit);
+  const uva = list.filter(
+    (g) =>
+      (g.league === "NCAAM" || g.league === "NCAAF") &&
+      isUvaGame(g)
+  );
+
+  const nonUva = list.filter(
+    (g) =>
+      !(
+        (g.league === "NCAAM" || g.league === "NCAAF") &&
+        isUvaGame(g)
+      )
+  );
+
+  // keep UVA pinned (max 4), then fill remaining slots with others
+  const pinnedUva = uniqById(uva).slice(0, 4);
+  const rest = uniqById(nonUva);
+
+  return uniqById([...pinnedUva, ...rest]).slice(0, limit);
 }, [games, limit]);
 
   if (games === null) return null;

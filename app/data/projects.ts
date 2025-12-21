@@ -50,7 +50,7 @@ export const projects: Project[] = [
     title: "Accessibility Compliance Program",
     emoji: "✅",
     message:
-      "Designed a structured accessibility monitoring and remediation program.",
+      "Designed a structured accessibility monitoring and remediation program fior for Tyler Virginia.",
     longDescription:
       "Designed a structured accessibility compliance program leveraging scans, dashboards, and remediation workflows. Helped agencies prioritize high-impact fixes, track progress, and align with WCAG and VITA requirements.",
   },

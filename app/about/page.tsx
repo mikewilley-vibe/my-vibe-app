@@ -1,6 +1,7 @@
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 import FamilySection from "../components/content/FamilySection";
+import { Instagram, Linkedin } from "lucide-react";
 
 export default function AboutPage() {
   return (
@@ -42,7 +43,7 @@ export default function AboutPage() {
           </div>
         </section>
 
-<FamilySection />
+        <FamilySection />
 
         {/* Contact card */}
         <section>
@@ -77,17 +78,35 @@ export default function AboutPage() {
                 </a>
               </div>
 
-              <div className="flex items-start justify-between gap-3">
-                <span className="text-slate-500">LinkedIn</span>
-                <a
-                  href="https://www.linkedin.com/in/mike-willey-6357536/"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-right font-medium text-blue-600 hover:text-blue-700"
-                >
-                  /in/mikewilley
-                </a>
-              </div>
+  <div className="flex items-center justify-between gap-3">
+  <span className="flex items-center gap-2 text-slate-500">
+    <Instagram className="h-4 w-4" />
+    Instagram
+  </span>
+  <a
+    href="https://www.instagram.com/bigwilleystyled/?hl=en"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="font-medium text-blue-600 hover:text-pink-600 transition"
+  >
+    @bigwilleystyled
+  </a>
+</div>
+
+<div className="flex items-center justify-between gap-3">
+  <span className="flex items-center gap-2 text-slate-500">
+    <Linkedin className="h-4 w-4" />
+    LinkedIn
+  </span>
+  <a
+    href="https://www.linkedin.com/in/mike-willey-6357536/"
+    target="_blank"
+    rel="noreferrer"
+    className="font-medium text-blue-600 hover:text-blue-700 transition"
+  >
+    /in/mikewilley
+  </a>
+</div>
 
               <div className="flex items-start justify-between gap-3">
                 <span className="text-slate-500">Best for</span>

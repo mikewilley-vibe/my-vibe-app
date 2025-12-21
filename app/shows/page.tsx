@@ -1,28 +1,31 @@
-// app/shows/page.tsx
-import Link from "next/link";
+import ShowTabs from "./ShowTabs";
+import { getBaseUrl } from "@/lib/baseUrl";
+import type { Concert } from "@/lib/concerts/types";
 
-export default function ShowsPage() {
+type FollowingGroup = { artist: string; events: Concert[] };
+
+export default async function ShowsPage() {
+  const baseUrl = await getBaseUrl();
+
+  const [nextRes, followRes] = await Promise.all([
+    fetch(`${baseUrl}/api/concerts/next-7-days`, { cache: "no-store" }),
+    fetch(`${baseUrl}/api/concerts/following`, { cache: "no-store" }),
+  ]);
+
+  const nextJson: { events: Concert[] } = await nextRes.json();
+  const followJson: { results: FollowingGroup[] } = await followRes.json();
+
   return (
     <main className="min-h-screen bg-slate-50">
-      <section className="mx-auto max-w-3xl px-4 py-10 space-y-6">
+      <section className="mx-auto max-w-5xl px-4 py-10 space-y-6">
         <h1 className="text-3xl font-bold tracking-tight text-slate-900">
           Shows
         </h1>
 
-        <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-          <p className="text-sm font-semibold text-slate-900">
-            Shows I&apos;m going to
-          </p>
-
-          <div className="mt-3">
-            <Link
-              href="/shows/badfish"
-              className="inline-flex items-center text-sm font-semibold text-blue-600 hover:text-blue-700"
-            >
-              Badfish (Norfolk — Jan 23) →
-            </Link>
-          </div>
-        </div>
+        <ShowTabs
+          nextEvents={nextJson.events ?? []}
+          following={followJson.results ?? []}
+        />
       </section>
     </main>
   );

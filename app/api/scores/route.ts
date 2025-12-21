@@ -283,12 +283,18 @@ const gamecastUrl =
 
 function getNextSundayYmd() {
   const d = new Date();
-  const day = d.getDay(); // 0 = Sunday
-  const diff = (7 - day) % 7; // 0 if today is Sunday, else days until Sunday
+  const day = d.getDay(); // 0=Sun,1=Mon,...
+
+  // days until next Sunday (NEVER 0)
+  const diff = day === 0 ? 7 : 7 - day;
+
   d.setDate(d.getDate() + diff);
 
-  // ESPN wants YYYYMMDD
-  return d.toISOString().slice(0, 10).replace(/-/g, "");
+  // build YYYYMMDD in LOCAL time (no UTC shift)
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const dd = String(d.getDate()).padStart(2, "0");
+  return `${y}${m}${dd}`;
 }
 
 function withinHours(msDiff: number, hours: number) {

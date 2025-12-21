@@ -15,6 +15,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "cdn.espn.com",
       },
+        {
+        protocol: "https",
+        hostname: "s1.ticketm.net",
+      },
     ],
   },
 };

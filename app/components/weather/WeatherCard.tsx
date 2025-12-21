@@ -238,15 +238,19 @@ setWeather({
     [weather]
   );
 
+const weatherUrl = `https://forecast.weather.gov/MapClick.php?lat=${coords.lat}&lon=${coords.lon}`;
+  
   if (!weather) {
     return (
-      <FadeIn>
+      <a href={weatherUrl} target="_blank" rel="noreferrer" className="block">
+        <FadeIn>
         <section className="rounded-2xl border border-slate-200 bg-white px-4 py-3 shadow-sm">
           <p className="text-sm text-slate-600">
             Loading weather{geoStatus === "requesting" ? " (getting your location…)" : "…"}
           </p>
         </section>
       </FadeIn>
+      </a>
     );
   }
 
@@ -254,6 +258,7 @@ setWeather({
   const vibe = vibeClasses(weather.weathercode);
 
   return (
+      <a href={weatherUrl} target="_blank" rel="noreferrer" className="block">
     <FadeIn>
       <section
         className={[
@@ -332,5 +337,6 @@ setWeather({
                 </div>
       </section>
     </FadeIn>
+    </a>
   );
 }

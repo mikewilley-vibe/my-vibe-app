@@ -13,6 +13,54 @@ export type VibePost = {
 };
 
 export const vibePosts: VibePost[] = [
+    {
+    id: 17,
+    slug: "day-17-small-polish-big-feel",
+    title: "Day 17 — Small Polish, Big Feel",
+    date: "2025-12-20",
+    emoji: "✨",
+    summary:
+      "Tightened UI details that make the app feel intentional instead of accidental.",
+    message:
+      "Day 17 was a reminder that small decisions compound.\n\n" +
+      "I tightened spacing, trimmed visual noise, and made components feel like they belong to the same system. Nothing here is a headline feature — but everything adds up to \"this feels good.\"\n\n" +
+      "I also paid attention to what I *don’t* want: clutter, inconsistent patterns, and UI that fights the user.\n\n" +
+      "These are the days that keep a project from turning into a pile of half-finished ideas. The code got cleaner, and the experience got calmer.\n\n" +
+      "Quiet progress is still progress — and it’s the kind that lasts.",
+    tags: ["day-17", "polish", "ui", "consistency", "cleanup", "momentum"],
+  },
+  {
+    id: 16,
+    slug: "day-16-scores-and-weather-rhythm",
+    title: "Day 16 — Scores & Weather Rhythm",
+    date: "2025-12-19",
+    emoji: "📡",
+    summary:
+      "Made the dashboard feel alive with refresh cycles, presets, and clickable utility.",
+    message:
+      "Day 16 was about rhythm — the feeling that the site is current.\n\n" +
+      "I tuned the ScoresBanner behavior, made sure the refresh cycle is predictable, and kept the UI thin and readable so it doesn’t overpower the page.\n\n" +
+      "I like when features do one job well: show the important info, update reliably, and get out of the way.\n\n" +
+      "The Weather + Scores block now feels like a single \"status bar\" for my day, which is exactly what I wanted.\n\n" +
+      "This is the kind of feature that turns a site into a habit.",
+    tags: ["day-16", "scores", "weather", "api", "refresh", "dashboard"],
+  },
+  {
+    id: 15,
+    slug: "day-15-back-to-stable-forward-to-better",
+    title: "Day 15 — Back to Stable, Forward to Better",
+    date: "2025-12-18",
+    emoji: "🧭",
+    summary:
+      "Got everything working again, then locked in a plan to improve without breaking stuff.",
+    message:
+      "Day 15 was about stability.\n\n" +
+      "After moving fast for a few days, I hit the point where things started to drift — components living in the wrong place, imports getting messy, and changes piling up.\n\n" +
+      "I re-centered the project: verify what works, restore what broke, and commit in a way that keeps the repo safe.\n\n" +
+      "The biggest win wasn’t code — it was process. More frequent commits, smaller changes, and cleaner checkpoints.\n\n" +
+      "Now I can build faster *because* the foundation is stable.",
+    tags: ["day-15", "stability", "git", "process", "refactor", "foundation"],
+  },
   {
   id: 14,
   slug: "day-14-architecture-cleanup",

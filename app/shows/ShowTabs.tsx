@@ -1,29 +1,113 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
-import ConcertCard from "@/app/components/concerts/ConcertCard";
+import { useMemo, useState } from "react";
 import type { Concert } from "@/lib/concerts/types";
-import Link from "next/link";
 
-type FollowingGroup = {
-  artist: string;
-  events: Concert[];
-};
+type Tab = "going" | "following" | "next";
+
+type FollowingGroup = { artist: string; events: Concert[] };
 
 type Props = {
   nextEvents: Concert[];
   following: FollowingGroup[];
+  // optional if you add later:
+  goingEvents?: Concert[];
 };
 
-type Tab = "going" | "following" | "next";
+function TabButton({
+  active,
+  onClick,
+  children,
+}: {
+  active: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`px-3 py-2 text-sm font-semibold border-b-2 ${
+        active
+          ? "border-slate-900 text-slate-900"
+          : "border-transparent text-slate-500 hover:text-slate-900"
+      }`}
+    >
+      {children}
+    </button>
+  );
+}
 
-export default function ShowTabs({ nextEvents, following }: Props) {
-  const [tab, setTab] = useState<Tab>("following");
+function EventRow({ e }: { e: Concert }) {
+  const dt = e?.dateTime ? new Date(e.dateTime) : null;
+  const nice =
+    dt && !Number.isNaN(dt.getTime())
+      ? dt.toLocaleString("en-US", {
+          weekday: "short",
+          month: "short",
+          day: "numeric",
+          hour: "numeric",
+          minute: "2-digit",
+        })
+      : "TBD";
 
   return (
-    <div className="space-y-6">
-      {/* Tabs */}
-      <div className="flex gap-2 border-b border-slate-200">
+    <a
+      href={e.url}
+      target="_blank"
+      rel="noreferrer"
+      className="block rounded-xl border border-slate-200 bg-white p-4 shadow-sm hover:shadow"
+    >
+      <div className="flex items-start justify-between gap-4">
+        <div className="min-w-0">
+          <div className="text-sm font-semibold text-slate-900 truncate">{e.name}</div>
+          <div className="mt-1 text-xs text-slate-600">
+            {nice} • {e.venue} • {e.city}
+            {e.state ? `, ${e.state}` : ""}
+          </div>
+          {typeof e.priceMin === "number" ? (
+            <div className="mt-1 text-xs text-slate-500">
+              ${e.priceMin.toFixed(2)}
+              {typeof e.priceMax === "number" && e.priceMax !== e.priceMin
+                ? ` – $${e.priceMax.toFixed(2)}`
+                : ""}
+            </div>
+          ) : null}
+        </div>
+
+        {e.image ? (
+          <img
+            src={e.image}
+            alt=""
+            className="h-14 w-20 rounded-lg object-cover border border-slate-200"
+          />
+        ) : null}
+      </div>
+    </a>
+  );
+}
+
+export default function ShowTabs({ nextEvents, following, goingEvents = [] }: Props) {
+  // ✅ hooks INSIDE component
+  const [tab, setTab] = useState<Tab>("next"); // default to Next 7 Days
+
+  const flatFollowing = useMemo(() => {
+    return (following ?? []).flatMap((g) => g.events ?? []);
+  }, [following]);
+
+  const list =
+    tab === "next" ? nextEvents : tab === "following" ? flatFollowing : goingEvents;
+
+  const emptyText =
+    tab === "next"
+      ? "No events found in the next 7 days."
+      : tab === "following"
+      ? "No followed artist events found."
+      : "No saved shows yet.";
+
+  return (
+    <div className="space-y-4">
+      <div className="flex gap-6 border-b border-slate-200">
         <TabButton active={tab === "going"} onClick={() => setTab("going")}>
           Shows I’m Going To
         </TabButton>
@@ -35,94 +119,15 @@ export default function ShowTabs({ nextEvents, following }: Props) {
         </TabButton>
       </div>
 
-      {/* Content */}
-      {tab === "going" && (
-  <Section>
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-        <div className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-          Shows I’m going to
+      {list?.length ? (
+        <div className="space-y-3">
+          {list.map((e) => (
+            <EventRow key={e.id} e={e} />
+          ))}
         </div>
-
-        <div className="mt-2 text-lg font-bold text-slate-900">
-          Badfish (Tribute to Sublime)
-        </div>
-
-        <div className="mt-1 text-sm text-slate-600">
-          Norfolk • Jan 23
-        </div>
-
-        <div className="mt-4">
-          <Link
-            href="/shows/badfish"
-            className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-semibold text-slate-900 transition hover:bg-white hover:border-slate-300"
-          >
-            Open details <span aria-hidden="true">→</span>
-          </Link>
-        </div>
-      </div>
-    </div>
-  </Section>
-)}
-
-      {tab === "following" && (
-        <Section>
-          {following.length === 0 ? (
-            <Empty text="No followed artist events found." />
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {following.flatMap((g) =>
-                g.events.map((c) => <ConcertCard key={c.id} concert={c} />)
-              )}
-            </div>
-          )}
-        </Section>
-      )}
-
-      {tab === "next" && (
-        <Section>
-          {nextEvents.length === 0 ? (
-            <Empty text="No shows in the next 7 days." />
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {nextEvents.map((c) => (
-                <ConcertCard key={c.id} concert={c} />
-              ))}
-            </div>
-          )}
-        </Section>
+      ) : (
+        <p className="text-sm text-slate-600">{emptyText}</p>
       )}
     </div>
   );
-}
-
-function TabButton({
-  active,
-  onClick,
-  children,
-}: {
-  active: boolean;
-  onClick: () => void;
-  children: ReactNode;
-}) {
-  return (
-    <button
-      onClick={onClick}
-      className={`px-4 py-2 text-sm font-medium border-b-2 transition ${
-        active
-          ? "border-slate-900 text-slate-900"
-          : "border-transparent text-slate-500 hover:text-slate-700"
-      }`}
-    >
-      {children}
-    </button>
-  );
-}
-
-function Section({ children }: { children: ReactNode }) {
-  return <div className="min-h-[200px]">{children}</div>;
-}
-
-function Empty({ text }: { text: string }) {
-  return <div className="text-sm text-slate-500">{text}</div>;
 }

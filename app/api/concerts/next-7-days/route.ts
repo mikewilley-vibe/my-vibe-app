@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { fetchTMEvents } from "@/lib/ticketmaster";
 
 function tmIso(d: Date) {
-  // Ticketmaster wants UTC with seconds + Z
   return d.toISOString().split(".")[0] + "Z";
 }
 
@@ -27,18 +26,13 @@ export async function GET(req: Request) {
       size: "24",
     });
 
-    console.log("[TM] got events:", Array.isArray(events) ? events.length : events);
-
-    // Always return a valid shape
     return NextResponse.json({
       ok: true,
       updatedAt: new Date().toISOString(),
-      events: Array.isArray(events) ? events : [],
+      events,
     });
   } catch (err: any) {
-    // Never throw from an API route in prod
     console.error("[TM] next-7-days failed:", err?.message ?? err);
-
     return NextResponse.json({
       ok: false,
       updatedAt: new Date().toISOString(),

@@ -3,60 +3,6 @@ import { NextResponse } from "next/server";
 
 const SCHEDULE_URL = "https://virginiasports.com/sports/mbball/schedule/";
 
-// NOTE: VirginiaSports JSON-LD uses @graph / ItemList wrappers
-
-type JsonLdEvent = {
-  "@type"?: string;
-  startDate?: string;
-  endDate?: string;
-  name?: string;
-  url?: string;
-  location?: {
-    name?: string;
-    address?: {
-      name?: string;
-      addressLocality?: string;
-      addressRegion?: string;
-    };
-  };
-};
-
-type UvaGame = {
-  id: string;
-  sport: "basketball";
-  opponent: string;
-  date: string; // ISO-ish
-  location: "home" | "away" | "neutral";
-  result: "pending"; // we’ll add results later if you want
-  score?: string;
-  note?: string;
-  sourceUrl?: string;
-};
-
-function normalizeOpponent(name?: string) {
-  const n = (name ?? "").trim();
-  // VirginiaSports names look like "Virginia vs. Duke" / "Virginia at Duke"
-  const lower = n.toLowerCase();
-
-  if (lower.includes(" vs. ")) {
-    return { opponent: n.split(/ vs\. /i)[1]?.trim() || "Opponent TBA", location: "home" as const };
-  }
-  if (lower.includes(" at ")) {
-    return { opponent: n.split(/ at /i)[1]?.trim() || "Opponent TBA", location: "away" as const };
-  }
-  // fallback
-  return { opponent: n || "Opponent TBA", location: "neutral" as const };
-}
-
-function pickCityState(ev: JsonLdEvent) {
-  const loc =
-    ev.location?.address?.addressLocality ||
-    ev.location?.address?.name ||
-    ev.location?.name ||
-    "";
-  return String(loc).trim();
-}
-
 export async function GET() {
   try {
     const res = await fetch(SCHEDULE_URL, {
@@ -68,52 +14,64 @@ export async function GET() {
       },
     });
 
+    // ✅ WRAP #1: if upstream fails, return safe JSON (don’t throw)
+    if (!res.ok) {
+      console.error("[UVA] Upstream not ok:", res.status, res.statusText);
+      return NextResponse.json({
+        ok: false,
+        status: res.status,
+        updatedAt: new Date().toISOString(),
+        games: [],
+        count: 0,
+        source: SCHEDULE_URL,
+      });
+    }
+
+    // ✅ WRAP #2: guard against non-HTML / empty body
+    const contentType = res.headers.get("content-type") || "";
     const html = await res.text();
 
+    if (!html || (!contentType.includes("text/html") && !html.includes("<html"))) {
+      console.error("[UVA] Non-HTML response:", contentType, html.slice(0, 120));
+      return NextResponse.json({
+        ok: false,
+        status: 200,
+        updatedAt: new Date().toISOString(),
+        games: [],
+        count: 0,
+        source: SCHEDULE_URL,
+      });
+    }
+
+    // ---- your existing parsing logic continues unchanged ----
     // Pull JSON-LD scripts
-const blocks = Array.from(
-  html.matchAll(
-    /<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi
-  )
-).map((m) => m[1]);
+    const blocks = Array.from(
+      html.matchAll(
+        /<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi
+      )
+    ).map((m) => m[1]);
 
-const events: JsonLdEvent[] = [];
+    const events: any[] = [];
 
-function pushPossibleEvents(node: any) {
-  if (!node) return;
+    function pushPossibleEvents(node: any) {
+      if (!node) return;
+      if (Array.isArray(node)) return void node.forEach(pushPossibleEvents);
+      if (Array.isArray(node["@graph"])) node["@graph"].forEach(pushPossibleEvents);
+      if (Array.isArray(node.itemListElement)) {
+        node.itemListElement.forEach((el: any) => pushPossibleEvents(el?.item ?? el));
+      }
+      if (node.startDate || node.name || node["@type"]) events.push(node);
+    }
 
-  // If it's an array, recurse into each item
-  if (Array.isArray(node)) {
-    node.forEach(pushPossibleEvents);
-    return;
-  }
+    for (const raw of blocks) {
+      try {
+        const parsed = JSON.parse(raw.trim());
+        pushPossibleEvents(parsed);
+      } catch {}
+    }
 
-  // Common JSON-LD wrappers
-  if (Array.isArray(node["@graph"])) {
-    node["@graph"].forEach(pushPossibleEvents);
-  }
 
-  if (Array.isArray(node.itemListElement)) {
-    // itemListElement can be objects with `.item`
-    node.itemListElement.forEach((el: any) => pushPossibleEvents(el?.item ?? el));
-  }
-
-  // If it looks like an event-ish object, keep it
-  if (node.startDate || node.name || node["@type"]) {
-    events.push(node);
-  }
-}
-
-for (const raw of blocks) {
-  try {
-    const parsed = JSON.parse(raw.trim());
-    pushPossibleEvents(parsed);
-  } catch {
-    // ignore unparseable block
-  }
-}
-
-    // Keep only Event/SportsEvent-ish items with startDate
+    
     const eventItems = events.filter(
       (e) =>
         (e?.["@type"] === "Event" || e?.["@type"] === "SportsEvent" || !!e?.startDate) &&
@@ -121,40 +79,79 @@ for (const raw of blocks) {
         !!e?.name
     );
 
-    const games: UvaGame[] = eventItems.map((ev) => {
-      const { opponent, location } = normalizeOpponent(ev.name);
-      const dateIso = ev.startDate ? new Date(ev.startDate).toISOString() : new Date().toISOString();
-      const place = pickCityState(ev);
+    // ... build games, dedupe, sort ...
+type UvaGame = {
+  id: string;
+  sport: "basketball";
+  opponent: string;
+  date: string;
+  location: "home" | "away" | "neutral";
+  result: "pending";
+  note?: string;
+  sourceUrl?: string;
+};
 
-      return {
-        id: `uva-mbb-${dateIso}-${opponent.replace(/\s+/g, "-").toLowerCase()}`,
-        sport: "basketball",
-        opponent,
-        date: dateIso,
-        location,
-        result: "pending",
-        note: place ? `Location: ${place}` : undefined,
-        sourceUrl: ev.url || undefined,
-      };
-    });
+function normalizeOpponent(name?: string) {
+  const n = (name ?? "").trim();
+  const lower = n.toLowerCase();
 
-    // Dedup + sort
-    const deduped = Array.from(new Map(games.map((g) => [g.id, g])).values()).sort(
-      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
-    );
-
-    return NextResponse.json({
-      ok: res.ok,
-      status: res.status,
-      updatedAt: new Date().toISOString(),
-      games: deduped,
-      count: deduped.length,
-      source: SCHEDULE_URL,
-    });
-  } catch (err: any) {
-    return NextResponse.json(
-      { ok: false, error: String(err?.message ?? err) },
-      { status: 500 }
-    );
+  if (lower.includes(" vs. ")) {
+    return { opponent: n.split(/ vs\. /i)[1]?.trim() || "Opponent TBA", location: "home" as const };
   }
+  if (lower.includes(" at ")) {
+    return { opponent: n.split(/ at /i)[1]?.trim() || "Opponent TBA", location: "away" as const };
+  }
+  return { opponent: n || "Opponent TBA", location: "neutral" as const };
+}
+
+function pickCityState(ev: any) {
+  const loc =
+    ev.location?.address?.addressLocality ||
+    ev.location?.address?.name ||
+    ev.location?.name ||
+    "";
+  return String(loc).trim();
+}
+
+const games: UvaGame[] = eventItems.map((ev: any) => {
+  const { opponent, location } = normalizeOpponent(ev.name);
+  const dateIso = ev.startDate ? new Date(ev.startDate).toISOString() : new Date().toISOString();
+  const place = pickCityState(ev);
+
+  return {
+    id: `uva-mbb-${dateIso}-${opponent.replace(/\s+/g, "-").toLowerCase()}`,
+    sport: "basketball",
+    opponent,
+    date: dateIso,
+    location,
+    result: "pending",
+    note: place ? `Location: ${place}` : undefined,
+    sourceUrl: ev.url || undefined,
+  };
+});
+
+// ✅ THIS is the missing variable you’re trying to return
+const deduped = Array.from(new Map(games.map((g) => [g.id, g])).values()).sort(
+  (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+);
+return NextResponse.json({
+  ok: true,
+  status: 200,
+  updatedAt: new Date().toISOString(),
+  games: deduped,
+  count: deduped.length,
+  source: SCHEDULE_URL,
+});
+} catch (err: any) {
+  console.error("[UVA] Exception:", err);
+  return NextResponse.json({
+    ok: false,
+    status: 200,
+    updatedAt: new Date().toISOString(),
+    games: [],
+    count: 0,
+    source: SCHEDULE_URL,
+    error: String(err?.message ?? err),
+  });
+}
 }

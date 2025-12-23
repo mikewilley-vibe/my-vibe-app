@@ -2,6 +2,7 @@
 import { getBaseUrl } from "@/lib/baseUrl";
 import TwoColumnSection from "@/app/components/ui/TwoColumnSection";
 import ScoresBanner from "@/app/components/sports/ScoresBanner";
+import { safeFetch } from "@/lib/safeFetch";
 
 const UVA_ORANGE = "#F84C1E";
 const UVA_BLUE = "#232D4B";
@@ -128,13 +129,26 @@ function GameList({
 
 export default async function UvaPage() {
   const baseUrl = await getBaseUrl();
-  const res = await fetch(`${baseUrl}/api/uva`, { cache: "no-store" });
-  if (!res.ok) throw new Error(`Failed to load UVA data: ${res.status}`);
+const { data: uvaData, ok } = await safeFetch<UvaApiResponse>(
+  `${baseUrl}/api/uva`,
+  { cache: "no-store" }
+);
 
-  const data = (await res.json()) as UvaApiResponse;
-  const updatedAt = new Date(data.updatedAt);
+if (!ok || !uvaData) {
+  return (
+    <main className="min-h-screen bg-slate-50">
+      <section className="mx-auto max-w-5xl px-4 py-10">
+        <h1 className="text-3xl font-bold text-slate-900">UVA</h1>
+        <p className="mt-4 text-sm text-slate-500">
+          UVA data is temporarily unavailable.
+        </p>
+      </section>
+    </main>
+  );
+}
 
-  const all = data.games ?? [];
+ const updatedAt = new Date(uvaData.updatedAt);
+const all = uvaData.games ?? [];
 
   // 1) Try basketball filter...
   const basketball = all.filter((g) => isBasketballSport(g.sport));

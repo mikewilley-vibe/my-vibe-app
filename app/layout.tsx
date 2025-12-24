@@ -45,9 +45,28 @@ export default function RootLayout({
   <Link href="/shows" className="text-slate-700 hover:text-blue-700">
     Shows
   </Link>
-  <Link href="/uva" className="text-slate-700 hover:text-blue-700">
+  <details className="relative group">
+  <summary className="list-none cursor-pointer select-none inline-flex items-center gap-1 rounded-md px-2 py-1 text-sm font-semibold text-slate-700 hover:text-slate-900 hover:bg-slate-50">
     UVA
-  </Link>
+    <span className="text-xs opacity-70">▾</span>
+  </summary>
+
+  <div className="absolute left-0 mt-2 w-52 rounded-xl border border-slate-200 bg-white shadow-lg p-1 z-50">
+    <Link
+      href="/uva"
+      className="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-slate-900"
+    >
+      Upcoming Games
+    </Link>
+
+    <Link
+      href="/uva/results"
+      className="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-slate-900"
+    >
+      Results
+    </Link>
+  </div>
+</details>
   <Link href="/contact" className="text-slate-700 hover:text-blue-700">
     Contact
   </Link>

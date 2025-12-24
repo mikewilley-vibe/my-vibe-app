@@ -1,25 +1,16 @@
 // app/uva/page.tsx
 import { getBaseUrl } from "@/lib/baseUrl";
-import TwoColumnSection from "@/app/components/ui/TwoColumnSection";
-import ScoresBanner from "@/app/components/sports/ScoresBanner";
 import { safeFetch } from "@/lib/safeFetch";
+import ScoresBanner from "@/app/components/sports/ScoresBanner";
 
 const UVA_ORANGE = "#F84C1E";
 const UVA_BLUE = "#232D4B";
 
 type ApiUvaGame = {
-  id?: string;
-  sport?: string;
-
-  date?: string;
-  startTime?: string;
-
-  opponent?: string;
-  location?: string;
-
-  home?: string;
-  away?: string;
-
+  id: string;
+  opponent: string;
+  date: string;
+  location: "home" | "away" | "neutral";
   note?: string;
   sourceUrl?: string;
 };
@@ -29,80 +20,134 @@ type UvaApiResponse = {
   games: ApiUvaGame[];
 };
 
-function isBasketballSport(sport: unknown) {
-  return String(sport ?? "").toLowerCase().includes("basketball");
+function fmtDate(d: string) {
+  const dt = new Date(d);
+  if (Number.isNaN(dt.getTime())) return "TBD";
+  return dt.toLocaleString("en-US", {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  });
 }
 
-function getGameDate(g: ApiUvaGame): Date | null {
-  const raw = (g.date ?? g.startTime ?? "").toString().trim();
-  if (!raw) return null;
-  if (raw.toLowerCase().includes("tbd")) return null;
+function LocationChip({ location }: { location: ApiUvaGame["location"] }) {
+  if (location === "home")
+    return (
+      <span
+        className="rounded-full px-2 py-0.5 text-[11px] font-bold"
+        style={{ background: UVA_BLUE, color: "white" }}
+      >
+        HOME
+      </span>
+    );
 
-  const d = new Date(raw);
-  return Number.isNaN(d.getTime()) ? null : d;
+  if (location === "away")
+    return (
+      <span
+        className="rounded-full px-2 py-0.5 text-[11px] font-bold"
+        style={{ background: UVA_ORANGE, color: "white" }}
+      >
+        AWAY
+      </span>
+    );
+
+  return null;
 }
 
-function gameTitle(g: ApiUvaGame) {
-  if (g.opponent) {
-    return `vs ${String(g.opponent)
-      .replace(/^vs\.?\s+/i, "")
-      .replace(/^at\s+/i, "")
-      .trim()}`;
+export default async function UvaPage() {
+  const baseUrl = await getBaseUrl();
+
+  const { ok, data } = await safeFetch<UvaApiResponse>(
+    `${baseUrl}/api/uva`,
+    { cache: "no-store" }
+  );
+
+  if (!ok || !data) {
+    return (
+      <main className="min-h-screen bg-slate-50">
+        <section className="mx-auto max-w-5xl px-4 py-10">
+          <h1 className="text-3xl font-bold text-slate-900">UVA Basketball</h1>
+          <p className="mt-4 text-sm text-slate-500">
+            Upcoming games are temporarily unavailable.
+          </p>
+        </section>
+      </main>
+    );
   }
-  if (g.away || g.home) return `${g.away ?? "TBD"} @ ${g.home ?? "TBD"}`;
-  return "Opponent TBA";
-}
 
-function locationChip(g: ApiUvaGame) {
-  const l = String(g.location ?? "").toLowerCase();
-  if (l === "home") return "HOME";
-  if (l === "away") return "AWAY";
-  return "";
-}
+  const now = new Date();
 
-function fmtDate(d: Date | null) {
-  if (!d) return "TBD";
-  return d.toLocaleDateString("en-US", { month: "numeric", day: "numeric", year: "numeric" });
-}
+  const upcoming = (data.games ?? [])
+    .filter((g) => {
+      const d = new Date(g.date);
+      return !Number.isNaN(d.getTime()) && d > now;
+    })
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+    .slice(0, 10);
 
-function GameList({
-  title,
-  games,
-  emptyText,
-}: {
-  title: string;
-  games: ApiUvaGame[];
-  emptyText: string;
-}) {
   return (
-    <div>
-      <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide" style={{ color: UVA_BLUE }}>
-        {title}
-      </h2>
+    <main
+      className="min-h-screen"
+      style={{ background: `linear-gradient(135deg, ${UVA_BLUE}11, ${UVA_ORANGE}11)` }}
+    >
+      <section className="mx-auto max-w-5xl px-4 py-12">
+        {/* Header */}
+        <div className="mb-8 flex items-center justify-between">
+          <div>
+            <h1
+              className="text-3xl font-extrabold tracking-tight"
+              style={{ color: UVA_BLUE }}
+            >
+              UVA Basketball
+            </h1>
+            <p className="mt-2 text-sm text-slate-600">
+              Upcoming games
+            </p>
+          </div>
 
-      {games.length === 0 ? (
-        <p className="text-sm text-slate-600">{emptyText}</p>
-      ) : (
-        <div className="space-y-3">
-          {games.map((g, idx) => {
-            const d = getGameDate(g);
-            const chip = locationChip(g);
-
-            return (
+          <div
+            className="flex h-14 w-14 items-center justify-center rounded-lg text-2xl font-bold shadow-md"
+            style={{
+              backgroundColor: UVA_BLUE,
+              color: UVA_ORANGE,
+              border: `3px solid ${UVA_ORANGE}`,
+            }}
+          >
+            🏀
+          </div>
+        </div>
+{/* 🔥 Scores banner */}
+<div className="mb-6">
+  <ScoresBanner />
+</div>
+        {/* Games Grid */}
+        {upcoming.length === 0 ? (
+          <p className="text-sm text-slate-600">No upcoming games found.</p>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {upcoming.map((g) => (
               <div
-                key={g.id ?? `${title}-${idx}`}
-                className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm"
+                key={g.id}
+                className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
               >
                 <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <div className="text-xs font-semibold text-slate-500">
-                      {fmtDate(d)}
-                      {chip ? ` • ${chip}` : ""}
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-2 text-xs font-semibold text-slate-500">
+                      <span>{fmtDate(g.date)}</span>
+                      <LocationChip location={g.location} />
                     </div>
 
-                    <div className="mt-1 text-sm font-semibold text-slate-900">{gameTitle(g)}</div>
+                    <div className="mt-1 text-base font-extrabold text-slate-900 truncate">
+                      vs {g.opponent}
+                    </div>
 
-                    {g.note ? <div className="mt-1 text-xs text-slate-500">{g.note}</div> : null}
+                    {g.note ? (
+                      <div className="mt-1 text-xs text-slate-500">
+                        {g.note}
+                      </div>
+                    ) : null}
 
                     {g.sourceUrl ? (
                       <a
@@ -116,109 +161,14 @@ function GameList({
                     ) : null}
                   </div>
 
-                  <div className="text-xl">🏀</div>
+                  <div className="grid place-items-center rounded-xl border border-slate-200 bg-white px-3 py-2 shadow-sm">
+                    🏀
+                  </div>
                 </div>
               </div>
-            );
-          })}
-        </div>
-      )}
-    </div>
-  );
-}
-
-export default async function UvaPage() {
-  const baseUrl = await getBaseUrl();
-const { data: uvaData, ok } = await safeFetch<UvaApiResponse>(
-  `${baseUrl}/api/uva`,
-  { cache: "no-store" }
-);
-
-if (!ok || !uvaData) {
-  return (
-    <main className="min-h-screen bg-slate-50">
-      <section className="mx-auto max-w-5xl px-4 py-10">
-        <h1 className="text-3xl font-bold text-slate-900">UVA</h1>
-        <p className="mt-4 text-sm text-slate-500">
-          UVA data is temporarily unavailable.
-        </p>
-      </section>
-    </main>
-  );
-}
-
- const updatedAt = new Date(uvaData.updatedAt);
-const all = uvaData.games ?? [];
-
-  // 1) Try basketball filter...
-  const basketball = all.filter((g) => isBasketballSport(g.sport));
-
-  // 2) ...but if that yields 0, fall back to showing whatever we got
-  const pool = basketball.length > 0 ? basketball : all;
-
-  const now = new Date();
-  const withDates = pool.map((g) => ({ g, d: getGameDate(g) }));
-
-  // Past = only games with a real date <= now
-  const past = withDates
-    .filter((x) => x.d && x.d <= now)
-    .sort((a, b) => b.d!.getTime() - a.d!.getTime())
-    .map((x) => x.g)
-    .slice(0, 5);
-
-  // Upcoming = future-dated games PLUS TBD/unknown dates (TBD last)
-  const upcoming = withDates
-    .filter((x) => !x.d || x.d > now) // <-- keeps TBD
-    .sort((a, b) => {
-      if (!a.d && !b.d) return 0;
-      if (!a.d) return 1; // TBD last
-      if (!b.d) return -1;
-      return a.d.getTime() - b.d.getTime();
-    })
-    .map((x) => x.g)
-    .slice(0, 5);
-
-  return (
-    <main
-      className="min-h-screen"
-      style={{ background: `linear-gradient(135deg, ${UVA_BLUE}11, ${UVA_ORANGE}11)` }}
-    >
-      <section className="mx-auto max-w-4xl px-4 py-12">
-        <div className="mb-8 flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-extrabold tracking-tight" style={{ color: UVA_BLUE }}>
-              UVA Basketball
-            </h1>
-            <p className="mt-2 text-xs text-slate-600">
-              Last updated{" "}
-              {updatedAt.toLocaleString("en-US", {
-                month: "numeric",
-                day: "numeric",
-                year: "numeric",
-                hour: "numeric",
-                minute: "2-digit",
-              })}
-            </p>
+            ))}
           </div>
-
-          <div
-            className="flex h-16 w-16 items-center justify-center rounded-lg text-3xl font-bold shadow-md"
-            style={{
-              backgroundColor: UVA_BLUE,
-              color: UVA_ORANGE,
-              border: `3px solid ${UVA_ORANGE}`,
-            }}
-          >
-            V⚔️
-          </div>
-        </div>
-<div className="mb-6">
-  <ScoresBanner />
-</div>
-        <TwoColumnSection className="gap-10">
-          <GameList title="Recent Games" games={past} emptyText="No recent games yet." />
-          <GameList title="Upcoming Games" games={upcoming} emptyText="No upcoming games." />
-        </TwoColumnSection>
+        )}
       </section>
     </main>
   );

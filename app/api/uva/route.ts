@@ -3,6 +3,45 @@ import { NextResponse } from "next/server";
 
 const SCHEDULE_URL = "https://virginiasports.com/sports/mbball/schedule/";
 
+type UvaGame = {
+  id: string;
+  sport: "basketball";
+  opponent: string;
+  date: string; // ISO
+  location: "home" | "away" | "neutral";
+  result: "pending"; // schedule-only here
+  note?: string;
+  sourceUrl?: string;
+};
+
+function normalizeOpponent(name?: string) {
+  const n = (name ?? "").trim();
+  const lower = n.toLowerCase();
+
+  if (lower.includes(" vs. ")) {
+    return {
+      opponent: n.split(/ vs\. /i)[1]?.trim() || "Opponent TBA",
+      location: "home" as const,
+    };
+  }
+  if (lower.includes(" at ")) {
+    return {
+      opponent: n.split(/ at /i)[1]?.trim() || "Opponent TBA",
+      location: "away" as const,
+    };
+  }
+  return { opponent: n || "Opponent TBA", location: "neutral" as const };
+}
+
+function pickCityState(ev: any) {
+  const loc =
+    ev.location?.address?.addressLocality ||
+    ev.location?.address?.name ||
+    ev.location?.name ||
+    "";
+  return String(loc).trim();
+}
+
 export async function GET() {
   try {
     const res = await fetch(SCHEDULE_URL, {
@@ -14,7 +53,7 @@ export async function GET() {
       },
     });
 
-    // ✅ WRAP #1: if upstream fails, return safe JSON (don’t throw)
+    // ✅ WRAP #1
     if (!res.ok) {
       console.error("[UVA] Upstream not ok:", res.status, res.statusText);
       return NextResponse.json({
@@ -27,7 +66,7 @@ export async function GET() {
       });
     }
 
-    // ✅ WRAP #2: guard against non-HTML / empty body
+    // ✅ WRAP #2
     const contentType = res.headers.get("content-type") || "";
     const html = await res.text();
 
@@ -43,7 +82,6 @@ export async function GET() {
       });
     }
 
-    // ---- your existing parsing logic continues unchanged ----
     // Pull JSON-LD scripts
     const blocks = Array.from(
       html.matchAll(
@@ -70,8 +108,6 @@ export async function GET() {
       } catch {}
     }
 
-
-    
     const eventItems = events.filter(
       (e) =>
         (e?.["@type"] === "Event" || e?.["@type"] === "SportsEvent" || !!e?.startDate) &&
@@ -79,79 +115,47 @@ export async function GET() {
         !!e?.name
     );
 
-    // ... build games, dedupe, sort ...
-type UvaGame = {
-  id: string;
-  sport: "basketball";
-  opponent: string;
-  date: string;
-  location: "home" | "away" | "neutral";
-  result: "pending";
-  note?: string;
-  sourceUrl?: string;
-};
+    const games: UvaGame[] = eventItems.map((ev: any) => {
+      const { opponent, location } = normalizeOpponent(ev.name);
+      const dateIso = ev.startDate
+        ? new Date(ev.startDate).toISOString()
+        : new Date().toISOString();
+      const place = pickCityState(ev);
 
-function normalizeOpponent(name?: string) {
-  const n = (name ?? "").trim();
-  const lower = n.toLowerCase();
+      return {
+        id: `uva-mbb-${dateIso}-${opponent.replace(/\s+/g, "-").toLowerCase()}`,
+        sport: "basketball",
+        opponent,
+        date: dateIso,
+        location,
+        result: "pending",
+        note: place ? `Location: ${place}` : undefined,
+        sourceUrl: ev.url || undefined,
+      };
+    });
 
-  if (lower.includes(" vs. ")) {
-    return { opponent: n.split(/ vs\. /i)[1]?.trim() || "Opponent TBA", location: "home" as const };
+    const deduped: UvaGame[] = Array.from(
+      new Map(games.map((g) => [g.id, g])).values()
+    ).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+
+    return NextResponse.json({
+      ok: true,
+      status: 200,
+      updatedAt: new Date().toISOString(),
+      games: deduped,
+      count: deduped.length,
+      source: SCHEDULE_URL,
+    });
+  } catch (err: any) {
+    console.error("[UVA] Exception:", err);
+    return NextResponse.json({
+      ok: false,
+      status: 200,
+      updatedAt: new Date().toISOString(),
+      games: [],
+      count: 0,
+      source: SCHEDULE_URL,
+      error: String(err?.message ?? err),
+    });
   }
-  if (lower.includes(" at ")) {
-    return { opponent: n.split(/ at /i)[1]?.trim() || "Opponent TBA", location: "away" as const };
-  }
-  return { opponent: n || "Opponent TBA", location: "neutral" as const };
-}
-
-function pickCityState(ev: any) {
-  const loc =
-    ev.location?.address?.addressLocality ||
-    ev.location?.address?.name ||
-    ev.location?.name ||
-    "";
-  return String(loc).trim();
-}
-
-const games: UvaGame[] = eventItems.map((ev: any) => {
-  const { opponent, location } = normalizeOpponent(ev.name);
-  const dateIso = ev.startDate ? new Date(ev.startDate).toISOString() : new Date().toISOString();
-  const place = pickCityState(ev);
-
-  return {
-    id: `uva-mbb-${dateIso}-${opponent.replace(/\s+/g, "-").toLowerCase()}`,
-    sport: "basketball",
-    opponent,
-    date: dateIso,
-    location,
-    result: "pending",
-    note: place ? `Location: ${place}` : undefined,
-    sourceUrl: ev.url || undefined,
-  };
-});
-
-// ✅ THIS is the missing variable you’re trying to return
-const deduped = Array.from(new Map(games.map((g) => [g.id, g])).values()).sort(
-  (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
-);
-return NextResponse.json({
-  ok: true,
-  status: 200,
-  updatedAt: new Date().toISOString(),
-  games: deduped,
-  count: deduped.length,
-  source: SCHEDULE_URL,
-});
-} catch (err: any) {
-  console.error("[UVA] Exception:", err);
-  return NextResponse.json({
-    ok: false,
-    status: 200,
-    updatedAt: new Date().toISOString(),
-    games: [],
-    count: 0,
-    source: SCHEDULE_URL,
-    error: String(err?.message ?? err),
-  });
-}
 }

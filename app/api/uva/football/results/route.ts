@@ -1,4 +1,4 @@
-// app/api/uva/football-results/route.ts
+// app/api/uva/football/results/route.ts
 import { NextResponse } from "next/server";
 
 type ResultGame = {

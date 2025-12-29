@@ -56,7 +56,7 @@ export default function SiteHeader() {
                   Upcoming Games
                 </Link>
                 <Link
-                  href="/uva/results"
+                  href="/uva/basketball/results"
                   onClick={() => setOpen(false)}
                   className="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-slate-900"
                 >

@@ -1,4 +1,4 @@
-// app/api/uva/results/route.ts
+// app/api/uva/basketball/results/route.ts
 import { NextResponse } from "next/server";
 
 type ResultGame = {
@@ -152,7 +152,7 @@ export async function GET(req: Request) {
     return NextResponse.json({
       ok: true,
       updatedAt: new Date().toISOString(),
-      results: out.slice(0, 15),
+      results: out,
       ...(debugMode
         ? {
             debug: {

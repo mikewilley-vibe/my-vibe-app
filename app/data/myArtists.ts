@@ -48,4 +48,8 @@ export const myArtists: MyArtist[] = [
     name: "Grateful Dead",
     tmQuery: "Grateful Dead",
   },
+  {
+    name: "Kishi Bashi",
+    tmQuery: "Kishi Bashi", 
+  }
 ];

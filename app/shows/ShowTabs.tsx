@@ -47,48 +47,71 @@ function TabButton({
   );
 }
 
-function fmtNice(iso?: string) {
-  const dt = iso ? new Date(iso) : null;
-  return dt && !Number.isNaN(dt.getTime())
-    ? dt.toLocaleString("en-US", {
-        weekday: "short",
-        month: "short",
-        day: "numeric",
-        hour: "numeric",
-        minute: "2-digit",
-      })
-    : "TBD";
+function fmtNice(raw?: string) {
+  if (!raw) return "TBD";
+  const d = new Date(raw);
+  if (Number.isNaN(d.getTime())) return "TBD";
+
+  return d.toLocaleString("en-US", {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  });
 }
 
 function EventRow({ e }: { e: Concert }) {
+  // ✅ handle multiple possible fields, but prefer dateTime
+  const rawDate =
+    (e as any)?.dateTime ||
+    (e as any)?.dates?.start?.dateTime ||
+    (e as any)?.dates?.start?.localDate ||
+    (e as any)?.date ||
+    (e as any)?.dateIso ||
+    "";
+
+  const nice = fmtNice(rawDate);
+
+  const venue = (e as any)?.venue ?? "";
+  const city = (e as any)?.city ?? "";
+  const state = (e as any)?.state ?? "";
+
+  const where = [venue, [city, state].filter(Boolean).join(", ")]
+    .filter(Boolean)
+    .join(" • ");
+
+  const line = [nice, where].filter(Boolean).join(" • ");
+
   return (
     <a
-      href={e.url}
+      href={(e as any)?.url}
       target="_blank"
       rel="noreferrer"
       className="block rounded-xl border border-slate-200 bg-white p-4 shadow-sm hover:shadow"
     >
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">
-          <div className="text-sm font-semibold text-slate-900 truncate">{e.name}</div>
-          <div className="mt-1 text-xs text-slate-600">
-            {fmtNice(e.dateTime)} • {e.venue} • {e.city}
-            {e.state ? `, ${e.state}` : ""}
+          <div className="text-sm font-semibold text-slate-900 truncate">
+            {(e as any)?.name ?? "Untitled"}
           </div>
 
-          {typeof e.priceMin === "number" ? (
+          <div className="mt-1 text-xs text-slate-600">{line || "TBD"}</div>
+
+          {typeof (e as any)?.priceMin === "number" ? (
             <div className="mt-1 text-xs text-slate-500">
-              ${e.priceMin.toFixed(2)}
-              {typeof e.priceMax === "number" && e.priceMax !== e.priceMin
-                ? ` – $${e.priceMax.toFixed(2)}`
+              ${(e as any).priceMin.toFixed(2)}
+              {typeof (e as any)?.priceMax === "number" &&
+              (e as any).priceMax !== (e as any).priceMin
+                ? ` – $${(e as any).priceMax.toFixed(2)}`
                 : ""}
             </div>
           ) : null}
         </div>
 
-        {e.image ? (
+        {(e as any)?.image ? (
           <img
-            src={e.image}
+            src={(e as any).image}
             alt=""
             className="h-14 w-20 rounded-lg object-cover border border-slate-200"
           />

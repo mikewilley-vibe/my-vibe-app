@@ -13,7 +13,142 @@ export type VibePost = {
 };
 
 export const vibePosts: VibePost[] = [
-    {
+      {
+    id: 26,
+    slug: "day-26-shows-page-real-data-real-filters",
+    title: "Day 26 — Shows Page: Real Data, Real Filters",
+    date: "2025-12-29",
+    emoji: "🎟️",
+    summary:
+      "Cleaned up the Shows experience: two tabs, real concert-only data, and venue filtering that feels intentional.",
+    message:
+      "Day 26 was about making the Shows page feel like a feature, not a demo.\n\n" +
+      "I tightened the scope: concerts only, predictable tabs, and a local-venues filter that actually helps. I leaned into defensive UI rendering so bad data doesn’t turn into broken cards.\n\n" +
+      "The big win was mindset: when results looked wrong, I stopped tweaking the UI and traced the data back through the API. Once the shape was right, the UI snapped into place.\n\n" +
+      "This is the kind of work that turns \"cool idea\" into \"I’d actually use this.\"",
+    tags: ["day-26", "shows", "ticketmaster", "filters", "debugging", "product-thinking"],
+  },
+  {
+    id: 25,
+    slug: "day-25-ticketmaster-shape-truth",
+    title: "Day 25 — The Shape of Truth",
+    date: "2025-12-28",
+    emoji: "🧾",
+    summary:
+      "Stopped guessing. Logged the raw responses. Fixed the real issue: double-transforming data.",
+    message:
+      "Day 25 was a classic API lesson: the UI wasn’t the problem — the data shape was.\n\n" +
+      "I added focused debug output, inspected the raw Ticketmaster payload, and realized I was transforming events twice. That created empty fields like dateTime/venue/city and the UI fell back to TBD.\n\n" +
+      "Fixing the pipeline made everything cleaner: one transform, consistent Concert objects, predictable rendering.\n\n" +
+      "This was a confidence-builder: I can reason about systems now, not just components.",
+    tags: ["day-25", "api", "ticketmaster", "data-shape", "debugging", "systems"],
+  },
+  {
+    id: 24,
+    slug: "day-24-uvafication-results-pages",
+    title: "Day 24 — UVA Results Pages That Feel Legit",
+    date: "2025-12-27",
+    emoji: "🏟️",
+    summary:
+      "Built real results pages for basketball + football with record summaries, two-column layout, and clean nav.",
+    message:
+      "Day 24 was about turning sports pages into something that feels finished.\n\n" +
+      "I separated upcoming vs results, added record summaries, and got the layout consistent across football and basketball. The two-column split made the pages scanable, and the recap links made it useful.\n\n" +
+      "I also cleaned up the navbar dropdown behavior so it closes on route change and outside click — small detail, huge polish.\n\n" +
+      "This is the kind of feature that tells someone: this wasn’t copied from a tutorial.",
+    tags: ["day-24", "uva", "results", "ui", "navigation", "polish"],
+  },
+  {
+    id: 23,
+    slug: "day-23-espn-debugging-wins",
+    title: "Day 23 — ESPN Debugging Wins",
+    date: "2025-12-26",
+    emoji: "🧪",
+    summary:
+      "Tracked down NaN scores, fixed finals detection, and made the results API reliable.",
+    message:
+      "Day 23 was pure debugging.\n\n" +
+      "ESPN’s data shape wasn’t consistent — sometimes scores were numbers, sometimes nested objects. I stopped assuming and wrote score pickers that could handle the messy reality.\n\n" +
+      "Once the parsing was solid, the UI stopped lying. Finals were finals. Scores were real. And the page became trustworthy.\n\n" +
+      "A good dev skill isn’t writing code fast — it’s making uncertain inputs predictable.",
+    tags: ["day-23", "espn", "api", "debugging", "reliability", "parsing"],
+  },
+  {
+    id: 22,
+    slug: "day-22-shipping-and-vercel-muscle",
+    title: "Day 22 — Shipping Muscle Memory",
+    date: "2025-12-25",
+    emoji: "🚢",
+    summary:
+      "Tightened my ship flow: smaller commits, clearer checkpoints, and smoother deploys.",
+    message:
+      "Day 22 was about building the habit of shipping.\n\n" +
+      "I focused on small, safe changes, committed more frequently, and kept the repo in a state where I could deploy without fear.\n\n" +
+      "The big lesson: speed comes from trust — trust in your checkpoints, trust in your rollback path, trust in your process.\n\n" +
+      "When shipping gets boring, that’s a sign the system is healthy.",
+    tags: ["day-22", "shipping", "git", "vercel", "process", "habits"],
+  },
+  {
+    id: 21,
+    slug: "day-21-better-navigation-feels-like-product",
+    title: "Day 21 — Navigation That Feels Like a Product",
+    date: "2025-12-24",
+    emoji: "🧭",
+    summary:
+      "Improved the UX glue: dropdown behavior, route transitions, and page structure consistency.",
+    message:
+      "Day 21 was about the glue — the stuff users feel immediately.\n\n" +
+      "I improved dropdown behavior, cleaned up routes, and made sure pages share consistent structure. When the nav behaves, the whole site feels more confident.\n\n" +
+      "It’s easy to chase flashy features. But navigation and structure are what make everything else feel intentional.\n\n" +
+      "This was a \"quiet wow\" day — and those are the ones that level up a project.",
+    tags: ["day-21", "navigation", "ux", "consistency", "components"],
+  },
+  {
+    id: 20,
+    slug: "day-20-concerts-focus-no-more-jambase",
+    title: "Day 20 — Concerts Only, No More JamBase",
+    date: "2025-12-23",
+    emoji: "🎶",
+    summary:
+      "Cut the dead weight and refocused the Shows page around one reliable source and a clearer goal.",
+    message:
+      "Day 20 was a good reminder: not every integration is worth saving.\n\n" +
+      "JamBase wasn’t giving me clean, reliable output for what I wanted, so I removed the dependency and pushed the Shows page toward a simpler, more stable plan.\n\n" +
+      "The project instantly felt lighter. Fewer moving parts. Fewer weird edge cases. More control.\n\n" +
+      "This was a product decision, not a coding decision — and that’s growth.",
+    tags: ["day-20", "shows", "scope", "cleanup", "product"],
+  },
+  {
+    id: 19,
+    slug: "day-19-concerts-and-location-thinking",
+    title: "Day 19 — Location Thinking",
+    date: "2025-12-22",
+    emoji: "📍",
+    summary:
+      "Started treating location as a first-class feature: radius, venues, and time windows that make sense.",
+    message:
+      "Day 19 was about designing the question before coding the answer.\n\n" +
+      "Instead of \"show me stuff,\" I framed it as: what’s happening near me, what’s worth seeing, and how can I filter quickly?\n\n" +
+      "Radius and time windows became the core model. Once that model is right, every tab and filter becomes a simple expression of it.\n\n" +
+      "It’s not just data — it’s a map of my actual life.",
+    tags: ["day-19", "concerts", "location", "filters", "modeling"],
+  },
+  {
+    id: 18,
+    slug: "day-18-keep-it-working-while-improving",
+    title: "Day 18 — Improve Without Breaking",
+    date: "2025-12-21",
+    emoji: "🧰",
+    summary:
+      "Kept momentum while protecting stability: change less at once, test more, commit smarter.",
+    message:
+      "Day 18 was about restraint.\n\n" +
+      "I kept improving the site, but I started protecting the parts that already work. Smaller edits, clearer checkpoints, and fewer \"big bang\" refactors.\n\n" +
+      "I’m learning that shipping isn’t just finishing — it’s maintaining a baseline of trust while you evolve the system.\n\n" +
+      "Momentum feels better when you’re not afraid of your own code.",
+    tags: ["day-18", "process", "stability", "git", "momentum"],
+  },
+  {
     id: 17,
     slug: "day-17-small-polish-big-feel",
     title: "Day 17 — Small Polish, Big Feel",

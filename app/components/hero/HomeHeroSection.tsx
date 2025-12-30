@@ -16,11 +16,9 @@ type Props = {
 };
 
 export default function HomeHeroSection({
-  title = "Blending public-sector projects, accessibility, and financial chops ⚖️💻",
+  title = "Blending project management and accounting ⚖️💻",
   subtitle = "Mike's Vibe Coder HQ",
-  blurb = `I lead and ship digital projects for governments and agencies —
-from DMV PODS to accessibility programs and payment portals.
-This space is my home base for experiments, projects, and tracking the vibe.`,
+  blurb = `This space is my home base for experiments, projects, and tracking the vibe.`,
   primaryCtaHref = "/projects",
   primaryCtaLabel = "View projects",
   secondaryCtaHref = "/contact",

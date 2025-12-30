@@ -125,4 +125,10 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+  @keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 }

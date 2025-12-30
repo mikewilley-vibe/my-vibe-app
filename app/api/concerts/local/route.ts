@@ -25,12 +25,12 @@ export async function GET(req: Request) {
   const end = new Date();
   end.setDate(end.getDate() + days);
 
-  // Keep size sane (more days => more events)
-  const size = String(clamp(days * 6, 40, 200));
+  // Keep size sane
+  const size = String(clamp(days * 6, 60, 200));
 
   try {
     const events: Concert[] = await fetchTMEvents({
-      classificationName: "music", // keeps out sports/plays most of the time
+      classificationName: "music",
       latlong: `${lat},${lon}`,
       radius,
       unit: "miles",

@@ -3,10 +3,12 @@ import HeroImage from "@/app/components/hero/HeroImage";
 export default function FamilySection() {
   return (
     <Section title="Family">
-      <HeroImage
+     <div className="relative inline-block">
+      </div> <HeroImage
         src="/images/williamsburg.jpeg"
         alt="Mike with his family"
         priority
+        
       />
 
       <p className="text-slate-700">

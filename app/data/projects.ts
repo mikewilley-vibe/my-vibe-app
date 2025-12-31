@@ -5,6 +5,7 @@ export type Project = {
   message: string;
   longDescription: string;
   image?: string;
+  video?: string;
 };
 
 export const projects: Project[] = [
@@ -13,19 +14,30 @@ export const projects: Project[] = [
     title: "Selling Buick Enclave",
     emoji: "🚗",
     message:
-      "Have a 2016 Buick Enclave for Sale",
+      "2016 Buick Enclabve for sale.",
     longDescription:
       "If you are interested in stealing it, then by all means, the keys on in it.",
   },
   {
-    slug: "uva-football",
-    title: "GATOR BOWL BOUND!",
-    emoji: "🏉",
+    slug: "vandy-accounting",
+    title: "Vandy Accounting Website Rehaul",
+    emoji: "💼",
     message:
-      "Cavaliers are headed to the TaxSlayer Gator Bowl!",
+      "Created a new website for Vandy Accounting.",
     longDescription:
-      "No. 19 Virginia Cavaliers vs. Missouri Tigers",
-      image: "/images/cam-fb.jpeg"
+      "My aunt Julie has an Accounting Solutions company in Indianapolis and I remade her website. ",
+      image: "/images/logo.pneg"
+  },
+   {
+    slug: "3d-rotunda",
+    title: "3D Rotunda Chrsitmas Project",
+    emoji: "🏛️",
+    message:
+      "My daughter Bea is at the head of her class and she designed and created a 3D model of the Rotunda.",
+    longDescription:
+      "This was such a cool project and was a perfect Christmas peresent to give to my Dad",
+    video: "/video/rotunda-3d-print.mp4"
+        
   },
   {
     slug: "fairfax-community-revitalization-migration",
@@ -36,15 +48,7 @@ export const projects: Project[] = [
     longDescription:
       "Still seeking Fairfax County email address to allow us to have access",
   },
-  {
-    slug: "local-government-portals-payments",
-    title: "Local Government Portals & Payments",
-    emoji: "🏛️",
-    message:
-      "Oversaw website + payment integrations for localities and tax portals.",
-    longDescription:
-      "Oversaw website and payment integrations for local governments, including tax portals, citizen services, and forms. Coordinated with treasurers, finance teams, and technical staff to ensure secure, reliable payment flows and clear user experiences.",
-  },
+ 
   {
     slug: "accessibility-compliance-program",
     title: "Accessibility Compliance Program",

@@ -13,15 +13,21 @@ export type Project = {
 };
 
 export const projects: Project[] = [
-  {
-    slug: "buick-enclave",
-    title: "Selling Buick Enclave",
-    emoji: "🚗",
+   {
+    slug: "orchard-house-basketball",
+    title: "Orchard House Middle School Basketball",
+    emoji: "🏀",
     message:
-      "2016 Buick Enclabve for sale.",
+      "We are the Gryphons!",
     longDescription:
-      "If you are interested in stealing it, then by all means, the keys on in it.",
+      "Ready for a great year!",
+    image: "/images/OHMS_Gryphon_Badge-Full+Color.png",
+    link: {
+      href: "https://master-bold-60756260.figma.site/",
+      label: "Orchard House Hoops",
   },
+},
+
   {
     slug: "vandy-accounting",
     title: "Vandy Accounting Website Rehaul",
@@ -59,14 +65,15 @@ export const projects: Project[] = [
   },
   
   {
-    slug: "accessibility-compliance-program",
-    title: "Accessibility Compliance Program",
-    emoji: "✅",
+    slug: "buick-enclave",
+    title: "Selling Buick Enclave",
+    emoji: "🚗",
     message:
-      "Designed a structured accessibility monitoring and remediation program fior for Tyler Virginia.",
+      "2016 Buick Enclabve for sale.",
     longDescription:
-      "Designed a structured accessibility compliance program leveraging scans, dashboards, and remediation workflows. Helped agencies prioritize high-impact fixes, track progress, and align with WCAG and VITA requirements.",
+      "If you are interested in stealing it, then by all means, the keys on in it.",
   },
+ 
   {
     slug: "controller-accounting-background",
     title: "Controller & Accounting Background",

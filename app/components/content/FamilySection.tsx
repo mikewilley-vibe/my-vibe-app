@@ -5,7 +5,7 @@ export default function FamilySection() {
     <Section title="Family">
      <div className="relative inline-block">
       </div> <HeroImage
-        src="/images/williamsburg.jpeg"
+        src="/images/ptown.jpeg"
         alt="Mike with his family"
         priority
         

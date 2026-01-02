@@ -14,7 +14,7 @@ export default function PageHeader({
   return (
     <header className="mb-8">
       {eyebrow ? (
-        <p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-500">
+        <p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-500 truncate">
           {eyebrow}
         </p>
       ) : null}

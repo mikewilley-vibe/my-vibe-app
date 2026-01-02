@@ -21,7 +21,7 @@ export default function BrandBadgeLink({
       target="_blank"
       rel="noreferrer"
       className="inline-flex items-center mt-3 transition-all duration-300
-                 grayscale hover:grayscale-0 hover:opacity-100 opacity-80
+                  hover:opacity-100 opacity-80
                  hover:scale-[1.02]"
     >
       <Image

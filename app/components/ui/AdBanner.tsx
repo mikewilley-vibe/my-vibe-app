@@ -1,6 +1,8 @@
 // app/components/ui/AdBanner.tsx
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { motion } from "framer-motion";
+
 
 type Props = {
   sponsor: string;
@@ -52,15 +54,20 @@ export default function AdBanner({
   const v = VARIANTS[variant];
 
   return (
-    <div
+    <motion.div
+    initial={{ opacity: 0, y: 8 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.5, ease: "easeOut" }}
       className={[
-        "relative overflow-hidden rounded-2xl bg-gradient-to-r",
+        "relative overflow-hidden rounded-2xl bg-gradient-to-r ",
         v.bg,
         "p-3 shadow-sm ring-1",
         v.ring,
+        
         "h-full min-h-[140px]", // consistent card height
         "opacity-0 translate-y-2 animate-[fadeInUp_0.6s_ease-out_forwards]",
         className,
+        className="hover-lift"
       ].join(" ")}
     >
       {/* glow blobs */}
@@ -83,6 +90,7 @@ export default function AdBanner({
 
           <Link
             href={href}
+            
             className={[
               "inline-flex items-center justify-center rounded-xl px-4 py-2",
               "text-sm font-extrabold shadow-sm transition",
@@ -105,6 +113,6 @@ export default function AdBanner({
           <p className="mt-0.5 text-[11px] text-white/70">{sponsor}</p>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

@@ -6,6 +6,10 @@ export type Project = {
   longDescription: string;
   image?: string;
   video?: string;
+  link?: {
+    href: string;
+    label: string;
+  };
 };
 
 export const projects: Project[] = [
@@ -26,11 +30,11 @@ export const projects: Project[] = [
       "Created a new website for Vandy Accounting.",
     longDescription:
       "My aunt Julie has an Accounting Solutions company in Indianapolis and I remade her website. ",
-      image: "/images/logo.pneg"
+      image: "/images/vandy-screenshot2.png"
   },
    {
     slug: "3d-rotunda",
-    title: "3D Rotunda Chrsitmas Project",
+    title: "3D Rotunda Christmas Project",
     emoji: "🏛️",
     message:
       "My daughter Bea is at the head of her class and she designed and created a 3D model of the Rotunda.",
@@ -44,11 +48,16 @@ export const projects: Project[] = [
     title: "Fairfax Community Revitalization Migration",
     emoji: "📊",
     message:
-      "Migrating the Current https://www.fcrevite.org/ site to be included in Fairfax County's Planning and Development",
+      "Migrating the Current OCR site to be included in Fairfax County's Planning and Development",
     longDescription:
       "Still seeking Fairfax County email address to allow us to have access",
+    image: "/images/fairfax-ocr2.png",
+    link: {
+      href: "https://www.fcrevite.org/",
+      label: "fcrevite.org",
+    },
   },
- 
+  
   {
     slug: "accessibility-compliance-program",
     title: "Accessibility Compliance Program",

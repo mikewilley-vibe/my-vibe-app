@@ -191,7 +191,7 @@ export default function WeatherCard({
 
     const url =
   "https://api.open-meteo.com/v1/forecast" +
-  "?latitude=37.5407&longitude=-77.4360" +
+  `?latitude=${coords.lat}&longitude=${coords.lon}` +
   "&current_weather=true" +
   "&hourly=relative_humidity_2m,dew_point_2m,apparent_temperature" +
   "&daily=temperature_2m_max,temperature_2m_min,weathercode,sunrise,sunset" +
@@ -267,12 +267,12 @@ const weatherUrl = `https://forecast.weather.gov/MapClick.php?lat=${coords.lat}&
           vibe.wrap,
         ].join(" ")}
       >
-<div className="flex w-full items-center justify-between gap-4">
-  {/* LEFT: Current weather + location */}
+<div className="flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+  {/* TOP/LEFT: Current weather + location */}
   <div className="flex items-center gap-3 min-w-0">
     <div
       className={[
-        "flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200",
+        "flex h-10 w-10 flex-none items-center justify-center rounded-xl border border-slate-200",
         vibe.badge,
       ].join(" ")}
       aria-hidden="true"
@@ -281,7 +281,7 @@ const weatherUrl = `https://forecast.weather.gov/MapClick.php?lat=${coords.lat}&
     </div>
 
     <div className="min-w-0">
-      <div className="text-xs font-semibold uppercase tracking-wide text-slate-700">
+      <div className="text-xs font-semibold uppercase tracking-wide text-slate-700 truncate">
         Weather · {coords.label}
       </div>
       <div className="text-sm text-slate-700 truncate">
@@ -293,27 +293,29 @@ const weatherUrl = `https://forecast.weather.gov/MapClick.php?lat=${coords.lat}&
     </div>
   </div>
 
-  {/* CENTER: Tomorrow */}
+  {/* TOMORROW: full width on mobile, compact on desktop */}
   {weather.tomorrow && (
-    <div className="flex items-center gap-3 rounded-xl bg-white/60 px-4 py-2">
-      <span className="text-3xl">
-        {weatherEmoji(weather.tomorrow.weathercode ?? 0)}
-      </span>
-      <div className="text-center">
-        <div className="text-[11px] uppercase tracking-wide text-slate-500">
-          Tomorrow
-        </div>
-        <div className="text-base font-bold text-slate-900">
-          {Math.round(weather.tomorrow.highF ?? 0)}°
-          <span className="mx-1 text-slate-400">/</span>
-          {Math.round(weather.tomorrow.lowF ?? 0)}°
+    <div className="flex items-center justify-between gap-3 rounded-xl bg-white/60 px-4 py-2 sm:justify-center sm:flex-none">
+      <div className="flex items-center gap-3">
+        <span className="text-2xl">
+          {weatherEmoji(weather.tomorrow.weathercode ?? 0)}
+        </span>
+        <div>
+          <div className="text-[11px] uppercase tracking-wide text-slate-500">
+            Tomorrow
+          </div>
+          <div className="text-base font-bold text-slate-900">
+            {Math.round(weather.tomorrow.highF ?? 0)}°
+            <span className="mx-1 text-slate-400">/</span>
+            {Math.round(weather.tomorrow.lowF ?? 0)}°
+          </div>
         </div>
       </div>
     </div>
   )}
 
-  {/* RIGHT: Details */}
-  <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-700 justify-end">
+  {/* DETAILS: grid on mobile so it doesn't overflow */}
+  <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs text-slate-700 sm:flex sm:flex-wrap sm:justify-end sm:text-right">
     <span>
       Feels <span className="font-semibold">{Math.round(weather.feelsF)}°</span>
     </span>
@@ -328,13 +330,13 @@ const weatherUrl = `https://forecast.weather.gov/MapClick.php?lat=${coords.lat}&
     </span>
 
     {weather.sunrise && weather.sunset && (
-      <span className="whitespace-nowrap">
+      <span className="col-span-2 whitespace-nowrap sm:col-span-1">
         🌅 <span className="font-semibold">{formatTime(weather.sunrise)}</span>{" "}
         · 🌇 <span className="font-semibold">{formatTime(weather.sunset)}</span>
       </span>
     )}
   </div>
-                </div>
+</div>
       </section>
     </FadeIn>
     </a>

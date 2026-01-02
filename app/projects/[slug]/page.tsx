@@ -69,6 +69,18 @@ export default async function ProjectDetailPage({
           <p className="whitespace-pre-line leading-relaxed text-slate-700">
             {project.longDescription ?? "No longDescription provided."}
           </p>
+          {project.link ? (
+  <p className="mt-2 text-sm">
+    <a
+      href={project.link.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="text-blue-600 underline hover:text-blue-800"
+    >
+      {project.link.label} 
+    </a>
+  </p>
+) : null}
         </section>
       </article>
     </main>

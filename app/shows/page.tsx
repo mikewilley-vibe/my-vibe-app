@@ -21,7 +21,7 @@ export default async function ShowsPage() {
         <p className="mt-2 text-sm text-slate-600">
           My Artists (within 1,000 miles) + Local Venues (within 120 miles)
         </p>
-
+export const dynamic = "force-dynamic";
         <div className="mt-6">
           <ShowTabs
             myArtists={myArtistsRes.data?.events ?? []}

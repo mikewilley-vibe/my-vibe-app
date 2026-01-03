@@ -1,5 +1,4 @@
 // app/projects/[slug]/page.tsx
-
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
@@ -14,23 +13,11 @@ export async function generateStaticParams() {
 export default async function ProjectDetailPage({
   params,
 }: {
-  params: Params;
+  params: Promise<Params>;
 }) {
-  const { slug } = params;
+  const { slug } = await params;
 
-  let decodedSlug = slug;
-  try {
-    decodedSlug = decodeURIComponent(slug);
-  } catch {}
-
-  const project = getProjectBySlug(decodedSlug);
-
-  // Optional: dev-only debug
-  // if (process.env.NODE_ENV === "development") {
-  //   console.log("PROJECT SLUG:", decodedSlug);
-  //   console.log("KNOWN SLUGS:", projects.map((p) => p.slug));
-  // }
-
+  const project = getProjectBySlug(slug);
   if (!project) notFound();
 
   return (
@@ -61,9 +48,7 @@ export default async function ProjectDetailPage({
             </h1>
           </div>
 
-          <p className="mt-3 text-slate-600">
-            {project.message ?? "No summary yet."}
-          </p>
+          <p className="mt-3 text-slate-600">{project.message ?? "No summary yet."}</p>
         </header>
 
         <section className="mt-6 space-y-3">

@@ -1,4 +1,6 @@
 // app/shows/page.tsx
+export const dynamic = "force-dynamic";
+
 import { getBaseUrl } from "@/lib/baseUrl";
 import { safeFetch } from "@/lib/safeFetch";
 import ShowTabs from "./ShowTabs";
@@ -10,8 +12,12 @@ export default async function ShowsPage() {
   const baseUrl = await getBaseUrl();
 
   const [myArtistsRes, localRes] = await Promise.all([
-    safeFetch<ApiResp>(`${baseUrl}/api/concerts/my-artists?radius=1000&days=180`, { cache: "no-store" }),
-    safeFetch<ApiResp>(`${baseUrl}/api/concerts/local?radius=120&days=30`, { cache: "no-store" }),
+    safeFetch<ApiResp>(`${baseUrl}/api/concerts/my-artists?radius=1000&days=180`, {
+      cache: "no-store",
+    }),
+    safeFetch<ApiResp>(`${baseUrl}/api/concerts/local?radius=120&days=30`, {
+      cache: "no-store",
+    }),
   ]);
 
   return (
@@ -21,7 +27,7 @@ export default async function ShowsPage() {
         <p className="mt-2 text-sm text-slate-600">
           My Artists (within 1,000 miles) + Local Venues (within 120 miles)
         </p>
-export const dynamic = "force-dynamic";
+
         <div className="mt-6">
           <ShowTabs
             myArtists={myArtistsRes.data?.events ?? []}

@@ -3,6 +3,7 @@ import { getBaseUrl } from "@/lib/baseUrl";
 import TwoColumnSection from "@/app/components/ui/TwoColumnSection";
 import ScoresBanner from "@/app/components/sports/ScoresBanner";
 import { safeFetch } from "@/lib/safeFetch";
+export const dynamic = "force-dynamic";
 
 const UVA_ORANGE = "#F84C1E";
 const UVA_BLUE = "#232D4B";

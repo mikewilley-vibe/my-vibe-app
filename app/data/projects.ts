@@ -75,14 +75,18 @@ export const projects: Project[] = [
   },
  
   {
-    slug: "controller-accounting-background",
-    title: "Controller & Accounting Background",
+    slug: "dpor",
+    title: "DPOR Drupal Site",
     emoji: "💼",
     message:
-      "Former controller bringing financial discipline into digital projects.",
+      "Virginia Department of Professional and Occupational Regulation",
     longDescription:
-      "Former controller with hands-on experience in GL, AP/AR, payroll, budgeting, and audits. Brings financial discipline, forecasting skills, and risk awareness into technical and government digital projects.",
+      "This is a site I made in Drupal a few years ago.",
+     link: {
+      href: "https://www.dpor.virginia.gov/",
+      label: "DPOR"
   },
+},
 ];
 
 export function getProjectBySlug(slug: string) {

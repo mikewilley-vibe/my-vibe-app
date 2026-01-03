@@ -2,6 +2,7 @@
 import { getBaseUrl } from "@/lib/baseUrl";
 import { safeFetch } from "@/lib/safeFetch";
 import ScoresBanner from "@/app/components/sports/ScoresBanner";
+export const dynamic = "force-dynamic";
 
 const UVA_ORANGE = "#F84C1E";
 const UVA_BLUE = "#232D4B";

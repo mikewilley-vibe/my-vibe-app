@@ -14,12 +14,10 @@ export async function generateStaticParams() {
 export default async function ProjectDetailPage({
   params,
 }: {
-  params: Promise<Params>;
+  params: Params;
 }) {
-  const { slug } = await params;
+  const { slug } = params;
 
-  // NOTE: Next already gives you a decoded string most of the time.
-  // decodeURIComponent is safe here, but we’ll guard it just in case.
   let decodedSlug = slug;
   try {
     decodedSlug = decodeURIComponent(slug);
@@ -27,9 +25,11 @@ export default async function ProjectDetailPage({
 
   const project = getProjectBySlug(decodedSlug);
 
-  // debug (shows in your terminal, not the browser)
-  console.log("PROJECT SLUG:", decodedSlug);
-  console.log("KNOWN SLUGS:", projects.map((p) => p.slug));
+  // Optional: dev-only debug
+  // if (process.env.NODE_ENV === "development") {
+  //   console.log("PROJECT SLUG:", decodedSlug);
+  //   console.log("KNOWN SLUGS:", projects.map((p) => p.slug));
+  // }
 
   if (!project) notFound();
 
@@ -61,7 +61,9 @@ export default async function ProjectDetailPage({
             </h1>
           </div>
 
-          <p className="mt-3 text-slate-600">{project.message ?? "No summary yet."}</p>
+          <p className="mt-3 text-slate-600">
+            {project.message ?? "No summary yet."}
+          </p>
         </header>
 
         <section className="mt-6 space-y-3">
@@ -69,18 +71,19 @@ export default async function ProjectDetailPage({
           <p className="whitespace-pre-line leading-relaxed text-slate-700">
             {project.longDescription ?? "No longDescription provided."}
           </p>
+
           {project.link ? (
-  <p className="mt-2 text-sm">
-    <a
-      href={project.link.href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="text-blue-600 underline hover:text-blue-800"
-    >
-      {project.link.label} 
-    </a>
-  </p>
-) : null}
+            <p className="mt-2 text-sm">
+              <a
+                href={project.link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 underline hover:text-blue-800"
+              >
+                {project.link.label}
+              </a>
+            </p>
+          ) : null}
         </section>
       </article>
     </main>

@@ -2,6 +2,7 @@ export type SafeFetchResult<T> = {
   ok: boolean;
   status?: number;
   data: T | null;
+  error?: string;
 };
 
 export async function safeFetch<T>(
@@ -12,18 +13,21 @@ export async function safeFetch<T>(
     const res = await fetch(input, init);
 
     if (!res.ok) {
-      console.error("safeFetch non-OK", {
-        url: typeof input === "string" ? input : input.toString(),
+      return {
+        ok: false,
         status: res.status,
-      });
-
-      return { ok: false, status: res.status, data: null };
+        data: null,
+        error: `HTTP ${res.status}`,
+      };
     }
 
     const data = (await res.json()) as T;
     return { ok: true, status: res.status, data };
-  } catch (err) {
-    console.error("safeFetch error", err);
-    return { ok: false, data: null };
+  } catch (err: any) {
+    return {
+      ok: false,
+      data: null,
+      error: err?.message ?? "Network error",
+    };
   }
 }

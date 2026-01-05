@@ -9,6 +9,7 @@ import type { Concert } from "@/lib/concerts/types";
 type ApiResp = { ok: boolean; updatedAt: string; events: Concert[] };
 
 export default async function ShowsPage() {
+  
   const baseUrl = await getBaseUrl();
 
   const [myArtistsRes, localRes] = await Promise.all([
@@ -19,6 +20,29 @@ export default async function ShowsPage() {
       cache: "no-store",
     }),
   ]);
+console.log("[shows] baseUrl:", baseUrl);
+
+console.log("[shows] myArtistsRes:", {
+  ok: myArtistsRes.ok,
+  status: (myArtistsRes as any).status,
+  error: (myArtistsRes as any).error,
+  hasData: !!myArtistsRes.data,
+  count: myArtistsRes.data?.events?.length ?? 0,
+});
+
+console.log("[shows] localRes:", {
+  ok: localRes.ok,
+  status: (localRes as any).status,
+  error: (localRes as any).error,
+  hasData: !!localRes.data,
+  count: localRes.data?.events?.length ?? 0,
+  
+});
+  const artistsFailed = !myArtistsRes.ok;
+  const localFailed = !localRes.ok;
+
+  const myArtists = artistsFailed ? [] : (myArtistsRes.data?.events ?? []);
+  const local = localFailed ? [] : (localRes.data?.events ?? []);
 
   return (
     <main className="min-h-screen bg-slate-50">
@@ -29,10 +53,18 @@ export default async function ShowsPage() {
         </p>
 
         <div className="mt-6">
-          <ShowTabs
-            myArtists={myArtistsRes.data?.events ?? []}
-            local={localRes.data?.events ?? []}
-          />
+          {(artistsFailed || localFailed) && (
+  <div className="mb-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+    Ticketmaster is temporarily unavailable for{" "}
+    {artistsFailed && localFailed
+      ? "My Artists and Local Venues"
+      : artistsFailed
+      ? "My Artists"
+      : "Local Venues"}
+    . Try again in a minute.
+  </div>
+)}
+         <ShowTabs myArtists={myArtists} local={local} />
         </div>
       </section>
     </main>

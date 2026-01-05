@@ -27,18 +27,22 @@ export default async function ProjectDetailPage({
           ← Back to Projects
         </Link>
 
-        {project.image ? (
-          <div className="mt-6 overflow-hidden rounded-2xl border border-slate-100">
-            <Image
-              src={project.image}
-              alt={project.title}
-              width={1200}
-              height={630}
-              className="h-56 w-full object-cover md:h-72"
-              priority
-            />
-          </div>
-        ) : null}
+       {project.image ? (
+  <section className="mt-10 mb-14">
+    <div className="mx-auto max-w-3xl">
+      <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+        <Image
+          src={project.image}
+          alt={project.title}
+          width={1200}
+          height={800}
+          className="mx-auto max-h-[420px] w-auto object-contain"
+          priority
+        />
+      </div>
+    </div>
+  </section>
+) : null}
 
         <header className="mt-6">
           <div className="flex items-center gap-3">

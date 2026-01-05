@@ -15,6 +15,23 @@ function sleep(ms: number) {
   return new Promise((r) => setTimeout(r, ms));
 }
 
+function isRetryableNetworkError(err: unknown) {
+  const anyErr = err as any;
+  const code = anyErr?.code || anyErr?.cause?.code;
+  // Common transient/network/DNS codes you might see in Node
+  return (
+    code === "ENOTFOUND" ||
+    code === "EAI_AGAIN" ||
+    code === "ECONNRESET" ||
+    code === "ETIMEDOUT" ||
+    code === "ECONNREFUSED"
+  );
+}
+
+function snippet(s: string, n = 240) {
+  return s.length > n ? s.slice(0, n) + "…" : s;
+}
+
 export function tmToConcert(ev: any): Concert | null {
   const id = ev?.id;
   const name = ev?.name;
@@ -45,17 +62,21 @@ export function tmToConcert(ev: any): Concert | null {
 }
 
 /**
- * Tiny in-memory cache to reduce TM calls (helps avoid 429s).
- * Cache is per unique URL for 60 seconds.
+ * In-memory cache to reduce TM calls (helps avoid 429s).
+ * Cache is per unique URL for 5 minutes.
  */
-const CACHE_TTL_MS = 60_000;
+const CACHE_TTL_MS = 5 * 60_000;
 const cache = new Map<string, { at: number; data: Concert[] }>();
 
+/**
+ * Fetch events from Ticketmaster.
+ * IMPORTANT: This function THROWS on upstream failure so your API routes can return ok:false.
+ */
 export async function fetchTMEvents(params: TMParams): Promise<Concert[]> {
   const apiKey = process.env.TICKETMASTER_API_KEY;
   if (!apiKey) {
-    console.error("[TM] Missing TICKETMASTER_API_KEY");
-    return [];
+    // Throw so your API route catch() returns ok:false instead of silently empty.
+    throw new Error("[TM] Missing TICKETMASTER_API_KEY");
   }
 
   const url =
@@ -67,30 +88,42 @@ export async function fetchTMEvents(params: TMParams): Promise<Concert[]> {
   const now = Date.now();
   if (cached && now - cached.at < CACHE_TTL_MS) return cached.data;
 
-  // retry on 429 with small backoff
   const maxAttempts = 4;
+
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    const ctrl = new AbortController();
+    const timeout = setTimeout(() => ctrl.abort(), 10_000); // 10s timeout
+
     try {
-      const res = await fetch(url, { cache: "no-store" });
+      const res = await fetch(url, { cache: "no-store", signal: ctrl.signal });
       const ct = res.headers.get("content-type") || "";
       const text = await res.text(); // read once
 
+      // 429: retry with backoff
       if (res.status === 429) {
-        // Ticketmaster spike-arrest; back off a bit
-        const wait = 250 * attempt + Math.floor(Math.random() * 200);
-        console.warn(`[TM] 429 rate-limited. Backing off ${wait}ms (attempt ${attempt}/${maxAttempts})`);
+        const wait = 400 * attempt + Math.floor(Math.random() * 300);
+        console.warn(
+          `[TM] 429 rate-limited. Backing off ${wait}ms (attempt ${attempt}/${maxAttempts})`
+        );
         await sleep(wait);
         continue;
       }
 
+      // other non-OK: do NOT pretend it's "no events"
       if (!res.ok) {
-        console.error("[TM] Upstream not ok:", res.status, res.statusText, text.slice(0, 200));
-        return [];
+        const msg = `[TM] Upstream not ok: ${res.status} ${res.statusText} — ${snippet(text)}`;
+        // For 5xx, a retry is sometimes useful
+        if (res.status >= 500 && attempt < maxAttempts) {
+          const wait = 300 * attempt + Math.floor(Math.random() * 250);
+          console.warn(`${msg}. Retrying in ${wait}ms (attempt ${attempt}/${maxAttempts})`);
+          await sleep(wait);
+          continue;
+        }
+        throw new Error(msg);
       }
 
       if (!ct.includes("application/json")) {
-        console.error("[TM] Non-JSON response:", ct, text.slice(0, 200));
-        return [];
+        throw new Error(`[TM] Non-JSON response: ${ct} — ${snippet(text)}`);
       }
 
       const json = JSON.parse(text);
@@ -99,17 +132,31 @@ export async function fetchTMEvents(params: TMParams): Promise<Concert[]> {
 
       const concerts = rawEvents.map(tmToConcert).filter(Boolean) as Concert[];
 
-      // store cache
       cache.set(url, { at: Date.now(), data: concerts });
-
       return concerts;
-    } catch (err) {
+    } catch (err: any) {
+      const aborted = err?.name === "AbortError";
+      const retryable = aborted || isRetryableNetworkError(err);
+
       console.error("[TM] Exception:", err);
-      // last attempt -> give up
-      if (attempt === maxAttempts) return [];
-      await sleep(150 * attempt);
+
+      if (attempt < maxAttempts && retryable) {
+        const wait = 350 * attempt + Math.floor(Math.random() * 250);
+        console.warn(
+          `[TM] retryable error (${aborted ? "timeout" : err?.code ?? "network"}). ` +
+            `Retrying in ${wait}ms (attempt ${attempt}/${maxAttempts})`
+        );
+        await sleep(wait);
+        continue;
+      }
+
+      // Final failure: throw so API route can return ok:false
+      throw err instanceof Error ? err : new Error(String(err));
+    } finally {
+      clearTimeout(timeout);
     }
   }
 
-  return [];
+  // Shouldn't reach here, but just in case:
+  throw new Error("[TM] Exhausted retries");
 }

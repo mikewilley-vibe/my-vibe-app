@@ -18,15 +18,15 @@ export const projects: Project[] = [
     title: "Orchard House Middle School Basketball",
     emoji: "🏀",
     message:
-      "We are the Gryphons!",
+      "I'm helping coach my daughter's middle school basketball team.",
     longDescription:
-      "Ready for a great year!",
-    image: "/images/OHMS_Gryphon_Badge-Full+Color.png",
+      "There wasn't a hub for the team schedule, game locations, jersey colors etc., so I made one for us all to use.  Turned out pretty nice!",
+    image: "/images/gryphons.png",
     link: {
-      href: "https://master-bold-60756260.figma.site/",
+      href: "https://orchardhousebasketball.org",
       label: "Orchard House Hoops",
   },
-},
+   },
 
   {
     slug: "vandy-accounting",
@@ -38,17 +38,32 @@ export const projects: Project[] = [
       "My aunt Julie has an Accounting Solutions company in Indianapolis and I remade her website. ",
       image: "/images/vandy-screenshot2.png"
   },
-   {
-    slug: "3d-rotunda",
-    title: "3D Rotunda Christmas Project",
-    emoji: "🏛️",
+{
+    slug: "shows",
+    title: "Concerts Coming Up",
+    emoji: "🎸",
     message:
-      "My daughter Bea is at the head of her class and she designed and created a 3D model of the Rotunda.",
+      "Created a central hub for my favorite bands and venues.",
     longDescription:
-      "This was such a cool project and was a perfect Christmas peresent to give to my Dad",
-    video: "/video/rotunda-3d-print.mp4"
-        
-  },
+      "I found myself clicking through various different websites trying to figure out what concerts were coming uop and occasionally missing some that I wanted to go to.",
+   link: {
+      href: "http://localhost:3000/shows",
+      label: "Shows"},
+   },
+
+   {
+    slug: "uva",
+    title: "Uva Sports Hub",
+    emoji: "⚔️",
+    message:
+      "Created a centralized location for the UVA sports that I'm into",
+    longDescription:
+      "This is an easy place for me to see what games are coming uo and reflect back on the games I watched,",
+   link: {
+      href: "http://localhost:3000/uva",
+      label: "UVA"},
+   },
+  
   {
     slug: "fairfax-community-revitalization-migration",
     title: "Fairfax Community Revitalization Migration",
@@ -64,16 +79,7 @@ export const projects: Project[] = [
     },
   },
   
-  {
-    slug: "buick-enclave",
-    title: "Selling Buick Enclave",
-    emoji: "🚗",
-    message:
-      "2016 Buick Enclabve for sale.",
-    longDescription:
-      "If you are interested in stealing it, then by all means, the keys on in it.",
-  },
- 
+  
   {
     slug: "dpor",
     title: "DPOR Drupal Site",
@@ -87,6 +93,17 @@ export const projects: Project[] = [
       label: "DPOR"
   },
 },
+ {
+    slug: "3d-rotunda",
+    title: "3D Rotunda Christmas Project",
+    emoji: "🏛️",
+    message:
+      "My daughter Bea is at the head of her class and she designed and created a 3D model of the Rotunda.",
+    longDescription:
+      "This was such a cool project and was a perfect Christmas peresent to give to my Dad",
+    video: "/video/rotunda-3d-print.mp4"
+        
+  },
 ];
 
 export function getProjectBySlug(slug: string) {

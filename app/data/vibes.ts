@@ -13,7 +13,100 @@ export type VibePost = {
 };
 
 export const vibePosts: VibePost[] = [
-      {
+     {
+  id: 33,
+  slug: "day-33-stability-over-cleverness",
+  title: "Day 33 — Stability Over Cleverness",
+  date: "2026-01-08",
+  emoji: "🧱",
+  summary:
+    "Stopped chasing dynamic complexity and made deliberate, stable product decisions.",
+  message:
+    "Today was about restraint.\n\n" +
+    "I recognized that the Shows page was technically impressive but operationally fragile — rate limits, API quirks, and data-shape uncertainty kept pulling me into long recovery loops.\n\n" +
+    "So I made a product call: simplify. Static cards, curated links, predictable UI. Fewer moving parts, fewer surprises.\n\n" +
+    "This wasn’t giving up — it was choosing reliability. The page is faster, clearer, and easier to reason about.\n\n" +
+    "That’s not less professional. It’s more.",
+  tags: ["day-33", "product-thinking", "stability", "scope", "decision-making"],
+},
+{
+  id: 32,
+  slug: "day-32-typescript-tells-the-truth",
+  title: "Day 32 — TypeScript Tells the Truth",
+  date: "2026-01-07",
+  emoji: "📐",
+  summary:
+    "Learned to stop fighting TS errors and start listening to what they’re actually saying.",
+  message:
+    "Day 32 was a mindset shift with TypeScript.\n\n" +
+    "Instead of treating red squiggles as blockers, I traced them back to mismatched data shapes, missing exports, and assumptions I’d carried forward without checking.\n\n" +
+    "Fixing those issues clarified the entire system: props lined up, imports made sense, and components stopped being brittle.\n\n" +
+    "TypeScript wasn’t slowing me down — it was pointing out where my mental model didn’t match reality.\n\n" +
+    "That’s a tool you learn to trust.",
+  tags: ["day-32", "typescript", "debugging", "data-shape", "confidence"],
+},
+{
+  id: 31,
+  slug: "day-31-entity-cards-as-pattern",
+  title: "Day 31 — Entity Cards as a Pattern",
+  date: "2026-01-06",
+  emoji: "🧩",
+  summary:
+    "Locked in EntityCard as a reusable mental and UI model.",
+  message:
+    "Day 31 was about recognizing a pattern.\n\n" +
+    "Artists and venues didn’t need special snowflake components — they needed a shared abstraction. EntityCard became that: title, image, link, fallback behavior.\n\n" +
+    "Once that clicked, everything got easier. The UI stayed consistent, the code got simpler, and future changes feel obvious instead of risky.\n\n" +
+    "This is how systems form — not by planning them upfront, but by noticing what keeps repeating.",
+  tags: ["day-31", "components", "patterns", "ui-systems", "reuse"],
+},
+{
+  id: 30,
+  slug: "day-30-when-apis-arent-the-answer",
+  title: "Day 30 — When APIs Aren’t the Answer",
+  date: "2026-01-05",
+  emoji: "🔌",
+  summary:
+    "Accepted that not every problem needs live data.",
+  message:
+    "Day 30 was an important product realization.\n\n" +
+    "I’d been assuming that \"real-time API\" automatically meant \"better.\" In practice, it meant fragility, noise, and time spent debugging things users don’t care about.\n\n" +
+    "For the Shows page, static links were enough — and better. They’re fast, accurate, and under my control.\n\n" +
+    "Good engineering isn’t about maximum complexity. It’s about the right amount of truth.",
+  tags: ["day-30", "apis", "product", "simplification", "tradeoffs"],
+},
+{
+  id: 29,
+  slug: "day-29-understanding-data-flow",
+  title: "Day 29 — Understanding Data Flow",
+  date: "2026-01-04",
+  emoji: "🧠",
+  summary:
+    "Stopped guessing where bugs lived and started tracing data end-to-end.",
+  message:
+    "Day 29 was about seeing the whole pipeline.\n\n" +
+    "Instead of poking at UI symptoms, I traced issues from data source → transform → component → render. That changed everything.\n\n" +
+    "Once you understand the flow, debugging stops feeling random. You know where to look first — and where not to waste time.\n\n" +
+    "This felt like crossing a real threshold as a developer.",
+  tags: ["day-29", "data-flow", "debugging", "architecture", "learning"],
+},
+{
+  id: 28,
+  slug: "day-28-shipping-without-fear",
+  title: "Day 28 — Shipping Without Fear",
+  date: "2026-01-03",
+  emoji: "🚀",
+  summary:
+    "Built confidence in deploys by keeping changes small and reversible.",
+  message:
+    "Day 28 reinforced something important: fear comes from uncertainty.\n\n" +
+    "Smaller commits, clearer intent, and knowing how to roll back made deploying feel routine instead of risky.\n\n" +
+    "Once shipping stops being scary, you move faster — not because you rush, but because you trust yourself.\n\n" +
+    "That’s real momentum.",
+  tags: ["day-28", "shipping", "git", "vercel", "confidence"],
+},
+
+ {
     id: 26,
     slug: "day-26-shows-page-real-data-real-filters",
     title: "Day 26 — Shows Page: Real Data, Real Filters",

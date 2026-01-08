@@ -94,8 +94,7 @@ export default function ContactCard() {
             label="Let's talk about:"
             value={
               <p className="text-slate-700">
-                Public-sector web projects and anything
-                that mixes tech and finance.
+                The future of vibe coding.
               </p>
             }
           />

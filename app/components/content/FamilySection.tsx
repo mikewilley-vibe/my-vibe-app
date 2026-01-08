@@ -56,28 +56,7 @@ export default function FamilySection() {
   ]}
 />
 
-      <p className="text-slate-700">
-        I&apos;m currently coaching Mary&apos;s Orchard House Middle School basketball team, which has
-        been an awesome reminder of how much teamwork, patience, and encouragement matter —
-        on and off the court.
-      </p>
-
-      <Subsection title="A Christmas Project with Bea 🎄">
-        <p className="text-slate-600">
-          Bea is 3D-printing a model of the UVA Rotunda as a Christmas gift for my dad. This
-          video shows an early print in progress.
-        </p>
-
-        <video
-          src="/video/rotunda-3d-print.mp4"
-          controls
-          muted
-          playsInline
-          className="mx-auto aspect-square w-full max-w-md rounded-xl border shadow-sm bg-black"
-        >
-          Your browser does not support the video tag.
-        </video>
-      </Subsection>
+   
     </Section>
   );
 }

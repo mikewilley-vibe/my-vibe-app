@@ -31,8 +31,8 @@ export default function IntroSection() {
 
       <p className="text-lg text-slate-700">
         I&apos;m an accountant and a project manager for a large tech firm that
-        focuses on the public-sector. During the day I&apos;m blending websites,
-        payments, accessibility, and budgets. At night I&apos;m learning to code
+        focuses on the public-sector. During the day I&apos;m helping partners witht their websites
+        and payments while balancing budgets. At night I&apos;m learning to code
         and building my own tools.
       </p>
 

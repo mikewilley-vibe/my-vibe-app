@@ -10,6 +10,9 @@ type Props = {
   primaryCtaLabel?: string;
   secondaryCtaHref?: string;
   secondaryCtaLabel?: string;
+  tertiaryCtaHref?: string;
+  tertiaryCtaLabel?: string;
+ 
   avatarSrc?: string;
   avatarAlt?: string;
   footerNote?: string;
@@ -21,8 +24,11 @@ export default function HomeHeroSection({
   blurb = `This space is my home base for experiments, projects, and tracking the vibe.`,
   primaryCtaHref = "/projects",
   primaryCtaLabel = "View projects",
-  secondaryCtaHref = "/contact",
-  secondaryCtaLabel = "Contact Mike",
+  secondaryCtaHref = "/about",
+  secondaryCtaLabel = "About Mike",
+  tertiaryCtaHref = "/contact",
+  tertiaryCtaLabel = "Contact Mike",
+ 
   footerNote = "Currently coding in Richmond, VA · Next.js · TypeScript · Drupal · Smartsheet",
 }: Props) {
   return (
@@ -51,10 +57,16 @@ export default function HomeHeroSection({
 
             <Link
               href={secondaryCtaHref}
-              className="rounded-full border border-slate-300 px-5 py-2 text-sm font-semibold text-slate-800 transition hover:border-slate-400 hover:bg-white"
+              className="rounded-full border border-slate-300 px-5 py-2 text-sm font-semibold text-slate-800 transition hover:border-blue-700 hover:bg-white"
             >
               {secondaryCtaLabel}
             </Link>
+              <Link
+      href={tertiaryCtaHref}
+      className="rounded-full px-4 py-2 text-sm font-semibold text-slate-500 transition hover:text-slate-700"
+    >
+      {tertiaryCtaLabel} →
+    </Link>
           </div>
 
           <p className="text-xs text-slate-500">{footerNote}</p>

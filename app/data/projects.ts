@@ -27,7 +27,18 @@ export const projects: Project[] = [
       label: "Orchard House Hoops",
   },
    },
-
+  {
+    slug: "workout-timer",
+    title: "HIIT Workout Timer",
+    emoji: "💪",
+    message:
+      "Made a HIIT timer for my workuts",
+    longDescription:
+      "The clock app doesn't work very well for timing different intervals, so I created my own etimer that you can edit for individual workouts.",
+   link: {
+      href: "https://www.mikewilley.app/workout-timer",
+      label: "Workout Timer"},
+   },
   {
     slug: "vandy-accounting",
     title: "Vandy Accounting Website Rehaul",
@@ -64,7 +75,31 @@ export const projects: Project[] = [
       href: "https://www.mikewilley.app/uva",
       label: "UVA"},
    },
-  
+    {
+    slug: "poster-generator",
+    title: "Poster Generator",
+    emoji: "🎨",
+    message:
+      "Space to create posterrs with pictures",
+    longDescription: "Generate dark-mode posters from your photos with filters, borders, custom fonts, and export sizes.",
+    link: {
+      href: "https://www.mikewilley.app/poster-generator",
+      label: "Poster"
+      
+    },
+  },
+ {
+    slug: "gallery",
+    title: "Photo Gallery",
+    emoji: "📸",
+    message:
+      "Gallery of my pics",
+    longDescription: "Auto-pulls images from /public/gallery into a masonry-style gallery with filters and lightbox.",
+    link: {
+      href: "https://www.mikewilley.app/poster-generator",
+      label: "Poster"
+    },
+  },
   {
     slug: "fairfax-community-revitalization-migration",
     title: "Fairfax Community Revitalization Migration",

@@ -13,7 +13,34 @@ export type VibePost = {
 };
 
 export const vibePosts: VibePost[] = [
-     {
+    {
+  id: 34,
+  slug: "day-34-three-new-tools",
+  title: "Day 34 — Three New Tools Landed",
+  date: "2026-01-09",
+  emoji: "🛠️",
+  summary:
+    "Shipped Workout Timer, Poster Generator, and a fully automated Photo Gallery — my biggest feature jump yet.",
+  message:
+    "Today was momentum.\n\n" +
+    "I added three real, functional tools to the site:\n\n" +
+    "• **Workout Timer** — a clean HIIT/EMOM timer that feels fast and intentional.\n" +
+    "• **Poster Generator** — upload a photo, add filters, borders, titles, and clean exports.\n" +
+    "• **Auto Gallery** — a full masonry layout that pulls images straight from `/public/gallery`, no manual setup required.\n\n" +
+    "Each one started small but turned into a polished, usable feature — the kind of stuff that makes a personal site feel alive.\n\n" +
+    "This wasn’t just shipping pages. It was shipping capability.\n\n" +
+    "Message: keep building, keep adding, keep improving. Every tool expands what this project can be.",
+  tags: [
+    "day-34",
+    "shipping",
+    "tools",
+    "momentum",
+    "frontend",
+    "nextjs",
+    "vibe-coder"
+  ],
+},
+ {
   id: 33,
   slug: "day-33-stability-over-cleverness",
   title: "Day 33 — Stability Over Cleverness",

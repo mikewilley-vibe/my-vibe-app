@@ -24,7 +24,7 @@ export default function SiteHeader() {
   }, [open]);
 
   return (
-    <header className="border-b bg-white">
+    <header className=" sticky top-0 z-50 backdrop-blur-md bg-slate-950/80 border-b bg-white">
       <nav className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
         <Link href="/" className="font-semibold text-slate-900">
           Mike’s Vibe Coder HQ

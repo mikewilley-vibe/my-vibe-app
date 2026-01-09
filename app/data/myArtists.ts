@@ -14,5 +14,6 @@ export const myArtists: MyArtist[] = [
   { name: "Built to Spill", url: "https://www.builttospill.com/shows", image: "images/bts.jpg" },
   { name: "Phish", url: "https://www.ticketmaster.com/search?q=Phish", image: "images/phish.jpg"  },
   { name: "Kishi Bashi", url: "https://www.kishibashi.com/shows", image: "images/kb.png" },
+  { name: "Grateful Jed", url: "https://www.gratefuljed.com/tour", image: "images/gratefuljed.jpg" },
 
 ];

@@ -37,6 +37,7 @@ export const projects: Project[] = [
     longDescription:
       "My aunt Julie has an Accounting Solutions company in Indianapolis and I remade her website. ",
       image: "/images/vandy-screenshot2.png"
+      
   },
 {
     slug: "shows",
@@ -47,7 +48,7 @@ export const projects: Project[] = [
     longDescription:
       "I found myself clicking through various different websites trying to figure out what concerts were coming uop and occasionally missing some that I wanted to go to.",
    link: {
-      href: "http://localhost:3000/shows",
+      href: "https://www.mikewilley.app/shows",
       label: "Shows"},
    },
 
@@ -60,7 +61,7 @@ export const projects: Project[] = [
     longDescription:
       "This is an easy place for me to see what games are coming uo and reflect back on the games I watched,",
    link: {
-      href: "http://localhost:3000/uva",
+      href: "https://www.mikewilley.app/uva",
       label: "UVA"},
    },
   

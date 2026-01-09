@@ -72,6 +72,7 @@ export default function WorkoutTimerPage() {
   const isEmom = config.mode === "emom";
   const isThirty = config.mode === "thirty";
 
+  
   const totalRounds = useMemo(() => {
     if (isHiit) return config.rounds;
     if (isEmom) return config.emomMinutes;
@@ -153,10 +154,15 @@ export default function WorkoutTimerPage() {
       : timer.phase === "finished"
       ? "bg-purple-500"
       : "bg-slate-500";
-const beep = () => {
+const beep = async () => {
   try {
     const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
     const ctx = new AudioCtx();
+
+    // Resume audio context on iOS (required for user interaction)
+    if (ctx.state === "suspended") {
+      await ctx.resume();
+    }
 
     const o = ctx.createOscillator();
     const g = ctx.createGain();

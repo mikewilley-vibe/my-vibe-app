@@ -36,6 +36,9 @@ export default function SiteHeader() {
           <Link href="/vibes" className="text-slate-700 hover:text-blue-700">Vibes</Link>
           <Link href="/shows" className="text-slate-700 hover:text-blue-700">Shows</Link>
           <Link href="/workout-timer" className="hover:text-sky-300">Workout Timer</Link>
+          <Link href="/poster-generator">Poster Generator 🎨</Link>
+          <Link href="/gallery" className="text-slate-700 hover:text-blue-700">Gallery</Link>
+         
           {/* ✅ UVA dropdown */}
           <div ref={ref} className="relative">
             <button

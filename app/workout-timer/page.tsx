@@ -11,6 +11,7 @@ type TimerState = {
   isPaused: boolean;
   currentRound: number;
   remainingSeconds: number;
+  beepCount: number;
 };
 
 type Config = {
@@ -64,6 +65,7 @@ export default function WorkoutTimerPage() {
     isPaused: false,
     currentRound: 0,
     remainingSeconds: 0,
+    beepCount: 0,
   });
 
   const isHiit = config.mode === "hiit";
@@ -151,6 +153,37 @@ export default function WorkoutTimerPage() {
       : timer.phase === "finished"
       ? "bg-purple-500"
       : "bg-slate-500";
+const beep = () => {
+  try {
+    const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
+    const ctx = new AudioCtx();
+
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+
+    o.type = "sine";
+    o.frequency.value = 880; // pitch
+    g.gain.value = 0.08;     // volume
+
+    o.connect(g);
+    g.connect(ctx.destination);
+
+    o.start();
+    o.stop(ctx.currentTime + 0.12);
+
+    // cleanup
+    o.onended = () => {
+      ctx.close?.();
+    };
+  } catch {
+    // no-op (some environments block audio)
+  }
+};
+
+useEffect(() => {
+  if (timer.beepCount > 0) beep();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [timer.beepCount]);
 
   // Timer loop
   useEffect(() => {
@@ -168,7 +201,7 @@ export default function WorkoutTimerPage() {
         if (isHiit) {
           if (prev.phase === "work") {
             if (config.restSeconds > 0) {
-              return { ...prev, phase: "rest", remainingSeconds: config.restSeconds };
+              return { ...prev, phase: "rest", remainingSeconds: config.restSeconds, beepCount: prev.beepCount + 1,};
             }
 
             // no rest
@@ -190,11 +223,11 @@ export default function WorkoutTimerPage() {
               ...prev,
               phase: "work",
               currentRound: prev.currentRound + 1,
-              remainingSeconds: config.workSeconds,
+              remainingSeconds: config.workSeconds, beepCount: prev.beepCount + 1,
             };
           }
 
-          return { ...prev, phase: "finished", isRunning: false, remainingSeconds: 0 };
+          return { ...prev, phase: "finished", isRunning: false, remainingSeconds: 0, beepCount: prev.beepCount + 1 };
         }
 
         if (isEmom) {
@@ -210,14 +243,14 @@ export default function WorkoutTimerPage() {
               return { ...prev, phase: "work", currentRound: prev.currentRound + 1, remainingSeconds: workSec };
             }
 
-            return { ...prev, phase: "finished", isRunning: false, remainingSeconds: 0 };
+            return { ...prev, phase: "finished", isRunning: false, remainingSeconds: 0, beepCount: prev.beepCount + 1, };
           }
 
           // rest -> next minute
           if (prev.currentRound < totalRounds) {
             return { ...prev, phase: "work", currentRound: prev.currentRound + 1, remainingSeconds: workSec };
           }
-          return { ...prev, phase: "finished", isRunning: false, remainingSeconds: 0 };
+          return { ...prev, phase: "finished", isRunning: false, remainingSeconds: 0, beepCount: prev.beepCount + 1, };
         }
 
         if (isThirty) {
@@ -234,7 +267,7 @@ export default function WorkoutTimerPage() {
             return { ...prev, phase: "work", currentRound: prev.currentRound + 1, remainingSeconds: workSec };
           }
 
-          return { ...prev, phase: "finished", isRunning: false, remainingSeconds: 0 };
+          return { ...prev, phase: "finished", isRunning: false, remainingSeconds: 0, beepCount: prev.beepCount + 1 };
         }
 
         return prev;
@@ -261,15 +294,6 @@ export default function WorkoutTimerPage() {
     totalRounds,
   ]);
 
-  const resetTimer = () => {
-    setTimer({
-      phase: "idle",
-      isRunning: false,
-      isPaused: false,
-      currentRound: 0,
-      remainingSeconds: 0,
-    });
-  };
 
   const startTimer = () => {
     if (isHiit) {
@@ -281,32 +305,49 @@ export default function WorkoutTimerPage() {
         isPaused: false,
         currentRound: 1,
         remainingSeconds: config.workSeconds,
+        beepCount: 0
       });
       return;
     }
 
     if (isEmom) {
       if (config.emomWorkSeconds <= 0 || config.emomMinutes <= 0) return;
-
+setTimer((prev) => {
+  // ...
+  return {
+    ...prev,
+    phase: "rest",
+    remainingSeconds: config.restSeconds,
+    beepCount: prev.beepCount + 1,
+  };
+});
       setTimer({
         phase: "work",
         isRunning: true,
         isPaused: false,
         currentRound: 1,
-        remainingSeconds: config.emomWorkSeconds,
+        remainingSeconds: config.emomWorkSeconds, beepCount: 0
       });
       return;
     }
 
     // 30 MIN
     if (config.thirtyWorkSeconds <= 0 || config.thirtyMinutes <= 0) return;
-
+setTimer((prev) => {
+  // ...
+  return {
+    ...prev,
+    phase: "rest",
+    remainingSeconds: config.restSeconds,
+    beepCount: prev.beepCount + 1,
+  };
+});
     setTimer({
       phase: "work",
       isRunning: true,
       isPaused: false,
       currentRound: 1,
-      remainingSeconds: config.thirtyWorkSeconds,
+      remainingSeconds: config.thirtyWorkSeconds, beepCount: 0
     });
   };
 
@@ -319,6 +360,16 @@ export default function WorkoutTimerPage() {
     setConfig((prev) => ({ ...prev, mode }));
     resetTimer();
   };
+const resetTimer = () => {
+  setTimer({
+    phase: "idle",
+    isRunning: false,
+    isPaused: false,
+    currentRound: 0,
+    remainingSeconds: 0,
+    beepCount: 0, // 👈 NEW
+  });
+};
 
   const handleConfigChange = (field: keyof Config, value: number) => {
     setConfig((prev) => ({

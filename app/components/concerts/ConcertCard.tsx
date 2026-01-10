@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useState } from "react";
 import type { Concert } from "@/lib/concerts/types";
 
 function fmt(d: string) {
@@ -30,9 +31,14 @@ export default function ConcertCard({ concert }: { concert: Concert }) {
       {concert.image ? (
         <div className="relative h-40 w-full bg-slate-100">
           <Image
-            src={concert.image}
+            src={concert.image?.startsWith("/") || concert.image?.startsWith("http") ? concert.image : `/${concert.image}`}
             alt={concert.name}
             fill
+            onError={(e) => {
+              const img = e.currentTarget as HTMLImageElement | null;
+              /* next/image's onError receives a SyntheticEvent where currentTarget is the underlying IMG; set a placeholder by changing src attribute */
+              if (img) img.src = "/images/placeholder.svg";
+            }}
             className="object-cover"
             sizes="(max-width: 768px) 100vw, 50vw"
           />

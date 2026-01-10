@@ -1,4 +1,8 @@
+"use client";
+
 import Image from "next/image";
+import { useState } from "react";
+
 
 type Props = {
   name: string;
@@ -13,6 +17,15 @@ export default function ArtistOrVenueCard({
   href,
   meta,
 }: Props) {
+  // Normalize image source and provide a fallback when the image 404s
+  const normalizeSrc = (s: string | undefined) => {
+    if (!s) return "/images/placeholder.svg";
+    if (s.startsWith("http") || s.startsWith("/")) return s;
+    return `/${s}`;
+  };
+
+  const [src, setSrc] = useState<string>(normalizeSrc(imageSrc));
+
   return (
     <a
       href={href}
@@ -27,10 +40,11 @@ export default function ArtistOrVenueCard({
       <div className="p-3">
         <div className="relative overflow-hidden rounded-xl">
           <Image
-            src={imageSrc}
+            src={src}
             alt={name}
             width={400}
             height={400}
+            onError={() => setSrc("/images/placeholder.svg")}
             className="h-40 w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
           />
         </div>

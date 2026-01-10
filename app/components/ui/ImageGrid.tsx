@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import { useState } from "react";
 
 export type ImageItem = {
   src: string;
@@ -18,15 +21,24 @@ export default function ImageGrid({ images, gapClassName }: ImageGridProps) {
   // 1 image: simple full-width
   if (images.length === 1) {
     const img = images[0];
+    const normalize = (s: string) => {
+      if (!s) return "/images/placeholder.svg";
+      if (s.startsWith("http") || s.startsWith("/")) return s;
+      return `/${s}`;
+    };
+
+    const [src, setSrc] = useState<string>(normalize(img.src));
+
     return (
       <div className={`grid grid-cols-1 ${gap}`}>
         <div
           className={`relative w-full ${img.aspect ?? "aspect-[16/9]"} overflow-hidden rounded-2xl shadow-sm`}
         >
           <Image
-            src={img.src}
+            src={src}
             alt={img.alt}
             fill
+            onError={() => setSrc("/images/placeholder.svg")}
             className={img.objectClassName ?? "object-cover"}
           />
         </div>
@@ -49,15 +61,30 @@ export default function ImageGrid({ images, gapClassName }: ImageGridProps) {
               spanBothOnMd ? "md:col-span-2" : "",
             ].join(" ")}
           >
-            <Image
-              src={img.src}
-              alt={img.alt}
-              fill
-              className={img.objectClassName ?? "object-cover"}
-            />
+            <InnerImage img={img} />
           </div>
         );
       })}
     </div>
+  );
+}
+
+function InnerImage({ img }: { img: ImageItem }) {
+  const normalize = (s: string) => {
+    if (!s) return "/images/placeholder.svg";
+    if (s.startsWith("http") || s.startsWith("/")) return s;
+    return `/${s}`;
+  };
+
+  const [src, setSrc] = useState<string>(normalize(img.src));
+
+  return (
+    <Image
+      src={src}
+      alt={img.alt}
+      fill
+      onError={() => setSrc("/images/placeholder.svg")}
+      className={img.objectClassName ?? "object-cover"}
+    />
   );
 }

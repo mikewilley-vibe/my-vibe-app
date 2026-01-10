@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import { useState } from "react";
 
 type BrandBadgeLinkProps = {
   href: string;
@@ -15,6 +18,14 @@ export default function BrandBadgeLink({
   width = 200,
   height = 48,
 }: BrandBadgeLinkProps) {
+  const normalize = (s: string) => {
+    if (!s) return "/images/placeholder.svg";
+    if (s.startsWith("http") || s.startsWith("/")) return s;
+    return `/${s}`;
+  };
+
+  const [src, setSrc] = useState<string>(normalize(logoSrc));
+
   return (
     <a
       href={href}
@@ -25,10 +36,11 @@ export default function BrandBadgeLink({
                  hover:scale-[1.02]"
     >
       <Image
-        src={logoSrc}
+        src={src}
         alt={alt}
         width={width}
         height={height}
+        onError={() => setSrc("/images/placeholder.svg")}
         className="h-10 w-auto"
       />
     </a>

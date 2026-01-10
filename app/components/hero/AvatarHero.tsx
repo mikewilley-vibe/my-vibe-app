@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import { useState } from "react";
 
 type Props = {
   src: string;
@@ -17,6 +20,14 @@ export default function AvatarHero({
     lg: "h-100 w-100",
   };
 
+  const normalize = (s: string) => {
+    if (!s) return "/images/placeholder.svg";
+    if (s.startsWith("http") || s.startsWith("/")) return s;
+    return `/${s}`;
+  };
+
+  const [curSrc, setCurSrc] = useState<string>(normalize(src));
+
   return (
     <div
       className={`relative overflow-hidden rounded-3xl bg-gradient-to-br
@@ -24,9 +35,10 @@ export default function AvatarHero({
       ${sizeClasses[size]}`}
     >
       <Image
-        src={src}
+        src={curSrc}
         alt={alt}
         fill
+        onError={() => setCurSrc("/images/placeholder.svg")}
         className="object-cover object-top"
         priority
       />

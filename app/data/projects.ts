@@ -18,9 +18,9 @@ export const projects: Project[] = [
     title: "Orchard House Middle School Basketball",
     emoji: "🏀",
     message:
-      "I'm helping coach my daughter's middle school basketball team.",
+      "Built a team hub to keep the squad organized and connected.",
     longDescription:
-      "There wasn't a hub for the team schedule, game locations, jersey colors etc., so I made one for us all to use.  Turned out pretty nice!",
+      "Coaching my daughter's middle school basketball team, I realized there was no centralized place for schedules, game locations, jersey assignments, or team updates. So I built one. It's become the go-to resource for families to stay in sync on practices, games, and everything in between.",
     image: "/images/gryphons.png",
     link: {
       href: "https://orchardhousebasketball.org",
@@ -32,32 +32,32 @@ export const projects: Project[] = [
     title: "HIIT Workout Timer",
     emoji: "💪",
     message:
-      "Made a HIIT timer for my workuts",
+      "A smarter interval timer for high-intensity workouts.",
     longDescription:
-      "The clock app doesn't work very well for timing different intervals, so I created my own etimer that you can edit for individual workouts.",
+      "The default phone clock app wasn't cutting it for HIIT training—no easy way to manage different intervals or customize workouts on the fly. I built a sleek, responsive timer that lets you create custom intervals, store your favorite routines, and crush your training sessions with real-time feedback.",
    link: {
       href: "https://www.mikewilley.app/workout-timer",
       label: "Workout Timer"},
    },
   {
     slug: "vandy-accounting",
-    title: "Vandy Accounting Website Rehaul",
+    title: "Vandy Accounting Website Redesign",
     emoji: "💼",
     message:
-      "Created a new website for Vandy Accounting.",
+      "Modernized a professional accounting firm's web presence.",
     longDescription:
-      "My aunt Julie has an Accounting Solutions company in Indianapolis and I remade her website. ",
+      "My aunt Julie runs an Accounting Solutions company in Indianapolis, and her website needed a fresh look. I completely redesigned and rebuilt it with modern UI/UX, mobile responsiveness, service highlights, and an easy way for clients to learn about her offerings and get in touch.",
       image: "/images/vandy-screenshot2.png"
       
   },
 {
     slug: "shows",
-    title: "Concerts Coming Up",
+    title: "Concerts & Live Shows Hub",
     emoji: "🎸",
     message:
-      "Created a central hub for my favorite bands and venues.",
+      "Never miss a show from your favorite artists again.",
     longDescription:
-      "I found myself clicking through various different websites trying to figure out what concerts were coming uop and occasionally missing some that I wanted to go to.",
+      "I found myself constantly jumping between Ticketmaster, venue websites, and artist socials trying to stay on top of upcoming concerts. I built a unified hub that tracks my favorite bands and venues in one place, so I can see what's coming up, set reminders, and never miss an experience.",
    link: {
       href: "https://www.mikewilley.app/shows",
       label: "Shows"},
@@ -65,23 +65,23 @@ export const projects: Project[] = [
 
    {
     slug: "uva",
-    title: "Uva Sports Hub",
+    title: "UVA Sports Dashboard",
     emoji: "⚔️",
     message:
-      "Created a centralized location for the UVA sports that I'm into",
+      "Your one-stop shop for UVA football and basketball.",
     longDescription:
-      "This is an easy place for me to see what games are coming uo and reflect back on the games I watched,",
+      "Built a centralized hub to track upcoming UVA games, live scores, and game history for football and basketball. It's my go-to place to see what's coming up, reflect on past matchups, and stay connected with the sports I love.",
    link: {
       href: "https://www.mikewilley.app/uva",
       label: "UVA"},
    },
     {
     slug: "poster-generator",
-    title: "Poster Generator",
+    title: "AI-Powered Poster Generator",
     emoji: "🎨",
     message:
-      "Space to create posterrs with pictures",
-    longDescription: "Generate dark-mode posters from your photos with filters, borders, custom fonts, and export sizes.",
+      "Create stunning dark-mode posters with AI assistance and local filters.",
+    longDescription: "Upload a photo, add AI-generated taglines, apply artistic transforms (cartoon, sketch, anime, oil painting), customize fonts, borders, and text effects, then export in your choice of sizes. Features both server-side and client-side image transforms, so you always have a fast fallback ready.",
     link: {
       href: "https://www.mikewilley.app/poster-generator",
       label: "Poster"
@@ -90,14 +90,14 @@ export const projects: Project[] = [
   },
  {
     slug: "gallery",
-    title: "Photo Gallery",
+    title: "Dynamic Photo Gallery",
     emoji: "📸",
     message:
-      "Gallery of my pics",
-    longDescription: "Auto-pulls images from /public/gallery into a masonry-style gallery with filters and lightbox.",
+      "Browse your photo collection in a beautiful masonry layout.",
+    longDescription: "A responsive photo gallery that auto-pulls images from your local directory and displays them in an elegant masonry grid. Includes lightbox viewing, filtering options, and fast load times thanks to optimized image handling.",
     link: {
-      href: "https://www.mikewilley.app/poster-generator",
-      label: "Poster"
+      href: "https://www.mikewilley.app/gallery",
+      label: "Gallery"
     },
   },
   {
@@ -105,9 +105,9 @@ export const projects: Project[] = [
     title: "Fairfax Community Revitalization Migration",
     emoji: "📊",
     message:
-      "Migrating the Current OCR site to be included in Fairfax County's Planning and Development",
+      "Migrating a community initiative to the Fairfax County planning system.",
     longDescription:
-      "Still seeking Fairfax County email address to allow us to have access",
+      "Working on integrating the Orchard Community Revitalization (OCR) site into Fairfax County's Planning and Development department infrastructure. In progress—awaiting county email access to finalize the transition and unlock seamless integration.",
     image: "/images/fairfax-ocr2.png",
     link: {
       href: "https://www.fcrevite.org/",
@@ -118,12 +118,12 @@ export const projects: Project[] = [
   
   {
     slug: "dpor",
-    title: "DPOR Drupal Site",
+    title: "DPOR Drupal Portal",
     emoji: "💼",
     message:
-      "Virginia Department of Professional and Occupational Regulation",
+      "Professional licensing and regulation portal for Virginia.",
     longDescription:
-      "This is a site I made in Drupal a few years ago.",
+      "Built a few years ago with Drupal, this site serves the Virginia Department of Professional and Occupational Regulation (DPOR), helping Virginians navigate licensing, permits, and regulatory compliance.",
      link: {
       href: "https://www.dpor.virginia.gov/",
       label: "DPOR"
@@ -134,9 +134,9 @@ export const projects: Project[] = [
     title: "3D Rotunda Christmas Project",
     emoji: "🏛️",
     message:
-      "My daughter Bea is at the head of her class and she designed and created a 3D model of the Rotunda.",
+      "A family keepsake: a 3D-printed model of UVA's iconic Rotunda.",
     longDescription:
-      "This was such a cool project and was a perfect Christmas peresent to give to my Dad",
+      "My daughter Bea designed and 3D-modeled the University of Virginia's Rotunda as a school project—and did an incredible job capturing every architectural detail. I had it 3D-printed to scale and gave it to my Dad as a Christmas present. It's now a beautiful family keepsake.",
     video: "/video/rotunda-3d-print.mp4"
         
   },

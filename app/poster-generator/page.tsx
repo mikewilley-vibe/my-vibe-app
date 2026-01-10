@@ -247,6 +247,10 @@ export default function PosterGeneratorPage() {
   const [palette, setPalette] = useState<string[]>([]);
   const [paletteLoading, setPaletteLoading] = useState(false);
 
+  const [generatingTagline, setGeneratingTagline] = useState(false);
+  const [transformingImage, setTransformingImage] = useState(false);
+  const [transformStyle, setTransformStyle] = useState<"cartoon" | "anime" | "oil-painting" | "watercolor" | "sketch">("cartoon");
+
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const { width: previewWidth, height: previewHeight } =
@@ -289,6 +293,63 @@ export default function PosterGeneratorPage() {
     setTextEffect(t.textEffect);
     setTitleColor(t.titleColor);
     setSubtitleColor(t.subtitleColor);
+  };
+
+  const generateTagline = async () => {
+    try {
+      setGeneratingTagline(true);
+      const response = await fetch("/api/poster/tagline", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title, style: "creative" }),
+      });
+      const data = await response.json();
+      if (data.tagline) {
+        setSubtitle(data.tagline);
+      }
+    } catch (error) {
+      console.error("Failed to generate tagline:", error);
+      alert("Failed to generate tagline. Check your Hugging Face API key.");
+    } finally {
+      setGeneratingTagline(false);
+    }
+  };
+
+  const transformImage = async () => {
+    if (!image) return;
+    try {
+      setTransformingImage(true);
+
+      // First try the server-side Replicate transform
+      try {
+        const response = await fetch("/api/poster/transform", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ imageUrl: image, style: transformStyle }),
+        });
+
+        const data = await response.json();
+        if (response.ok && data.transformedImageUrl) {
+          setImage(data.transformedImageUrl);
+          return;
+        }
+        console.warn("Server transform failed or unavailable, falling back to client transform", data);
+      } catch (err) {
+        console.warn("Server transform threw, falling back to client transform", err);
+      }
+
+      // Client-side fallback (fast, lower-fidelity): apply canvas filters
+      try {
+        const { default: transformImageClient } = await import("../lib/canvasFilters");
+        const transformed = await transformImageClient(image, transformStyle);
+        setImage(transformed);
+      } catch (err) {
+        console.error("Client transform failed:", err);
+        alert("Failed to transform image locally.");
+      }
+    } finally {
+      setTransformingImage(false);
+    }
   };
 
   const downloadPoster = async () => {
@@ -532,6 +593,47 @@ export default function PosterGeneratorPage() {
               className="hidden"
             />
           </div>
+
+          {/* AI: Generate Tagline */}
+          <div>
+            <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-slate-400">
+              AI Tagline Generator
+            </label>
+            <button
+              onClick={generateTagline}
+              disabled={generatingTagline || !title}
+              className="w-full rounded-lg bg-purple-500 py-2 text-sm font-semibold text-white hover:bg-purple-400 disabled:opacity-60"
+            >
+              {generatingTagline ? "Generating…" : "✨ Generate Tagline"}
+            </button>
+          </div>
+
+          {/* AI: Transform Image */}
+          {image && (
+            <div>
+              <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-slate-400">
+                Transform Image
+              </label>
+              <select
+                value={transformStyle}
+                onChange={(e) => setTransformStyle(e.target.value as any)}
+                className="mb-2 w-full rounded bg-slate-800 px-3 py-2 text-sm"
+              >
+                <option value="cartoon">🎨 Cartoon</option>
+                <option value="anime">✨ Anime</option>
+                <option value="oil-painting">🖼️ Oil Painting</option>
+                <option value="watercolor">🌊 Watercolor</option>
+                <option value="sketch">✏️ Sketch</option>
+              </select>
+              <button
+                onClick={transformImage}
+                disabled={transformingImage}
+                className="w-full rounded-lg bg-blue-500 py-2 text-sm font-semibold text-white hover:bg-blue-400 disabled:opacity-60"
+              >
+                {transformingImage ? "Transforming… (may take 30s)" : "🎬 Transform Image"}
+              </button>
+            </div>
+          )}
 
           {/* Title */}
           <div>

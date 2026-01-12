@@ -14,6 +14,56 @@ export type VibePost = {
 
 export const vibePosts: VibePost[] = [
     {
+  id: 37,
+  slug: "day-37-mobile-app-mvp",
+  title: "Day 37 — Mobile App MVP Complete",
+  date: "2026-01-12",
+  emoji: "📱",
+  summary:
+    "Launched my-vibe-mobile: a fully functional React + Vite mobile app with Workout Timer, Shows, UVA Basketball, and OHMS Basketball.",
+  message:
+    "Day 37 shipped a complete mobile experience.\n\n" +
+    "Built my-vibe-mobile as a responsive React + Vite app with:\n\n" +
+    "• **Workout Timer** — HIIT/EMOM timer ported from web\n" +
+    "• **Shows** — 21 artists + 12 regional venues from real data\n" +
+    "• **UVA Basketball** — Two-column layout with upcoming games and past results\n" +
+    "• **OHMS Basketball** — Full schedule with game details and directions\n\n" +
+    "Deployed to Vercel for instant mobile access. No React Native debugging nightmares — just a fast, clean web app that feels native.\n\n" +
+    "Sometimes the simpler path is the right one.",
+  tags: ["day-37", "mobile", "vite", "react", "deployment", "vercel", "mvp"],
+},
+{
+  id: 36,
+  slug: "day-36-uva-schedule-all-games",
+  title: "Day 36 — UVA Schedule: Show All Games",
+  date: "2026-01-11",
+  emoji: "🏀",
+  summary:
+    "Removed the 10-game limit from UVA Basketball upcoming schedule.",
+  message:
+    "Day 36 was a small but important fix.\n\n" +
+    "The UVA page was only showing the next 10 games — an arbitrary limit left over from early design. Removed it so users see the full season schedule.\n\n" +
+    "Small changes like this compound. Every page just got more useful.",
+  tags: ["day-36", "uva", "basketball", "schedule", "product-improvement"],
+},
+{
+  id: 35,
+  slug: "day-35-two-column-game-results",
+  title: "Day 35 — Two-Column Game Results Layout",
+  date: "2026-01-10",
+  emoji: "⚖️",
+  summary:
+    "Redesigned UVA Basketball page: upcoming games on left, past results on right.",
+  message:
+    "Day 35 was about user experience clarity.\n\n" +
+    "The original single-column list mixed upcoming and past games. The new two-column layout puts:\n\n" +
+    "• **Left**: Upcoming games (next game on top)\n" +
+    "• **Right**: Game results (most recent on top)\n\n" +
+    "Now users can see future plans and recent performance at a glance. The design feels intentional, not random.\n\n" +
+    "Sometimes the fix isn't more features — it's better organization of what's already there.",
+  tags: ["day-35", "uva", "ui-design", "layout", "basketball"],
+},
+    {
   id: 34,
   slug: "day-34-three-new-tools",
   title: "Day 34 — Three New Tools Landed",

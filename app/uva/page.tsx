@@ -85,8 +85,7 @@ export default async function UvaPage() {
       const d = new Date(g.date);
       return !Number.isNaN(d.getTime()) && d > now;
     })
-    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
-    .slice(0, 10);
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
   return (
     <main

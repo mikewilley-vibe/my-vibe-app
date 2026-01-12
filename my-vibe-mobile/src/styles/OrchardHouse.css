@@ -1,0 +1,79 @@
+.orchard-container {
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.orchard-container h2 {
+  margin: 0;
+  font-size: 28px;
+  color: #232d4b;
+}
+
+.subtitle {
+  margin: 4px 0 16px 0;
+  font-size: 14px;
+  color: #64748b;
+}
+
+.teams-list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.team-card {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border-left: 4px solid #f84c1e;
+}
+
+.team-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.team-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #232d4b;
+}
+
+.record {
+  font-size: 14px;
+  font-weight: 600;
+  color: #667eea;
+  background: #f0f4ff;
+  padding: 4px 12px;
+  border-radius: 6px;
+}
+
+.next-game {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.time {
+  font-size: 14px;
+  color: #232d4b;
+  font-weight: 500;
+}

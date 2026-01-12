@@ -35,10 +35,11 @@ export default function SiteHeader() {
           <Link href="/projects" className="text-slate-700 hover:text-blue-700">Projects</Link>
           <Link href="/vibes" className="text-slate-700 hover:text-blue-700">Vibes</Link>
           <Link href="/shows" className="text-slate-700 hover:text-blue-700">Shows</Link>
-          <Link href="/workout-timer" className="hover:text-sky-300">Workout Timer</Link>
-          <Link href="/poster-generator">Poster Generator 🎨</Link>
+          <Link href="/workout-timer" className="hover:text-sky-300">HIIT Timer</Link>
+          <Link href="/poster-generator">Poster Generator </Link>
           <Link href="/gallery" className="text-slate-700 hover:text-blue-700">Gallery</Link>
-         
+          <Link href="https://www.orchardhousebasketball.org/" className="text-slate-700 hover:text-blue-700">OHMS BB</Link>
+
           {/* ✅ UVA dropdown */}
           <div ref={ref} className="relative">
             <button

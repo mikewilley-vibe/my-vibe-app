@@ -32,12 +32,12 @@ export const localVenuesByRegion: VenueRegion[] = [
   {
     name: "Elevation 27",
     url: "https://www.elevation27.com/events",
-    image: "/images/elevation-27.jpg",
+    image: "/images/levation-27.jpg.png",
   },
   {
   name: "The Annex",
   url: "https://theannexnfk.com/events/",
-  image: "/images/the-annex.jpg",
+  image: "/images/the-annex.jpg.png",
 },
 {
   name: "Veterans United Home Loans Amphitheater (Virginia Beach)",
@@ -52,7 +52,7 @@ export const localVenuesByRegion: VenueRegion[] = [
          {
     name: "The Broadberry",
     url: "https://thebroadberry.com/events/",
-    image: "/images/the-broadberry.jpg",
+    image: "/images/the-broadberry.jpg.png",
   },
     {
     name: "Allianz Amphitheater at Riverfront",
@@ -62,31 +62,27 @@ export const localVenuesByRegion: VenueRegion[] = [
   {
     name: "Richmond Music Hall",
     url: "https://www.capitalalehouse.com/richmond-music-hall/",
-    image: "/images/richmond-music-hall.jpg",
+    image: "/images/richmond-music-hall.jpg.png",
   },
 
 
   {
     name: "The Camel",
     url: "https://thecamel.org/events/",
-    image: "/images/the-camel.jpg",
+    image: "/images/the-camel.jpg.png",
   },
-  {
-    name: "Gallery5",
-    url: "https://gallery5arts.org/calendar/",
-    image: "/images/gallery5.jpg",
-  },
+
   {
     name: "Ember Music Hall",
     url: "https://www.embermusichall.com/events",
-    image: "/images/ember-music-hall.jpg",
+    image: "/images/embermusichall.png",
   },
 
 
   {
     name: "Brown's Island",
     url: "https://www.brownsisland.com/events",
-    image: "/images/browns-island.jpg",
+    image: "/images/brownsisland.png",
   },
 
   ],
@@ -97,23 +93,15 @@ export const localVenuesByRegion: VenueRegion[] = [
          {
     name: "9:30 Club",
     url: "https://www.930.com/e/listing/",
-    image: "/images/930-club.jpg",
+    image: "/images/930club.png",
   },
   {
     name: "The Anthem",
     url: "https://theanthemdc.com/events/",
-    image: "/images/the-anthem.jpg",
+    image: "/images/theanthem.png",
   },
-  {
-    name: "Black Cat",
-    url: "https://www.blackcatdc.com/schedule/",
-    image: "/images/black-cat.jpg",
-  },
-  {
-    name: "Lincoln Theatre",
-    url: "https://lincolntheatre-dc.org/events/",
-    image: "/images/lincoln-theatre.jpg",
-  },
+
+
   
 ],
 

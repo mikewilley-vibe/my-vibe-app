@@ -154,15 +154,31 @@ export default function WorkoutTimerPage() {
       : timer.phase === "finished"
       ? "bg-purple-500"
       : "bg-slate-500";
+let audioContext: AudioContext | null = null;
+
+const getAudioContext = async (): Promise<AudioContext | null> => {
+  try {
+    if (!audioContext) {
+      const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
+      audioContext = new AudioCtx();
+    }
+
+    // Resume audio context if suspended (required for iOS)
+    if (audioContext.state === "suspended") {
+      await audioContext.resume();
+    }
+
+    return audioContext;
+  } catch (e) {
+    console.warn("Audio context not available:", e);
+    return null;
+  }
+};
+
 const beep = async () => {
   try {
-    const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
-    const ctx = new AudioCtx();
-
-    // Resume audio context on iOS (required for user interaction)
-    if (ctx.state === "suspended") {
-      await ctx.resume();
-    }
+    const ctx = await getAudioContext();
+    if (!ctx) return;
 
     const o = ctx.createOscillator();
     const g = ctx.createGain();
@@ -176,18 +192,15 @@ const beep = async () => {
 
     o.start();
     o.stop(ctx.currentTime + 0.12);
-
-    // cleanup
-    o.onended = () => {
-      ctx.close?.();
-    };
-  } catch {
-    // no-op (some environments block audio)
+  } catch (e) {
+    console.warn("Beep failed:", e);
   }
 };
 
 useEffect(() => {
-  if (timer.beepCount > 0) beep();
+  if (timer.beepCount > 0) {
+    beep();
+  }
   // eslint-disable-next-line react-hooks/exhaustive-deps
 }, [timer.beepCount]);
 

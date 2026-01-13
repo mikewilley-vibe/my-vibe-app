@@ -175,88 +175,30 @@ const getAudioContext = async (): Promise<AudioContext | null> => {
   }
 };
 
-// Generate a beep sound as a data URL (fallback for iOS)
-const generateBeepDataUrl = (): string => {
-  const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-  const sampleRate = audioContext.sampleRate;
-  const duration = 0.12; // seconds
-  const frequency = 880; // Hz
-  const volume = 0.08;
-
-  const samples = new Float32Array(sampleRate * duration);
-  for (let i = 0; i < samples.length; i++) {
-    samples[i] = Math.sin((2 * Math.PI * frequency * i) / sampleRate) * volume;
-  }
-
-  // Convert to WAV format
-  const wav = new Uint8Array(44 + samples.length * 2);
-  const view = new DataView(wav.buffer);
-
-  // WAV header
-  const writeString = (offset: number, string: string) => {
-    for (let i = 0; i < string.length; i++) {
-      view.setUint8(offset + i, string.charCodeAt(i));
-    }
-  };
-
-  writeString(0, "RIFF");
-  view.setUint32(4, 36 + samples.length * 2, true);
-  writeString(8, "WAVE");
-  writeString(12, "fmt ");
-  view.setUint32(16, 16, true); // fmt chunk size
-  view.setUint16(20, 1, true); // audio format (PCM)
-  view.setUint16(22, 1, true); // channels (mono)
-  view.setUint32(24, sampleRate, true); // sample rate
-  view.setUint32(28, sampleRate * 2, true); // byte rate
-  view.setUint16(32, 2, true); // block align
-  view.setUint16(34, 16, true); // bits per sample
-  writeString(36, "data");
-  view.setUint32(40, samples.length * 2, true);
-
-  // Write samples
-  let offset = 44;
-  for (let i = 0; i < samples.length; i++) {
-    view.setInt16(offset, samples[i] < 0 ? samples[i] * 0x8000 : samples[i] * 0x7fff, true);
-    offset += 2;
-  }
-
-  const blob = new Blob([wav], { type: "audio/wav" });
-  return URL.createObjectURL(blob);
-};
-
 const beep = async () => {
   try {
     const ctx = await getAudioContext();
-    if (!ctx) {
-      // Fallback: try using Audio element
-      playBeepFallback();
-      return;
+    if (ctx) {
+      const o = ctx.createOscillator();
+      const g = ctx.createGain();
+
+      o.type = "sine";
+      o.frequency.value = 880; // pitch
+      g.gain.value = 0.08;     // volume
+
+      o.connect(g);
+      g.connect(ctx.destination);
+
+      o.start();
+      o.stop(ctx.currentTime + 0.12);
     }
-
-    const o = ctx.createOscillator();
-    const g = ctx.createGain();
-
-    o.type = "sine";
-    o.frequency.value = 880; // pitch
-    g.gain.value = 0.08;     // volume
-
-    o.connect(g);
-    g.connect(ctx.destination);
-
-    o.start();
-    o.stop(ctx.currentTime + 0.12);
   } catch (e) {
-    console.warn("Web Audio API beep failed:", e);
-    playBeepFallback();
+    console.warn("Web Audio beep failed:", e);
   }
-};
 
-const playBeepFallback = () => {
-  try {
-    const audio = new Audio(generateBeepDataUrl());
-    audio.play().catch(e => console.warn("Audio playback failed:", e));
-  } catch (e) {
-    console.warn("Fallback beep failed:", e);
+  // Always vibrate as a fallback (works great on iOS!)
+  if (navigator.vibrate) {
+    navigator.vibrate(100);
   }
 };
 

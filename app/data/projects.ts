@@ -28,41 +28,19 @@ export const projects: Project[] = [
   },
    },
   {
-    slug: "workout-timer",
-    title: "HIIT Workout Timer",
-    emoji: "💪",
+    slug: "beas-girl-scout-troop",
+    title: "Bea's Girl Scout Troop Hub",
+    emoji: "👧",
     message:
-      "A smarter interval timer for high-intensity workouts.",
+      "A central hub for organizing Girl Scout troop activities and planning.",
     longDescription:
-      "The default phone clock app wasn't cutting it for HIIT training—no easy way to manage different intervals or customize workouts on the fly. I built a sleek, responsive timer that lets you create custom intervals, store your favorite routines, and crush your training sessions with real-time feedback.",
-   link: {
-      href: "https://www.mikewilley.app/workout-timer",
-      label: "Workout Timer"},
-   },
-  {
-    slug: "vandy-accounting",
-    title: "Vandy Accounting Website Redesign",
-    emoji: "💼",
-    message:
-      "Modernized a professional accounting firm's web presence.",
-    longDescription:
-      "My aunt Julie runs an Accounting Solutions company in Indianapolis, and her website needed a fresh look. I completely redesigned and rebuilt it with modern UI/UX, mobile responsiveness, service highlights, and an easy way for clients to learn about her offerings and get in touch.",
-      image: "/images/vandy-screenshot2.png"
-      
+      "Built a dedicated site for my daughter's Girl Scout troop to coordinate meetings, activities, badge achievements, and family involvement. Helps the troop stay organized, communicate schedules, and celebrate accomplishments together.",
+    image: "/images/gs.png",
+    link: {
+      href: "https://bea-troop-site.vercel.app/",
+      label: "Girl Scout Troop",
+    },
   },
-{
-    slug: "shows",
-    title: "Concerts & Live Shows Hub",
-    emoji: "🎸",
-    message:
-      "Never miss a show from your favorite artists again.",
-    longDescription:
-      "I found myself constantly jumping between Ticketmaster, venue websites, and artist socials trying to stay on top of upcoming concerts. I built a unified hub that tracks my favorite bands and venues in one place, so I can see what's coming up, set reminders, and never miss an experience.",
-   link: {
-      href: "https://www.mikewilley.app/shows",
-      label: "Shows"},
-   },
-
    {
     slug: "uva",
     title: "UVA Sports Dashboard",
@@ -75,6 +53,69 @@ export const projects: Project[] = [
       href: "https://www.mikewilley.app/uva",
       label: "UVA"},
    },
+{
+    slug: "shows",
+    title: "Concerts & Live Shows Hub",
+    emoji: "🎸",
+    message:
+      "Never miss a show from your favorite artists again.",
+    longDescription:
+      "I found myself constantly jumping between Ticketmaster, venue websites, and artist socials trying to stay on top of upcoming concerts. I built a unified hub that tracks my favorite bands and venues in one place, so I can see what's coming up, set reminders, and never miss an experience.",
+   link: {
+      href: "https://www.mikewilley.app/shows",
+      label: "Shows"},
+   },
+  {
+    slug: "vandy-accounting",
+    title: "Vandy Accounting Website Redesign",
+    emoji: "💼",
+    message:
+      "Modernized a professional accounting firm's web presence.",
+    longDescription:
+      "My aunt Julie runs an Accounting Solutions company in Indianapolis, and her website needed a fresh look. I completely redesigned and rebuilt it with modern UI/UX, mobile responsiveness, service highlights, and an easy way for clients to learn about her offerings and get in touch.",
+      image: "/images/vandy-screenshot2.png",
+      link: {
+        href: "https://vandy-accounting-migration.vercel.app/",
+        label: "Vandy Accounting",
+      },
+  },
+  {
+    slug: "vandy-dance",
+    title: "Vandy Dance Studio Website",
+    emoji: "💃",
+    message:
+      "Built a vibrant website for an independent dance studio.",
+    longDescription:
+      "Created a modern, engaging website for an independent dance studio to showcase their classes, schedule, and instructors. Features class calendars, registration information, and a welcoming design that captures the energy of the dance community.",
+    image: "/images/vandy.png",
+    link: {
+      href: "https://vandy-dance.vercel.app/",
+      label: "Vandy Dance",
+    },
+  },
+  {
+    slug: "workout-timer",
+    title: "HIIT Workout Timer",
+    emoji: "💪",
+    message:
+      "A smarter interval timer for high-intensity workouts.",
+    longDescription:
+      "The default phone clock app wasn't cutting it for HIIT training—no easy way to manage different intervals or customize workouts on the fly. I built a sleek, responsive timer that lets you create custom intervals, store your favorite routines, and crush your training sessions with real-time feedback.",
+   link: {
+      href: "https://www.mikewilley.app/workout-timer",
+      label: "Workout Timer"},
+   },
+ {
+    slug: "3d-rotunda",
+    title: "3D Rotunda Christmas Project",
+    emoji: "🏛️",
+    message:
+      "A family keepsake: a 3D-printed model of UVA's iconic Rotunda.",
+    longDescription:
+      "My daughter Bea designed and 3D-modeled the University of Virginia's Rotunda as a school project—and did an incredible job capturing every architectural detail. I had it 3D-printed to scale and gave it to my Dad as a Christmas present. It's now a beautiful family keepsake.",
+    video: "/video/rotunda-3d-print.mp4"
+        
+  },
     {
     slug: "poster-generator",
     title: "AI-Powered Poster Generator",
@@ -114,8 +155,6 @@ export const projects: Project[] = [
       label: "fcrevite.org",
     },
   },
-  
-  
   {
     slug: "dpor",
     title: "DPOR Drupal Portal",
@@ -129,45 +168,6 @@ export const projects: Project[] = [
       label: "DPOR"
   },
 },
- {
-    slug: "3d-rotunda",
-    title: "3D Rotunda Christmas Project",
-    emoji: "🏛️",
-    message:
-      "A family keepsake: a 3D-printed model of UVA's iconic Rotunda.",
-    longDescription:
-      "My daughter Bea designed and 3D-modeled the University of Virginia's Rotunda as a school project—and did an incredible job capturing every architectural detail. I had it 3D-printed to scale and gave it to my Dad as a Christmas present. It's now a beautiful family keepsake.",
-    video: "/video/rotunda-3d-print.mp4"
-        
-  },
-  {
-    slug: "vandy-dance",
-    title: "Vandy Dance Studio Website",
-    emoji: "💃",
-    message:
-      "Built a vibrant website for an independent dance studio.",
-    longDescription:
-      "Created a modern, engaging website for an independent dance studio to showcase their classes, schedule, and instructors. Features class calendars, registration information, and a welcoming design that captures the energy of the dance community.",
-    image: "/images/placeholder.svg",
-    link: {
-      href: "https://vandy-dance.vercel.app/",
-      label: "Vandy Dance",
-    },
-  },
-  {
-    slug: "beas-girl-scout-troop",
-    title: "Bea's Girl Scout Troop Hub",
-    emoji: "👧",
-    message:
-      "A central hub for organizing Girl Scout troop activities and planning.",
-    longDescription:
-      "Built a dedicated site for my daughter's Girl Scout troop to coordinate meetings, activities, badge achievements, and family involvement. Helps the troop stay organized, communicate schedules, and celebrate accomplishments together.",
-    image: "/images/placeholder.svg",
-    link: {
-      href: "https://bea-troop-site.vercel.app/",
-      label: "Girl Scout Troop",
-    },
-  },
 ];
 
 export function getProjectBySlug(slug: string) {

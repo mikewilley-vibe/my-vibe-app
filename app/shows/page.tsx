@@ -1,5 +1,6 @@
 import ShowTabs from "./ShowTabs";
 import { myArtists } from "@/app/data/myArtists";
+import ArtistRotator from "@/app/components/concerts/ArtistRotator";
 import FadeIn from "@/app/components/motion/FadeIn";
 
 export default function ShowsPage() {
@@ -14,6 +15,10 @@ export default function ShowsPage() {
         </FadeIn>
 
         <FadeIn delay={0.1}>
+          <ArtistRotator artists={myArtists} visibleCount={3} intervalMs={6000} />
+        </FadeIn>
+
+        <FadeIn delay={0.2}>
           <ShowTabs myArtists={myArtists} />
         </FadeIn>
       </section>

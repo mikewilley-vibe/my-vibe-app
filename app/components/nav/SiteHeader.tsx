@@ -36,8 +36,11 @@ export default function SiteHeader() {
             <NavLink href="/about">About</NavLink>
             <NavLink href="/projects">Projects</NavLink>
             <NavLink href="/vibes">Vibes</NavLink>
-            <NavLink href="/shows">Shows</NavLink>
-            
+            <NavLink href="/contact">Contact</NavLink>
+          </div>
+
+          {/* Right section: UVA, Shows, and other links */}
+          <div className="hidden sm:flex items-center gap-1 pl-2 border-l border-slate-200 ml-2">
             {/* UVA Dropdown */}
             <div ref={ref} className="relative">
               <button
@@ -56,16 +59,13 @@ export default function SiteHeader() {
                 </div>
               )}
             </div>
-          </div>
 
-          {/* Right section: External/Special links */}
-          <div className="hidden sm:flex items-center gap-1 pl-2 border-l border-slate-200 ml-2">
+            <NavLink href="/shows">Shows</NavLink>
             <NavLink href="/workout-timer" highlight>HIIT Timer</NavLink>
             <NavLink href="/poster-generator">Poster</NavLink>
             <NavLink href="https://www.orchardhousebasketball.org/">OHMS</NavLink>
             <NavLink href="https://vandy-dance.vercel.app/">Vandy Dance</NavLink>
             <NavLink href="https://bea-troop-site.vercel.app/">GS Troop 21</NavLink>
-            <NavLink href="/contact">Contact</NavLink>
           </div>
         </div>
       </nav>

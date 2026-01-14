@@ -46,7 +46,7 @@ export default function SiteHeader() {
               <button
                 type="button"
                 onClick={() => setOpen(v => !v)}
-                className="px-3 py-2 rounded-lg text-sm font-medium text-slate-700 hover:text-blue-600 hover:bg-blue-50/50 transition-all"
+                className="px-3 py-2 rounded-lg text-sm font-medium text-blue-600 hover:text-blue-700 hover:bg-gradient-to-br hover:from-slate-400 hover:to-slate-300 transition-all transform hover:scale-110 hover:shadow-lg hover:shadow-blue-200"
               >
                 UVA <span className={`text-xs opacity-70 transition-transform ${open ? "rotate-180" : ""}`}>▾</span>
               </button>
@@ -60,10 +60,10 @@ export default function SiteHeader() {
               )}
             </div>
 
-            <NavLink href="/shows">Shows</NavLink>
+            <NavLink href="/shows">Local Shows</NavLink>
             <NavLink href="/workout-timer" highlight>HIIT Timer</NavLink>
-            <NavLink href="/poster-generator">Poster</NavLink>
-            <NavLink href="https://www.orchardhousebasketball.org/">OHMS</NavLink>
+            <NavLink href="/poster-generator">Poster Maker</NavLink>
+            <NavLink href="https://www.orchardhousebasketball.org/">OHMS BBall</NavLink>
             <NavLink href="https://vandy-dance.vercel.app/">Vandy Dance</NavLink>
             <NavLink href="https://bea-troop-site.vercel.app/">GS Troop 21</NavLink>
           </div>
@@ -77,10 +77,10 @@ function NavLink({ href, children, highlight }: { href: string; children: React.
   return (
     <Link
       href={href}
-      className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+      className={`px-3 py-2 rounded-lg text-sm font-medium transition-all transform hover:scale-110 hover:shadow-lg hover:shadow-blue-200 ${
         highlight
-          ? "text-sky-600 hover:text-sky-700 hover:bg-sky-50/50"
-          : "text-slate-700 hover:text-blue-600 hover:bg-blue-50/50"
+          ? "text-blue-600 hover:text-blue-700 hover:bg-gradient-to-br hover:from-slate-400 hover:to-slate-300"
+          : "text-blue-600 hover:text-blue-700 hover:bg-gradient-to-br hover:from-slate-400 hover:to-slate-300 hover:shadow-md"
       }`}
     >
       {children}
@@ -92,7 +92,7 @@ function DropdownLink({ href, children }: { href: string; children: React.ReactN
   return (
     <Link
       href={href}
-      className="block px-3 py-2 rounded-lg text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-600 transition-all"
+      className="block px-3 py-2 rounded-lg text-sm text-blue-600 hover:text-blue-700 hover:bg-gradient-to-br hover:from-slate-400 hover:to-slate-300 transition-all transform hover:scale-105 hover:shadow-md hover:shadow-blue-200"
     >
       {children}
     </Link>

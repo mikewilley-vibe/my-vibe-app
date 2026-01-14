@@ -39,6 +39,8 @@ export default function SiteHeader() {
           <Link href="/poster-generator">Poster Generator </Link>
           <Link href="/gallery" className="text-slate-700 hover:text-blue-700">Gallery</Link>
           <Link href="https://www.orchardhousebasketball.org/" className="text-slate-700 hover:text-blue-700">OHMS BB</Link>
+          <Link href="https://vandy-dance.vercel.app/" className="text-slate-700 hover:text-blue-700">Vandy Dance</Link>
+          <Link href="https://bea-troop-site.vercel.app/" className="text-slate-700 hover:text-blue-700">Girl Scout Troop</Link>
 
           {/* ✅ UVA dropdown */}
           <div ref={ref} className="relative">

@@ -140,6 +140,30 @@ export const projects: Project[] = [
     video: "/video/rotunda-3d-print.mp4"
         
   },
+  {
+    slug: "vandy-dance",
+    title: "Vandy Dance Studio Website",
+    emoji: "💃",
+    message:
+      "Built a vibrant website for an independent dance studio.",
+    longDescription:
+      "Created a modern, engaging website for an independent dance studio to showcase their classes, schedule, and instructors. Features class calendars, registration information, and a welcoming design that captures the energy of the dance community.",
+    image: "/images/placeholder.svg",
+    link: {
+      href: "https://www.vandydancestudio.com/",
+      label: "Vandy Dance",
+    },
+  },
+  {
+    slug: "beas-girl-scout-troop",
+    title: "Bea's Girl Scout Troop Hub",
+    emoji: "👧",
+    message:
+      "A central hub for organizing Girl Scout troop activities and planning.",
+    longDescription:
+      "Built a dedicated site for my daughter's Girl Scout troop to coordinate meetings, activities, badge achievements, and family involvement. Helps the troop stay organized, communicate schedules, and celebrate accomplishments together.",
+    image: "/images/placeholder.svg",
+  },
 ];
 
 export function getProjectBySlug(slug: string) {

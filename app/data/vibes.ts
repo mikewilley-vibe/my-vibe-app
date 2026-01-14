@@ -14,6 +14,26 @@ export type VibePost = {
 
 export const vibePosts: VibePost[] = [
     {
+  id: 39,
+  slug: "day-39-ui-modernizations",
+  title: "Day 39 — UI Modernizations",
+  date: "2026-01-14",
+  emoji: "✨",
+  summary: "Added Vandy Dance and Girl Scout Troop projects. Enhanced all pages with modern animations and gradients.",
+  message: "Day 39 modernization pass: Added two new projects to the site and navigation. Enhanced pages with gradient backgrounds, staggered fade-in animations, improved hover effects on cards, and refined shadows.",
+  tags: ["day-39", "design", "ui", "animations"],
+},
+{
+  id: 38,
+  slug: "day-38-audio-vibration-assets",
+  title: "Day 38 — Audio Feedback & Asset Alignment",
+  date: "2026-01-13",
+  emoji: "🔊",
+  summary: "Fixed workout timer audio for iOS + aligned all artist and venue images.",
+  message: "Day 38 focused on mobile reliability. Switched to Vibration API for iOS haptic feedback. Updated 23 artists and 11 venues to use actual image files instead of placeholders.",
+  tags: ["day-38", "mobile", "ios", "audio", "vibration", "assets"],
+},
+    {
   id: 37,
   slug: "day-37-mobile-app-mvp",
   title: "Day 37 — Mobile App MVP Complete",

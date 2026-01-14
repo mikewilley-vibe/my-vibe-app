@@ -7,7 +7,7 @@ import TwoColumnSection from "@/app/components/ui/TwoColumnSection";
 
 export default function ProjectsPage() {
   return (
-    <main className="min-h-screen bg-slate-50 px-4 py-12">
+    <main className="min-h-screen bg-gradient-to-b from-slate-50 to-white px-4 py-12">
       <div className="mx-auto w-full max-w-5xl">
         <header className="mb-8 text-center">
           <h1 className="text-4xl font-bold">Projects &amp; Experience 🚀</h1>

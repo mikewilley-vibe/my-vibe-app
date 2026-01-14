@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import EntityCard from "@/app/components/ui/EntityCard";
+import FadeIn from "@/app/components/motion/FadeIn";
 import type { MyArtist } from "@/app/data/myArtists";
 import type { VenueRegion } from "@/app/data/localVenues";
 import { localVenuesByRegion } from "@/app/data/localVenues";
@@ -78,14 +79,15 @@ export default function ShowTabs({ myArtists, venuesByRegion }: Props) {
               Nothing to show yet.
             </div>
           ) : (
-            artists.map((a) => (
+            artists.map((a, idx) => (
+              <FadeIn key={a.url ?? a.name} delay={idx * 0.05}>
               <EntityCard
-                key={a.url ?? a.name}
                 title={a.name}
                 href={a.url ?? "#"}
                 imageSrc={a.image}
                 subtitle={a.url ? "Shows →" : "Add a link →"}
               />
+              </FadeIn>
             ))
           )}
         </div>

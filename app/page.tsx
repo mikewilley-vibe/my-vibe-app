@@ -16,26 +16,37 @@ import { sponsors } from "@/app/data/sponsors";
 export default function HomePage() {
   return (
     
-    <main className="min-h-screen bg-slate-50">
-      <div className="mx-auto flex max-w-5xl flex-col gap-2 px-4 pb-16 pt-10">
-           <div className="mb-8">
- 
-        
+    <main className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
+      <div className="mx-auto flex max-w-5xl flex-col gap-4 px-4 pb-16 pt-10">
+           <div className="mb-8 space-y-6">
+<FadeIn delay={0}>
 <SponsorRotator sponsors={sponsors} visibleCount={2} intervalMs={8000} />
+</FadeIn>
 <div className="mb-2 mt-4 flex flex-col gap-8">
+  <FadeIn delay={0.1}>
   <WeatherCard />
+  </FadeIn>
 </div>
+  <FadeIn delay={0.2}>
   <ScoresBanner />
-
+  </FadeIn>
 </div>
-        <FadeIn>
+        <FadeIn delay={0.3}>
          <HomeHeroSection />
         </FadeIn>
      
+        <FadeIn delay={0.4}>
         <LatestVibesSection />
+        </FadeIn>
+<FadeIn delay={0.5}>
 <FeaturedProjectsSection />
+</FadeIn>
+    <FadeIn delay={0.6}>
     <VibeOfTheDay />
+    </FadeIn>
+    <FadeIn delay={0.7}>
     <UvaNextGames count={2} />
+    </FadeIn>
       </div>
     </main>
   );

@@ -63,8 +63,8 @@ export default function SiteHeader() {
             <NavLink href="/workout-timer" highlight>HIIT Timer</NavLink>
             <NavLink href="/poster-generator">Poster</NavLink>
             <NavLink href="https://www.orchardhousebasketball.org/">OHMS</NavLink>
-            <NavLink href="https://vandy-dance.vercel.app/">Vandy</NavLink>
-            <NavLink href="https://bea-troop-site.vercel.app/">Troop</NavLink>
+            <NavLink href="https://vandy-dance.vercel.app/">Vandy Dance</NavLink>
+            <NavLink href="https://bea-troop-site.vercel.app/">GS Troop 21</NavLink>
             <NavLink href="/contact">Contact</NavLink>
           </div>
         </div>

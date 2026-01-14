@@ -24,64 +24,77 @@ export default function SiteHeader() {
   }, [open]);
 
   return (
-    <header className=" sticky top-0 z-50 backdrop-blur-md bg-slate-950/80 border-b bg-white">
-      <nav className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
-        <Link href="/" className="font-semibold text-slate-900">
-          Mike’s Vibe Coder HQ
+    <header className="sticky top-0 z-50 backdrop-blur-lg bg-white/80 border-b border-slate-200/50 shadow-sm">
+      <nav className="mx-auto flex max-w-5xl items-center justify-between px-4 py-4">
+        <Link href="/" className="font-bold text-lg bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-600 hover:from-blue-600 hover:to-blue-400 transition-all">
+          Mike's Vibe HQ
         </Link>
 
-        <div className="flex flex-wrap items-center gap-4 text-sm font-medium">
-          <Link href="/about" className="text-slate-700 hover:text-blue-700">About</Link>
-          <Link href="/projects" className="text-slate-700 hover:text-blue-700">Projects</Link>
-          <Link href="/vibes" className="text-slate-700 hover:text-blue-700">Vibes</Link>
-          <Link href="/shows" className="text-slate-700 hover:text-blue-700">Shows</Link>
-          <Link href="/workout-timer" className="hover:text-sky-300">HIIT Timer</Link>
-          <Link href="/poster-generator">Poster Generator </Link>
-          <Link href="/gallery" className="text-slate-700 hover:text-blue-700">Gallery</Link>
-          <Link href="https://www.orchardhousebasketball.org/" className="text-slate-700 hover:text-blue-700">OHMS BB</Link>
-          <Link href="https://vandy-dance.vercel.app/" className="text-slate-700 hover:text-blue-700">Vandy Dance</Link>
-          <Link href="https://bea-troop-site.vercel.app/" className="text-slate-700 hover:text-blue-700">Girl Scout Troop</Link>
+        <div className="flex items-center gap-1">
+          {/* Main navigation links */}
+          <div className="hidden sm:flex items-center gap-1">
+            <NavLink href="/about">About</NavLink>
+            <NavLink href="/projects">Projects</NavLink>
+            <NavLink href="/vibes">Vibes</NavLink>
+            <NavLink href="/shows">Shows</NavLink>
+            
+            {/* UVA Dropdown */}
+            <div ref={ref} className="relative">
+              <button
+                type="button"
+                onClick={() => setOpen(v => !v)}
+                className="px-3 py-2 rounded-lg text-sm font-medium text-slate-700 hover:text-blue-600 hover:bg-blue-50/50 transition-all"
+              >
+                UVA <span className={`text-xs opacity-70 transition-transform ${open ? "rotate-180" : ""}`}>▾</span>
+              </button>
 
-          {/* ✅ UVA dropdown */}
-          <div ref={ref} className="relative">
-            <button
-              type="button"
-              onClick={() => setOpen(v => !v)}
-              className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-sm font-semibold text-slate-700 hover:text-slate-900 hover:bg-slate-50"
-            >
-              UVA <span className={`text-xs opacity-70 transition ${open ? "rotate-180" : ""}`}>▾</span>
-            </button>
-
-            {open && (
-              <div className="absolute left-0 mt-2 w-52 rounded-xl border border-slate-200 bg-white shadow-lg p-1 z-50">
-                <Link
-                  href="/uva"
-                  onClick={() => setOpen(false)}
-                  className="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-slate-900"
-                >
-                  Upcoming Games
-                </Link>
-                <Link
-                  href="/uva/basketball/results"
-                  onClick={() => setOpen(false)}
-                  className="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-slate-900"
-                >
-                  Basketball Results
-                </Link>
-                <Link
-                  href="/uva/football/results"
-                  onClick={() => setOpen(false)}
-                  className="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-slate-900"
-                >
-                  Football Results
-                </Link>
-              </div>
-            )}
+              {open && (
+                <div className="absolute left-0 mt-2 w-48 rounded-xl border border-slate-200 bg-white shadow-lg p-2 z-50">
+                  <DropdownLink href="/uva">Upcoming Games</DropdownLink>
+                  <DropdownLink href="/uva/basketball/results">Basketball Results</DropdownLink>
+                  <DropdownLink href="/uva/football/results">Football Results</DropdownLink>
+                </div>
+              )}
+            </div>
           </div>
 
-          <Link href="/contact" className="text-slate-700 hover:text-blue-700">Contact</Link>
+          {/* Right section: External/Special links */}
+          <div className="hidden sm:flex items-center gap-1 pl-2 border-l border-slate-200 ml-2">
+            <NavLink href="/workout-timer" highlight>HIIT Timer</NavLink>
+            <NavLink href="/poster-generator">Poster</NavLink>
+            <NavLink href="https://www.orchardhousebasketball.org/">OHMS</NavLink>
+            <NavLink href="https://vandy-dance.vercel.app/">Vandy</NavLink>
+            <NavLink href="https://bea-troop-site.vercel.app/">Troop</NavLink>
+            <NavLink href="/contact">Contact</NavLink>
+          </div>
         </div>
       </nav>
     </header>
+  );
+}
+
+function NavLink({ href, children, highlight }: { href: string; children: React.ReactNode; highlight?: boolean }) {
+  return (
+    <Link
+      href={href}
+      className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+        highlight
+          ? "text-sky-600 hover:text-sky-700 hover:bg-sky-50/50"
+          : "text-slate-700 hover:text-blue-600 hover:bg-blue-50/50"
+      }`}
+    >
+      {children}
+    </Link>
+  );
+}
+
+function DropdownLink({ href, children }: { href: string; children: React.ReactNode }) {
+  return (
+    <Link
+      href={href}
+      className="block px-3 py-2 rounded-lg text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-600 transition-all"
+    >
+      {children}
+    </Link>
   );
 }

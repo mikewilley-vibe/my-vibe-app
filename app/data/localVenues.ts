@@ -15,7 +15,7 @@ export const localVenuesByRegion: VenueRegion[] = [
     venues: [
       {
     name: "The NorVa",
-    url: "https://www.thenorva.com/events/",
+    url: "https://www.thenorva.com/calendar/",
     image: "/images/the-norva.jpg",
   },
     {
@@ -25,13 +25,13 @@ export const localVenuesByRegion: VenueRegion[] = [
   },
   {
     name: "The National",
-    url: "https://www.thenationalva.com/events/",
+    url: "https://www.thenationalva.com/schedule/",
     image: "/images/the-national.jpg",
   },
  
   {
     name: "Elevation 27",
-    url: "https://www.elevation27.com/events",
+    url: "https://www.elevation27.com/calendar-2/",
     image: "/images/levation-27.jpg.png",
   },
   {
@@ -41,7 +41,7 @@ export const localVenuesByRegion: VenueRegion[] = [
 },
 {
   name: "Veterans United Home Loans Amphitheater (Virginia Beach)",
-  url: "https://www.livenation.com/venue/KovZpZAE7EA/veterans-united-home-loans-amphitheater-at-virginia-beach-events",
+  url: "https://www.veteransunitedhomeloansamphitheater.com/shows",
   image: "/images/vb-amphitheater.jpg",
 },
  ],

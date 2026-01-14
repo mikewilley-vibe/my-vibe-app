@@ -56,33 +56,20 @@ export const localVenuesByRegion: VenueRegion[] = [
   },
     {
     name: "Allianz Amphitheater at Riverfront",
-    url: "https://www.ticketmaster.com/allianz-amphitheater-at-riverfront-tickets-richmond/venue/9456",
+    url: "https://www.allianzamphitheater.com/shows",
     image: "/images/allianz-amphitheater.jpg",
   },
-  {
-    name: "Richmond Music Hall",
-    url: "https://www.capitalalehouse.com/richmond-music-hall/",
-    image: "/images/richmond-music-hall.jpg.png",
-  },
-
 
   {
     name: "The Camel",
-    url: "https://thecamel.org/events/",
+    url: "https://www.thecamel.org/shows",
     image: "/images/the-camel.jpg.png",
   },
 
   {
     name: "Ember Music Hall",
-    url: "https://www.embermusichall.com/events",
+    url: "https://embermusichall.com/events/",
     image: "/images/embermusichall.png",
-  },
-
-
-  {
-    name: "Brown's Island",
-    url: "https://www.brownsisland.com/events",
-    image: "/images/brownsisland.png",
   },
 
   ],
@@ -97,7 +84,7 @@ export const localVenuesByRegion: VenueRegion[] = [
   },
   {
     name: "The Anthem",
-    url: "https://theanthemdc.com/events/",
+    url: "https://theanthemdc.com/calendar/",
     image: "/images/theanthem.png",
   },
 

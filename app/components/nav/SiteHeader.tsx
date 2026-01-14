@@ -6,12 +6,14 @@ import { usePathname } from "next/navigation";
 
 export default function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
 
   // close on route change
   useEffect(() => {
     setOpen(false);
+    setMobileOpen(false);
   }, [pathname]);
 
   // close on outside click
@@ -30,9 +32,10 @@ export default function SiteHeader() {
           Mike's Vibe HQ
         </Link>
 
-        <div className="flex items-center gap-1">
+        {/* Desktop Navigation */}
+        <div className="hidden md:flex items-center gap-1">
           {/* Main navigation links */}
-          <div className="hidden sm:flex items-center gap-1">
+          <div className="flex items-center gap-1">
             <NavLink href="/about">About</NavLink>
             <NavLink href="/projects">Projects</NavLink>
             <NavLink href="/vibes">Vibes</NavLink>
@@ -40,7 +43,7 @@ export default function SiteHeader() {
           </div>
 
           {/* Right section: UVA, Shows, and other links */}
-          <div className="hidden sm:flex items-center gap-1 pl-2 border-l border-slate-200 ml-2">
+          <div className="flex items-center gap-1 pl-2 border-l border-slate-200 ml-2">
             {/* UVA Dropdown */}
             <div ref={ref} className="relative">
               <button
@@ -68,7 +71,52 @@ export default function SiteHeader() {
             <NavLink href="https://bea-troop-site.vercel.app/">GS Troop 21</NavLink>
           </div>
         </div>
+
+        {/* Mobile Hamburger Menu */}
+        <button
+          onClick={() => setMobileOpen(!mobileOpen)}
+          className="md:hidden p-2 rounded-lg text-blue-900 hover:bg-blue-50 transition-colors"
+          aria-label="Toggle menu"
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={mobileOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
+          </svg>
+        </button>
       </nav>
+
+      {/* Mobile Menu */}
+      {mobileOpen && (
+        <div className="md:hidden border-t border-slate-200/50 bg-white/95 backdrop-blur-sm px-4 py-3 space-y-2">
+          <MobileNavLink href="/about">About</MobileNavLink>
+          <MobileNavLink href="/projects">Projects</MobileNavLink>
+          <MobileNavLink href="/vibes">Vibes</MobileNavLink>
+          <MobileNavLink href="/contact">Contact</MobileNavLink>
+          
+          {/* UVA Mobile Dropdown */}
+          <div className="border-t border-slate-200 pt-2 mt-2">
+            <button
+              onClick={() => setOpen(v => !v)}
+              className="w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-blue-900 hover:bg-blue-50 transition-colors flex items-center justify-between"
+            >
+              UVA <span className={`text-xs opacity-70 transition-transform ${open ? "rotate-180" : ""}`}>▾</span>
+            </button>
+            {open && (
+              <div className="pl-2 space-y-1 mt-1">
+                <MobileNavLink href="/uva">Upcoming Games</MobileNavLink>
+                <MobileNavLink href="/uva/basketball/results">Basketball Results</MobileNavLink>
+                <MobileNavLink href="/uva/football/results">Football Results</MobileNavLink>
+              </div>
+            )}
+          </div>
+
+          <MobileNavLink href="/shows">Local Shows</MobileNavLink>
+          <MobileNavLink href="/workout-timer" highlight>HIIT Timer</MobileNavLink>
+          <MobileNavLink href="/poster-generator">Poster Maker</MobileNavLink>
+          <MobileNavLink href="https://www.orchardhousebasketball.org/">OHMS BBall</MobileNavLink>
+          <MobileNavLink href="https://vandy-dance.vercel.app/">Vandy Dance</MobileNavLink>
+          <MobileNavLink href="https://bea-troop-site.vercel.app/">GS Troop 21</MobileNavLink>
+        </div>
+      )}
     </header>
   );
 }
@@ -93,6 +141,21 @@ function DropdownLink({ href, children }: { href: string; children: React.ReactN
     <Link
       href={href}
       className="block px-3 py-2 rounded-lg text-sm text-blue-900 hover:text-orange-500 hover:bg-gradient-to-br hover:from-slate-400 hover:to-slate-300 transition-all transform hover:scale-105 hover:shadow-md hover:shadow-orange-200"
+    >
+      {children}
+    </Link>
+  );
+}
+
+function MobileNavLink({ href, children, highlight }: { href: string; children: React.ReactNode; highlight?: boolean }) {
+  return (
+    <Link
+      href={href}
+      className={`block px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+        highlight
+          ? "text-blue-600 hover:text-orange-500 hover:bg-blue-50"
+          : "text-blue-900 hover:text-orange-500 hover:bg-blue-50"
+      }`}
     >
       {children}
     </Link>

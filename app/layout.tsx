@@ -7,11 +7,23 @@ import SiteHeader from "@/app/components/nav/SiteHeader";
 
 export const metadata: Metadata = {
   title: {
-    default: "Mike’s Vibe Coder HQ",
-    template: "%s · Mike’s Vibe Coder HQ",
+    default: "Mike's Vibe Coder HQ",
+    template: "%s · Mike's Vibe Coder HQ",
   },
   description:
     "Portfolio + dev journal built with Next.js, TypeScript, and Tailwind.",
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 1,
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+  },
+  formatDetection: {
+    telephone: false,
+  },
 };
 
 const inter = Inter({ subsets: ["latin"] });
@@ -23,6 +35,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#1e40af" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+      </head>
       <body className={inter.className}>
         <div className="min-h-screen flex flex-col bg-slate-50">
           {/* NAVBAR */}

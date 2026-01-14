@@ -6,13 +6,16 @@ import { usePathname } from "next/navigation";
 
 export default function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const [otherOpen, setOtherOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const otherRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
 
   // close on route change
   useEffect(() => {
     setOpen(false);
+    setOtherOpen(false);
     setMobileOpen(false);
   }, [pathname]);
 
@@ -20,10 +23,11 @@ export default function SiteHeader() {
   useEffect(() => {
     function onDown(e: MouseEvent) {
       if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+      if (otherRef.current && !otherRef.current.contains(e.target as Node)) setOtherOpen(false);
     }
-    if (open) document.addEventListener("mousedown", onDown);
+    if (open || otherOpen) document.addEventListener("mousedown", onDown);
     return () => document.removeEventListener("mousedown", onDown);
-  }, [open]);
+  }, [open, otherOpen]);
 
   return (
     <header className="sticky top-0 z-50 backdrop-blur-lg bg-white/80 border-b border-slate-200/50 shadow-sm">
@@ -64,11 +68,28 @@ export default function SiteHeader() {
             </div>
 
             <NavLink href="/shows">Local Shows</NavLink>
+            <NavLink href="https://bea-troop-site.vercel.app/">Girl Scout Troop 21</NavLink>
             <NavLink href="/workout-timer" highlight>HIIT Timer</NavLink>
-            <NavLink href="/poster-generator">Poster Maker</NavLink>
             <NavLink href="https://www.orchardhousebasketball.org/">OHMS BBall</NavLink>
-            <NavLink href="https://vandy-dance.vercel.app/">Vandy Dance</NavLink>
-            <NavLink href="https://bea-troop-site.vercel.app/">GS Troop 21</NavLink>
+            
+            {/* Other Sites Dropdown */}
+            <div ref={otherRef} className="relative">
+              <button
+                type="button"
+                onClick={() => setOtherOpen(v => !v)}
+                className="px-3 py-2 rounded-lg text-sm font-medium text-blue-900 hover:text-orange-500 hover:bg-gradient-to-br hover:from-slate-400 hover:to-slate-300 transition-all transform hover:scale-110 hover:shadow-lg hover:shadow-orange-200"
+              >
+                Other Sites <span className={`text-xs opacity-70 transition-transform ${otherOpen ? "rotate-180" : ""}`}>▾</span>
+              </button>
+
+              {otherOpen && (
+                <div className="absolute left-0 mt-2 w-48 rounded-xl border border-slate-200 bg-white shadow-lg p-2 z-50">
+                  <DropdownLink href="/poster-generator">Poster Maker</DropdownLink>
+                  <DropdownLink href="https://vandy-dance.vercel.app/">Vandy Dance</DropdownLink>
+                  <DropdownLink href="https://vandy-accounting-migration.vercel.app/">Vandy Accounting</DropdownLink>
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
@@ -110,11 +131,28 @@ export default function SiteHeader() {
           </div>
 
           <MobileNavLink href="/shows">Local Shows</MobileNavLink>
+          <MobileNavLink href="https://bea-troop-site.vercel.app/">Girl Scout Troop 21</MobileNavLink>
           <MobileNavLink href="/workout-timer" highlight>HIIT Timer</MobileNavLink>
-          <MobileNavLink href="/poster-generator">Poster Maker</MobileNavLink>
           <MobileNavLink href="https://www.orchardhousebasketball.org/">OHMS BBall</MobileNavLink>
-          <MobileNavLink href="https://vandy-dance.vercel.app/">Vandy Dance</MobileNavLink>
-          <MobileNavLink href="https://bea-troop-site.vercel.app/">GS Troop 21</MobileNavLink>
+
+          {/* Other Sites Mobile Dropdown */}
+          <div className="border-t border-slate-200 pt-2 mt-2">
+            <button
+              onClick={() => setOtherOpen(v => !v)}
+              className="w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-blue-900 hover:bg-blue-50 transition-colors flex items-center justify-between"
+            >
+              Other Sites <span className={`text-xs opacity-70 transition-transform ${otherOpen ? "rotate-180" : ""}`}>▾</span>
+            </button>
+            {otherOpen && (
+              <div className="pl-2 space-y-1 mt-1">
+                <MobileNavLink href="/poster-generator">Poster Maker</MobileNavLink>
+                <MobileNavLink href="https://vandy-dance.vercel.app/">Vandy Dance</MobileNavLink>
+                <MobileNavLink href="https://vandy-accounting-migration.vercel.app/">Vandy Accounting</MobileNavLink>
+              </div>
+            )}
+          </div>
+
+          <MobileNavLink href="https://bea-troop-site.vercel.app/">Girl Scout Troop 21</MobileNavLink>
         </div>
       )}
     </header>

@@ -78,6 +78,9 @@ export default function HomePage() {
         <FadeIn delay={0.2}>
           <LatestVibesSection />
         </FadeIn>
+        <FadeIn delay={0.3}>
+          <FeaturedProjectsSection />
+        </FadeIn>
       </div>
     </main>
   );

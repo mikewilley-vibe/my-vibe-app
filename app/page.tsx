@@ -61,6 +61,9 @@ function PortfolioHome() {
         <FadeIn delay={0.1}>
           <HomeHeroSection />
         </FadeIn>
+        <FadeIn delay={0.2}>
+          <LatestVibesSection />
+        </FadeIn>
       </div>
     </main>
   );

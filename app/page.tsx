@@ -60,16 +60,16 @@ function PortfolioHome() {
 }
 
 export default function HomePage() {
-  const [isPersonal, setIsPersonal] = useState<boolean | null>(null);
-
-  useEffect(() => {
-    setIsPersonal(isPersonalMode());
-  }, []);
-
-  // Show portfolio mode until we detect the actual mode
-  if (isPersonal === null) {
-    return <PortfolioHome />;
-  }
-
-  return isPersonal ? <PersonalHome /> : <PortfolioHome />;
+  return (
+    <main className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
+      <div className="mx-auto max-w-5xl px-4 py-16">
+        <h1 className="text-4xl font-bold mb-4">Test Page</h1>
+        <p className="text-lg mb-4">If you see this, the page is rendering</p>
+        <div className="space-y-4">
+          <div className="p-4 bg-blue-100 rounded">Personal Mode Content</div>
+          <div className="p-4 bg-green-100 rounded">Portfolio Mode Content</div>
+        </div>
+      </div>
+    </main>
+  );
 }

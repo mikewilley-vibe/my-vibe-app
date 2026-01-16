@@ -56,30 +56,6 @@ export default function SiteHeader() {
               </div>
 
               <div className="flex items-center gap-1 pl-2 border-l border-slate-200 ml-2">
-                {/* UVA Dropdown */}
-                <div ref={ref} className="relative">
-                  <button
-                    type="button"
-                    onClick={() => setOpen(v => !v)}
-                    className="px-3 py-2 rounded-lg text-sm font-medium text-blue-900 hover:text-orange-500 hover:bg-gradient-to-br hover:from-slate-400 hover:to-slate-300 transition-all transform hover:scale-110 hover:shadow-lg hover:shadow-orange-200"
-                  >
-                    UVA <span className={`text-xs opacity-70 transition-transform ${open ? "rotate-180" : ""}`}>▾</span>
-                  </button>
-
-                  {open && (
-                    <div className="absolute left-0 mt-2 w-48 rounded-xl border border-slate-200 bg-white shadow-lg p-2 z-50">
-                      <DropdownLink href="/uva">Upcoming Games</DropdownLink>
-                      <DropdownLink href="/uva/basketball/results">Basketball Results</DropdownLink>
-                      <DropdownLink href="/uva/football/results">Football Results</DropdownLink>
-                    </div>
-                  )}
-                </div>
-
-                <NavLink href="/shows">Local Shows</NavLink>
-                <NavLink href="https://bea-troop-site.vercel.app/">Girl Scout Troop 21</NavLink>
-                <NavLink href="/workout-timer" highlight>HIIT Timer</NavLink>
-                <NavLink href="https://www.orchardhousebasketball.org/">OHMS BBall</NavLink>
-                
                 {/* Other Sites Dropdown */}
                 <div ref={otherRef} className="relative">
                   <button
@@ -87,11 +63,18 @@ export default function SiteHeader() {
                     onClick={() => setOtherOpen(v => !v)}
                     className="px-3 py-2 rounded-lg text-sm font-medium text-blue-900 hover:text-orange-500 hover:bg-gradient-to-br hover:from-slate-400 hover:to-slate-300 transition-all transform hover:scale-110 hover:shadow-lg hover:shadow-orange-200"
                   >
-                    Other Sites <span className={`text-xs opacity-70 transition-transform ${otherOpen ? "rotate-180" : ""}`}>▾</span>
+                    Links to Other Sites <span className={`text-xs opacity-70 transition-transform ${otherOpen ? "rotate-180" : ""}`}>▾</span>
                   </button>
 
                   {otherOpen && (
-                    <div className="absolute left-0 mt-2 w-48 rounded-xl border border-slate-200 bg-white shadow-lg p-2 z-50">
+                    <div className="absolute left-0 mt-2 w-56 rounded-xl border border-slate-200 bg-white shadow-lg p-2 z-50">
+                      <DropdownLink href="/uva">UVA Games</DropdownLink>
+                      <DropdownLink href="/uva/basketball/results">UVA Basketball Results</DropdownLink>
+                      <DropdownLink href="/uva/football/results">UVA Football Results</DropdownLink>
+                      <DropdownLink href="/shows">Local Shows</DropdownLink>
+                      <DropdownLink href="https://bea-troop-site.vercel.app/">Girl Scout Troop 21</DropdownLink>
+                      <DropdownLink href="/workout-timer">HIIT Timer</DropdownLink>
+                      <DropdownLink href="https://www.orchardhousebasketball.org/">OHMS Basketball</DropdownLink>
                       <DropdownLink href="/poster-generator">Poster Maker</DropdownLink>
                       <DropdownLink href="https://local-sausage.vercel.app/">Local Sausage</DropdownLink>
                       <DropdownLink href="https://vandy-dance.vercel.app/">Vandy Dance</DropdownLink>
@@ -156,22 +139,28 @@ export default function SiteHeader() {
                 )}
               </div>
 
-              <MobileNavLink href="/shows">Local Shows</MobileNavLink>
-              <MobileNavLink href="https://bea-troop-site.vercel.app/">Girl Scout Troop 21</MobileNavLink>
-              <MobileNavLink href="/workout-timer" highlight>HIIT Timer</MobileNavLink>
-              <MobileNavLink href="https://www.orchardhousebasketball.org/">OHMS BBall</MobileNavLink>
-
-              {/* Other Sites Mobile Dropdown */}
+              {/* Links to Other Sites Mobile Dropdown */}
               <div className="border-t border-slate-200 pt-2 mt-2">
                 <button
                   onClick={() => setOtherOpen(v => !v)}
                   className="w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-blue-900 hover:bg-blue-50 transition-colors flex items-center justify-between"
                 >
-                  Other Sites <span className={`text-xs opacity-70 transition-transform ${otherOpen ? "rotate-180" : ""}`}>▾</span>
+                  Links to Other Sites <span className={`text-xs opacity-70 transition-transform ${otherOpen ? "rotate-180" : ""}`}>▾</span>
                 </button>
                 {otherOpen && (
                   <div className="pl-2 space-y-1 mt-1">
+                    {/* UVA Links */}
+                    <MobileNavLink href="/uva">UVA Games</MobileNavLink>
+                    <MobileNavLink href="/uva/basketball">UVA Basketball Results</MobileNavLink>
+                    <MobileNavLink href="/uva/football">UVA Football Results</MobileNavLink>
+                    {/* Local/Events */}
+                    <MobileNavLink href="/shows">Local Shows</MobileNavLink>
+                    <MobileNavLink href="https://bea-troop-site.vercel.app/">Girl Scout Troop 21</MobileNavLink>
+                    {/* Apps */}
+                    <MobileNavLink href="/workout-timer" highlight>HIIT Timer</MobileNavLink>
+                    <MobileNavLink href="https://www.orchardhousebasketball.org/">OHMS Basketball</MobileNavLink>
                     <MobileNavLink href="/poster-generator">Poster Maker</MobileNavLink>
+                    {/* Other */}
                     <MobileNavLink href="https://local-sausage.vercel.app/">Local Sausage</MobileNavLink>
                     <MobileNavLink href="https://vandy-dance.vercel.app/">Vandy Dance</MobileNavLink>
                     <MobileNavLink href="https://vandy-accounting-migration.vercel.app/">Vandy Accounting</MobileNavLink>

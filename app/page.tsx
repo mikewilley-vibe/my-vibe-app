@@ -72,6 +72,9 @@ export default function HomePage() {
         <FadeIn delay={0}>
           <SponsorRotator sponsors={sponsors} visibleCount={2} intervalMs={8000} />
         </FadeIn>
+        <FadeIn delay={0.1}>
+          <HomeHeroSection />
+        </FadeIn>
       </div>
     </main>
   );

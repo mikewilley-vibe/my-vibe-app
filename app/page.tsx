@@ -7,6 +7,8 @@ import FeaturedProjectsSection from "@/app/components/content/FeaturedProjectsSe
 import HomeHeroSection from "@/app/components/hero/HomeHeroSection";
 import LatestVibesSection from "@/app/components/content/LatestVibesSection";
 import VibeOfTheDay from "@/app/components/vibes/VibeOfTheDay";
+import WeatherCard from "@/app/components/weather/WeatherCard";
+import ScoresBanner from "@/app/components/sports/ScoresBanner";
 import SponsorRotator from "@/app/components/ui/SponsorRotator";
 import { sponsors } from "@/app/data/sponsors";
 import { isPersonalMode } from "@/lib/appConfig";
@@ -35,6 +37,12 @@ export default function HomePage() {
       <main className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
         <div className="mx-auto max-w-5xl px-4 py-16">
           <FadeIn delay={0}>
+            <WeatherCard />
+          </FadeIn>
+          <FadeIn delay={0.1}>
+            <ScoresBanner />
+          </FadeIn>
+          <FadeIn delay={0.2}>
             <h1 className="mb-2 text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
               Welcome Back
             </h1>
@@ -43,7 +51,7 @@ export default function HomePage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {personalCards.map((card, index) => (
-              <FadeIn key={card.href} delay={0.1 + index * 0.05}>
+              <FadeIn key={card.href} delay={0.3 + index * 0.05}>
                 <Link href={card.href}>
                   <div className={`h-32 rounded-xl bg-gradient-to-br ${card.color} p-6 text-white shadow-lg hover:shadow-2xl hover:scale-105 transition-all cursor-pointer flex flex-col items-center justify-center text-center group`}>
                     <div className="text-4xl mb-2 group-hover:scale-125 transition-transform">{card.emoji}</div>
@@ -66,15 +74,21 @@ export default function HomePage() {
           <SponsorRotator sponsors={sponsors} visibleCount={2} intervalMs={8000} />
         </FadeIn>
         <FadeIn delay={0.1}>
-          <HomeHeroSection />
+          <WeatherCard />
         </FadeIn>
         <FadeIn delay={0.2}>
-          <LatestVibesSection />
+          <ScoresBanner />
         </FadeIn>
         <FadeIn delay={0.3}>
-          <FeaturedProjectsSection />
+          <HomeHeroSection />
         </FadeIn>
         <FadeIn delay={0.4}>
+          <LatestVibesSection />
+        </FadeIn>
+        <FadeIn delay={0.5}>
+          <FeaturedProjectsSection />
+        </FadeIn>
+        <FadeIn delay={0.6}>
           <VibeOfTheDay />
         </FadeIn>
       </div>

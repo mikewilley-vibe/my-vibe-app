@@ -65,32 +65,22 @@ export default function HomePage() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
       <div className="mx-auto flex max-w-5xl flex-col gap-4 px-4 pb-16 pt-10">
-        <div className="mb-8 space-y-6">
-          <FadeIn delay={0}>
-            <SponsorRotator sponsors={sponsors} visibleCount={2} intervalMs={8000} />
-          </FadeIn>
-          <div className="mb-2 mt-4 flex flex-col gap-8">
-            <FadeIn delay={0.1}>
-              <WeatherCard />
-            </FadeIn>
-          </div>
-          <FadeIn delay={0.2}>
-            <ScoresBanner />
-          </FadeIn>
-        </div>
-        <FadeIn delay={0.3}>
+        <FadeIn delay={0}>
+          <SponsorRotator sponsors={sponsors} visibleCount={2} intervalMs={8000} />
+        </FadeIn>
+        <FadeIn delay={0.1}>
           <HomeHeroSection />
         </FadeIn>
-        <FadeIn delay={0.4}>
+        <FadeIn delay={0.2}>
           <LatestVibesSection />
         </FadeIn>
-        <FadeIn delay={0.5}>
+        <FadeIn delay={0.3}>
           <FeaturedProjectsSection />
         </FadeIn>
-        <FadeIn delay={0.6}>
+        <FadeIn delay={0.4}>
           <VibeOfTheDay />
         </FadeIn>
-        <FadeIn delay={0.7}>
+        <FadeIn delay={0.5}>
           <UvaNextGames count={2} />
         </FadeIn>
       </div>

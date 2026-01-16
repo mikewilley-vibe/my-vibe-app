@@ -15,15 +15,15 @@ export type Project = {
 export const projects: Project[] = [
    {
     slug: "local-sausage",
-    title: "Local Sausage Shop Tracker",
-    emoji: "🌭",
+    title: "Seasonal Sous Chef",
+    emoji: "🍽️",
     message:
-      "Find the best local sausage shops and specialty meats in your area.",
+      "Find seasonal produce and create recipes with what's fresh locally.",
     longDescription:
-      "A fun project to discover and track local sausage shops, butchers, and specialty meat vendors. Browse by location, see what makes each shop special, read reviews, and find your next favorite sausage destination. Perfect for sausage enthusiasts and curious foodies exploring local culinary gems.",
+      "A project to discover what's in season locally, find fresh produce from farmers markets and local vendors, and get recipe ideas based on what's available. Browse by season, see what makes local farming special, find new recipes, and explore your next culinary adventure with seasonal ingredients.",
     link: {
       href: "https://local-sausage.vercel.app/",
-      label: "Local Sausage",
+      label: "Seasonal Sous Chef",
     },
   },
   {

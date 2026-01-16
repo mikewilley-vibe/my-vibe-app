@@ -76,7 +76,7 @@ export default function SiteHeader() {
                       <DropdownLink href="/workout-timer">HIIT Timer</DropdownLink>
                       <DropdownLink href="https://www.orchardhousebasketball.org/">OHMS Basketball</DropdownLink>
                       <DropdownLink href="/poster-generator">Poster Maker</DropdownLink>
-                      <DropdownLink href="https://local-sausage.vercel.app/">Local Sausage</DropdownLink>
+                      <DropdownLink href="https://local-sausage.vercel.app/">Recipe Maker & Local Produce</DropdownLink>
                       <DropdownLink href="https://vandy-dance.vercel.app/">Vandy Dance</DropdownLink>
                       <DropdownLink href="https://vandy-accounting-migration.vercel.app/">Vandy Accounting</DropdownLink>
                     </div>
@@ -94,7 +94,7 @@ export default function SiteHeader() {
               <NavLink href="https://bea-troop-site.vercel.app/">Girl Scouts</NavLink>
               <NavLink href="https://www.orchardhousebasketball.org/">Orchard House</NavLink>
               <NavLink href="/workout-timer" highlight>HIIT Timer</NavLink>
-              <NavLink href="https://local-sausage.vercel.app/">Local Sausage</NavLink>
+              <NavLink href="https://local-sausage.vercel.app/">Recipe Maker & Local Produce</NavLink>
             </div>
           )}
         </div>
@@ -161,7 +161,7 @@ export default function SiteHeader() {
                     <MobileNavLink href="https://www.orchardhousebasketball.org/">OHMS Basketball</MobileNavLink>
                     <MobileNavLink href="/poster-generator">Poster Maker</MobileNavLink>
                     {/* Other */}
-                    <MobileNavLink href="https://local-sausage.vercel.app/">Local Sausage</MobileNavLink>
+                    <MobileNavLink href="https://local-sausage.vercel.app/">Recipe Maker & Local Produce</MobileNavLink>
                     <MobileNavLink href="https://vandy-dance.vercel.app/">Vandy Dance</MobileNavLink>
                     <MobileNavLink href="https://vandy-accounting-migration.vercel.app/">Vandy Accounting</MobileNavLink>
                   </div>
@@ -178,7 +178,7 @@ export default function SiteHeader() {
               <MobileNavLink href="https://bea-troop-site.vercel.app/">Girl Scouts</MobileNavLink>
               <MobileNavLink href="https://www.orchardhousebasketball.org/">Orchard House</MobileNavLink>
               <MobileNavLink href="/workout-timer" highlight>HIIT Timer</MobileNavLink>
-              <MobileNavLink href="https://local-sausage.vercel.app/">Local Sausage</MobileNavLink>
+              <MobileNavLink href="https://local-sausage.vercel.app/">Recipe Maker & Local Produce</MobileNavLink>
             </>
           )}
         </div>

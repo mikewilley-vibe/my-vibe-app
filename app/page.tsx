@@ -56,6 +56,9 @@ function PortfolioHome() {
     <main className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
       <div className="mx-auto flex max-w-5xl flex-col gap-8 px-4 pb-16 pt-10">
         <FadeIn delay={0}>
+          <SponsorRotator sponsors={sponsors} visibleCount={2} intervalMs={8000} />
+        </FadeIn>
+        <FadeIn delay={0.1}>
           <HomeHeroSection />
         </FadeIn>
       </div>

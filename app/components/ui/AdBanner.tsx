@@ -77,11 +77,11 @@ export default function AdBanner({
       {/* ✅ Nusbaum-style layout */}
       <div className="relative flex h-full items-start gap-5">
         {/* left: logo + button stacked */}
-        <div className="flex w-[150px] shrink-0 flex-col items-start gap-2">
+        <div className="flex w-[150px] shrink-0 flex-col items-start gap-3">
           <div className="w-full">
             {brand ?? (
-              <div className="grid h-12 w-12 place-items-center rounded-xl bg-white/15 text-white ring-1 ring-white/25">
-                <span className="text-sm font-black">
+              <div className="grid h-16 w-16 place-items-center rounded-lg bg-white/25 text-white ring-2 ring-white/40 shadow-lg backdrop-blur-sm">
+                <span className="text-lg font-black">
                   {String(sponsor).slice(0, 2).toUpperCase()}
                 </span>
               </div>
@@ -92,10 +92,10 @@ export default function AdBanner({
             href={href}
             
             className={[
-              "inline-flex items-center justify-center rounded-xl px-4 py-2",
-              "text-sm font-extrabold shadow-sm transition",
+              "inline-flex items-center justify-center rounded-lg px-4 py-2",
+              "text-sm font-extrabold shadow-md transition",
               v.btn,
-              "whitespace-nowrap",
+              "whitespace-nowrap hover:shadow-lg",
             ].join(" ")}
           >
             {cta} <span aria-hidden className="ml-1">→</span>

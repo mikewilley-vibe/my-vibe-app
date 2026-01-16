@@ -3,14 +3,21 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { isPersonalMode } from "@/lib/appConfig";
 
 export default function SiteHeader() {
   const [open, setOpen] = useState(false);
   const [otherOpen, setOtherOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [isPersonal, setIsPersonal] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const otherRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
+
+  // Detect mode on mount
+  useEffect(() => {
+    setIsPersonal(isPersonalMode());
+  }, []);
 
   // close on route change
   useEffect(() => {
@@ -38,59 +45,75 @@ export default function SiteHeader() {
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-1">
-          {/* Main navigation links */}
-          <div className="flex items-center gap-1">
-            <NavLink href="/about">About</NavLink>
-            <NavLink href="/projects">Projects</NavLink>
-            <NavLink href="/vibes">Vibes</NavLink>
-            <NavLink href="/contact">Contact</NavLink>
-          </div>
+          {/* Portfolio Mode: Full navigation */}
+          {!isPersonal && (
+            <>
+              <div className="flex items-center gap-1">
+                <NavLink href="/about">About</NavLink>
+                <NavLink href="/projects">Projects</NavLink>
+                <NavLink href="/vibes">Vibes</NavLink>
+                <NavLink href="/contact">Contact</NavLink>
+              </div>
 
-          {/* Right section: UVA, Shows, and other links */}
-          <div className="flex items-center gap-1 pl-2 border-l border-slate-200 ml-2">
-            {/* UVA Dropdown */}
-            <div ref={ref} className="relative">
-              <button
-                type="button"
-                onClick={() => setOpen(v => !v)}
-                className="px-3 py-2 rounded-lg text-sm font-medium text-blue-900 hover:text-orange-500 hover:bg-gradient-to-br hover:from-slate-400 hover:to-slate-300 transition-all transform hover:scale-110 hover:shadow-lg hover:shadow-orange-200"
-              >
-                UVA <span className={`text-xs opacity-70 transition-transform ${open ? "rotate-180" : ""}`}>▾</span>
-              </button>
+              <div className="flex items-center gap-1 pl-2 border-l border-slate-200 ml-2">
+                {/* UVA Dropdown */}
+                <div ref={ref} className="relative">
+                  <button
+                    type="button"
+                    onClick={() => setOpen(v => !v)}
+                    className="px-3 py-2 rounded-lg text-sm font-medium text-blue-900 hover:text-orange-500 hover:bg-gradient-to-br hover:from-slate-400 hover:to-slate-300 transition-all transform hover:scale-110 hover:shadow-lg hover:shadow-orange-200"
+                  >
+                    UVA <span className={`text-xs opacity-70 transition-transform ${open ? "rotate-180" : ""}`}>▾</span>
+                  </button>
 
-              {open && (
-                <div className="absolute left-0 mt-2 w-48 rounded-xl border border-slate-200 bg-white shadow-lg p-2 z-50">
-                  <DropdownLink href="/uva">Upcoming Games</DropdownLink>
-                  <DropdownLink href="/uva/basketball/results">Basketball Results</DropdownLink>
-                  <DropdownLink href="/uva/football/results">Football Results</DropdownLink>
+                  {open && (
+                    <div className="absolute left-0 mt-2 w-48 rounded-xl border border-slate-200 bg-white shadow-lg p-2 z-50">
+                      <DropdownLink href="/uva">Upcoming Games</DropdownLink>
+                      <DropdownLink href="/uva/basketball/results">Basketball Results</DropdownLink>
+                      <DropdownLink href="/uva/football/results">Football Results</DropdownLink>
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
 
-            <NavLink href="/shows">Local Shows</NavLink>
-            <NavLink href="https://bea-troop-site.vercel.app/">Girl Scout Troop 21</NavLink>
-            <NavLink href="/workout-timer" highlight>HIIT Timer</NavLink>
-            <NavLink href="https://www.orchardhousebasketball.org/">OHMS BBall</NavLink>
-            
-            {/* Other Sites Dropdown */}
-            <div ref={otherRef} className="relative">
-              <button
-                type="button"
-                onClick={() => setOtherOpen(v => !v)}
-                className="px-3 py-2 rounded-lg text-sm font-medium text-blue-900 hover:text-orange-500 hover:bg-gradient-to-br hover:from-slate-400 hover:to-slate-300 transition-all transform hover:scale-110 hover:shadow-lg hover:shadow-orange-200"
-              >
-                Other Sites <span className={`text-xs opacity-70 transition-transform ${otherOpen ? "rotate-180" : ""}`}>▾</span>
-              </button>
+                <NavLink href="/shows">Local Shows</NavLink>
+                <NavLink href="https://bea-troop-site.vercel.app/">Girl Scout Troop 21</NavLink>
+                <NavLink href="/workout-timer" highlight>HIIT Timer</NavLink>
+                <NavLink href="https://www.orchardhousebasketball.org/">OHMS BBall</NavLink>
+                
+                {/* Other Sites Dropdown */}
+                <div ref={otherRef} className="relative">
+                  <button
+                    type="button"
+                    onClick={() => setOtherOpen(v => !v)}
+                    className="px-3 py-2 rounded-lg text-sm font-medium text-blue-900 hover:text-orange-500 hover:bg-gradient-to-br hover:from-slate-400 hover:to-slate-300 transition-all transform hover:scale-110 hover:shadow-lg hover:shadow-orange-200"
+                  >
+                    Other Sites <span className={`text-xs opacity-70 transition-transform ${otherOpen ? "rotate-180" : ""}`}>▾</span>
+                  </button>
 
-              {otherOpen && (
-                <div className="absolute left-0 mt-2 w-48 rounded-xl border border-slate-200 bg-white shadow-lg p-2 z-50">
-                  <DropdownLink href="/poster-generator">Poster Maker</DropdownLink>
-                  <DropdownLink href="https://vandy-dance.vercel.app/">Vandy Dance</DropdownLink>
-                  <DropdownLink href="https://vandy-accounting-migration.vercel.app/">Vandy Accounting</DropdownLink>
+                  {otherOpen && (
+                    <div className="absolute left-0 mt-2 w-48 rounded-xl border border-slate-200 bg-white shadow-lg p-2 z-50">
+                      <DropdownLink href="/poster-generator">Poster Maker</DropdownLink>
+                      <DropdownLink href="https://local-sausage.vercel.app/">Local Sausage</DropdownLink>
+                      <DropdownLink href="https://vandy-dance.vercel.app/">Vandy Dance</DropdownLink>
+                      <DropdownLink href="https://vandy-accounting-migration.vercel.app/">Vandy Accounting</DropdownLink>
+                    </div>
+                  )}
                 </div>
-              )}
+              </div>
+            </>
+          )}
+
+          {/* Personal Mode: Simplified utility navigation */}
+          {isPersonal && (
+            <div className="flex items-center gap-1">
+              <NavLink href="/shows">Shows</NavLink>
+              <NavLink href="/uva">UVA</NavLink>
+              <NavLink href="https://bea-troop-site.vercel.app/">Girl Scouts</NavLink>
+              <NavLink href="https://www.orchardhousebasketball.org/">Orchard House</NavLink>
+              <NavLink href="/workout-timer" highlight>HIIT Timer</NavLink>
+              <NavLink href="https://local-sausage.vercel.app/">Local Sausage</NavLink>
             </div>
-          </div>
+          )}
         </div>
 
         {/* Mobile Hamburger Menu */}
@@ -108,51 +131,67 @@ export default function SiteHeader() {
       {/* Mobile Menu */}
       {mobileOpen && (
         <div className="md:hidden border-t border-slate-200/50 bg-white/95 backdrop-blur-sm px-4 py-3 space-y-2">
-          <MobileNavLink href="/about">About</MobileNavLink>
-          <MobileNavLink href="/projects">Projects</MobileNavLink>
-          <MobileNavLink href="/vibes">Vibes</MobileNavLink>
-          <MobileNavLink href="/contact">Contact</MobileNavLink>
-          
-          {/* UVA Mobile Dropdown */}
-          <div className="border-t border-slate-200 pt-2 mt-2">
-            <button
-              onClick={() => setOpen(v => !v)}
-              className="w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-blue-900 hover:bg-blue-50 transition-colors flex items-center justify-between"
-            >
-              UVA <span className={`text-xs opacity-70 transition-transform ${open ? "rotate-180" : ""}`}>▾</span>
-            </button>
-            {open && (
-              <div className="pl-2 space-y-1 mt-1">
-                <MobileNavLink href="/uva">Upcoming Games</MobileNavLink>
-                <MobileNavLink href="/uva/basketball/results">Basketball Results</MobileNavLink>
-                <MobileNavLink href="/uva/football/results">Football Results</MobileNavLink>
+          {/* Portfolio Mode Mobile Menu */}
+          {!isPersonal && (
+            <>
+              <MobileNavLink href="/about">About</MobileNavLink>
+              <MobileNavLink href="/projects">Projects</MobileNavLink>
+              <MobileNavLink href="/vibes">Vibes</MobileNavLink>
+              <MobileNavLink href="/contact">Contact</MobileNavLink>
+              
+              {/* UVA Mobile Dropdown */}
+              <div className="border-t border-slate-200 pt-2 mt-2">
+                <button
+                  onClick={() => setOpen(v => !v)}
+                  className="w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-blue-900 hover:bg-blue-50 transition-colors flex items-center justify-between"
+                >
+                  UVA <span className={`text-xs opacity-70 transition-transform ${open ? "rotate-180" : ""}`}>▾</span>
+                </button>
+                {open && (
+                  <div className="pl-2 space-y-1 mt-1">
+                    <MobileNavLink href="/uva">Upcoming Games</MobileNavLink>
+                    <MobileNavLink href="/uva/basketball/results">Basketball Results</MobileNavLink>
+                    <MobileNavLink href="/uva/football/results">Football Results</MobileNavLink>
+                  </div>
+                )}
               </div>
-            )}
-          </div>
 
-          <MobileNavLink href="/shows">Local Shows</MobileNavLink>
-          <MobileNavLink href="https://bea-troop-site.vercel.app/">Girl Scout Troop 21</MobileNavLink>
-          <MobileNavLink href="/workout-timer" highlight>HIIT Timer</MobileNavLink>
-          <MobileNavLink href="https://www.orchardhousebasketball.org/">OHMS BBall</MobileNavLink>
+              <MobileNavLink href="/shows">Local Shows</MobileNavLink>
+              <MobileNavLink href="https://bea-troop-site.vercel.app/">Girl Scout Troop 21</MobileNavLink>
+              <MobileNavLink href="/workout-timer" highlight>HIIT Timer</MobileNavLink>
+              <MobileNavLink href="https://www.orchardhousebasketball.org/">OHMS BBall</MobileNavLink>
 
-          {/* Other Sites Mobile Dropdown */}
-          <div className="border-t border-slate-200 pt-2 mt-2">
-            <button
-              onClick={() => setOtherOpen(v => !v)}
-              className="w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-blue-900 hover:bg-blue-50 transition-colors flex items-center justify-between"
-            >
-              Other Sites <span className={`text-xs opacity-70 transition-transform ${otherOpen ? "rotate-180" : ""}`}>▾</span>
-            </button>
-            {otherOpen && (
-              <div className="pl-2 space-y-1 mt-1">
-                <MobileNavLink href="/poster-generator">Poster Maker</MobileNavLink>
-                <MobileNavLink href="https://vandy-dance.vercel.app/">Vandy Dance</MobileNavLink>
-                <MobileNavLink href="https://vandy-accounting-migration.vercel.app/">Vandy Accounting</MobileNavLink>
+              {/* Other Sites Mobile Dropdown */}
+              <div className="border-t border-slate-200 pt-2 mt-2">
+                <button
+                  onClick={() => setOtherOpen(v => !v)}
+                  className="w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-blue-900 hover:bg-blue-50 transition-colors flex items-center justify-between"
+                >
+                  Other Sites <span className={`text-xs opacity-70 transition-transform ${otherOpen ? "rotate-180" : ""}`}>▾</span>
+                </button>
+                {otherOpen && (
+                  <div className="pl-2 space-y-1 mt-1">
+                    <MobileNavLink href="/poster-generator">Poster Maker</MobileNavLink>
+                    <MobileNavLink href="https://local-sausage.vercel.app/">Local Sausage</MobileNavLink>
+                    <MobileNavLink href="https://vandy-dance.vercel.app/">Vandy Dance</MobileNavLink>
+                    <MobileNavLink href="https://vandy-accounting-migration.vercel.app/">Vandy Accounting</MobileNavLink>
+                  </div>
+                )}
               </div>
-            )}
-          </div>
+            </>
+          )}
 
-          <MobileNavLink href="https://bea-troop-site.vercel.app/">Girl Scout Troop 21</MobileNavLink>
+          {/* Personal Mode Mobile Menu */}
+          {isPersonal && (
+            <>
+              <MobileNavLink href="/shows">Shows</MobileNavLink>
+              <MobileNavLink href="/uva">UVA</MobileNavLink>
+              <MobileNavLink href="https://bea-troop-site.vercel.app/">Girl Scouts</MobileNavLink>
+              <MobileNavLink href="https://www.orchardhousebasketball.org/">Orchard House</MobileNavLink>
+              <MobileNavLink href="/workout-timer" highlight>HIIT Timer</MobileNavLink>
+              <MobileNavLink href="https://local-sausage.vercel.app/">Local Sausage</MobileNavLink>
+            </>
+          )}
         </div>
       )}
     </header>

@@ -14,6 +14,16 @@ export type VibePost = {
 
 export const vibePosts: VibePost[] = [
     {
+  id: 40,
+  slug: "day-40-local-sausage",
+  title: "Day 40 — Local Sausage Shop Tracker",
+  date: "2026-01-15",
+  emoji: "🌭",
+  summary: "Launched a new project to discover and track local sausage shops and specialty meat vendors.",
+  message: "Day 40 shipped Local Sausage—a fun side project to help sausage enthusiasts and foodies discover local butchers and specialty meat shops. Browse by location, find what makes each shop special, and explore local culinary gems. Added to projects, navigation, and the Other Sites dropdown.",
+  tags: ["day-40", "new-project", "local-business", "food"],
+},
+    {
   id: 39,
   slug: "day-39-ui-modernizations",
   title: "Day 39 — UI Modernizations",

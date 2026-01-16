@@ -45,7 +45,7 @@ function pickCityState(ev: any) {
 export async function GET() {
   try {
     const res = await fetch(SCHEDULE_URL, {
-      cache: "no-store",
+      next: { revalidate: 3600 }, // Cache for 1 hour
       headers: {
         "user-agent":
           "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36",

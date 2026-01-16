@@ -9,19 +9,25 @@ import LatestVibesSection from "@/app/components/content/LatestVibesSection";
 import VibeOfTheDay from "@/app/components/vibes/VibeOfTheDay";
 import WeatherCard from "@/app/components/weather/WeatherCard";
 import ScoresBanner from "@/app/components/sports/ScoresBanner";
+import FamilySection from "@/app/components/content/FamilySection";
 import SponsorRotator from "@/app/components/ui/SponsorRotator";
 import { sponsors } from "@/app/data/sponsors";
 import { isPersonalMode } from "@/lib/appConfig";
 
 const personalCards = [
-  { title: "UVA", emoji: "🏀", href: "/uva", color: "from-blue-500 to-blue-600" },
-  { title: "UVA Football", emoji: "🏈", href: "/uva/football", color: "from-orange-500 to-orange-600" },
-  { title: "UVA Basketball", emoji: "🏀", href: "/uva/basketball", color: "from-blue-500 to-indigo-600" },
-  { title: "Shows", emoji: "🎸", href: "/shows", color: "from-purple-500 to-pink-600" },
-  { title: "Girl Scouts", emoji: "🍪", href: "https://bea-troop-site.vercel.app/", color: "from-green-500 to-emerald-600" },
-  { title: "Orchard House", emoji: "🏀", href: "https://www.orchardhousebasketball.org/", color: "from-amber-500 to-orange-600" },
-  { title: "HIIT Timer", emoji: "⏱️", href: "/workout-timer", color: "from-red-500 to-rose-600" },
-  { title: "Local Sausage", emoji: "🌭", href: "https://local-sausage.vercel.app/", color: "from-yellow-500 to-amber-600" },
+  { 
+    title: "UVA Sports", 
+    subtitle: "Games, Basketball & Football",
+    emoji: "🏀", 
+    href: "/uva", 
+    color: "from-blue-500 to-indigo-600",
+    cta: "View All"
+  },
+  { title: "Shows", emoji: "🎸", href: "/shows", color: "from-purple-500 to-pink-600", cta: "Explore" },
+  { title: "Girl Scouts", emoji: "🍪", href: "https://bea-troop-site.vercel.app/", color: "from-green-500 to-emerald-600", cta: "Visit" },
+  { title: "Orchard House", emoji: "🏀", href: "https://www.orchardhousebasketball.org/", color: "from-amber-500 to-orange-600", cta: "Learn" },
+  { title: "HIIT Timer", emoji: "⏱️", href: "/workout-timer", color: "from-red-500 to-rose-600", cta: "Start" },
+  { title: "Recipe Maker", emoji: "🌭", href: "https://local-sausage.vercel.app/", color: "from-yellow-500 to-amber-600", cta: "Browse" },
 ];
 
 export default function HomePage() {
@@ -31,7 +37,7 @@ export default function HomePage() {
     setIsPersonal(isPersonalMode());
   }, []);
 
-  // Personal mode: show card grid
+  // Personal mode: show card grid with family and calendar
   if (isPersonal) {
     return (
       <main className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
@@ -49,18 +55,41 @@ export default function HomePage() {
             <p className="mb-12 text-lg text-slate-600">Quick access to your favorite apps and utilities</p>
           </FadeIn>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {/* Card Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
             {personalCards.map((card, index) => (
               <FadeIn key={card.href} delay={0.3 + index * 0.05}>
                 <Link href={card.href}>
-                  <div className={`h-32 rounded-xl bg-gradient-to-br ${card.color} p-6 text-white shadow-lg hover:shadow-2xl hover:scale-105 transition-all cursor-pointer flex flex-col items-center justify-center text-center group`}>
-                    <div className="text-4xl mb-2 group-hover:scale-125 transition-transform">{card.emoji}</div>
-                    <h3 className="font-bold text-lg">{card.title}</h3>
+                  <div className={`group relative h-40 rounded-2xl bg-gradient-to-br ${card.color} p-6 text-white shadow-lg hover:shadow-2xl hover:scale-105 transition-all cursor-pointer flex flex-col justify-between overflow-hidden`}>
+                    {/* Background decorative element */}
+                    <div className="absolute top-0 right-0 opacity-10 text-6xl group-hover:opacity-20 transition-opacity">
+                      {card.emoji}
+                    </div>
+                    
+                    {/* Content */}
+                    <div className="relative z-10">
+                      <div className="text-4xl mb-2 group-hover:scale-125 transition-transform origin-left">{card.emoji}</div>
+                      <h3 className="font-bold text-xl">{card.title}</h3>
+                      {card.subtitle && <p className="text-sm opacity-90">{card.subtitle}</p>}
+                    </div>
+                    
+                    {/* CTA Button */}
+                    <button className="relative z-10 self-start mt-auto inline-flex items-center gap-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm px-4 py-2 rounded-lg font-semibold text-sm transition-all border border-white/30 hover:border-white/50">
+                      {card.cta}
+                      <span className="text-lg">→</span>
+                    </button>
                   </div>
                 </Link>
               </FadeIn>
             ))}
           </div>
+
+          {/* Family Section */}
+          <FadeIn delay={0.6}>
+            <div className="mb-16">
+              <FamilySection />
+            </div>
+          </FadeIn>
         </div>
       </main>
     );

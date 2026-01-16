@@ -53,7 +53,7 @@ export default function RootLayout({
           {/* FOOTER */}
           <footer className="border-t bg-white">
             <div className="mx-auto max-w-5xl px-4 py-4 text-xs text-slate-500">
-              © {new Date().getFullYear()} Mike’s Vibe Coder HQ
+              © {new Date().getFullYear()} Mike's Vibe Coder HQ
             </div>
           </footer>
         </div>

@@ -3,8 +3,13 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import FadeIn from "@/app/components/motion/FadeIn";
+import UvaNextGames from "@/app/components/uva/UvaNextGames";
 import FeaturedProjectsSection from "@/app/components/content/FeaturedProjectsSection";
 import HomeHeroSection from "@/app/components/hero/HomeHeroSection";
+import LatestVibesSection from "@/app/components/content/LatestVibesSection";
+import VibeOfTheDay from "@/app/components/vibes/VibeOfTheDay";
+import SponsorRotator from "@/app/components/ui/SponsorRotator";
+import { sponsors } from "@/app/data/sponsors";
 import { isPersonalMode } from "@/lib/appConfig";
 
 const personalCards = [
@@ -50,11 +55,23 @@ function PortfolioHome() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
       <div className="mx-auto flex max-w-5xl flex-col gap-8 px-4 pb-16 pt-10">
-        <FadeIn delay={0.3}>
+        <FadeIn delay={0.1}>
+          <SponsorRotator sponsors={sponsors} visibleCount={2} interval={8000} />
+        </FadeIn>
+        <FadeIn delay={0.2}>
           <HomeHeroSection />
+        </FadeIn>
+        <FadeIn delay={0.3}>
+          <LatestVibesSection />
         </FadeIn>
         <FadeIn delay={0.4}>
           <FeaturedProjectsSection />
+        </FadeIn>
+        <FadeIn delay={0.5}>
+          <VibeOfTheDay />
+        </FadeIn>
+        <FadeIn delay={0.6}>
+          <UvaNextGames count={2} />
         </FadeIn>
       </div>
     </main>

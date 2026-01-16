@@ -65,23 +65,12 @@ export default function HomePage() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
       <div className="mx-auto flex max-w-5xl flex-col gap-4 px-4 pb-16 pt-10">
+        <div className="p-8 bg-white rounded-lg border">
+          <h2 className="text-2xl font-bold">Portfolio Test</h2>
+          <p>Testing which component breaks the page...</p>
+        </div>
         <FadeIn delay={0}>
           <SponsorRotator sponsors={sponsors} visibleCount={2} intervalMs={8000} />
-        </FadeIn>
-        <FadeIn delay={0.1}>
-          <HomeHeroSection />
-        </FadeIn>
-        <FadeIn delay={0.2}>
-          <LatestVibesSection />
-        </FadeIn>
-        <FadeIn delay={0.3}>
-          <FeaturedProjectsSection />
-        </FadeIn>
-        <FadeIn delay={0.4}>
-          <VibeOfTheDay />
-        </FadeIn>
-        <FadeIn delay={0.5}>
-          <UvaNextGames count={2} />
         </FadeIn>
       </div>
     </main>

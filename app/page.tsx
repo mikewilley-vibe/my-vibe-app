@@ -3,13 +3,10 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import FadeIn from "@/app/components/motion/FadeIn";
-import UvaNextGames from "@/app/components/uva/UvaNextGames";
 import FeaturedProjectsSection from "@/app/components/content/FeaturedProjectsSection";
 import HomeHeroSection from "@/app/components/hero/HomeHeroSection";
 import LatestVibesSection from "@/app/components/content/LatestVibesSection";
 import VibeOfTheDay from "@/app/components/vibes/VibeOfTheDay";
-import WeatherCard from "@/app/components/weather/WeatherCard";
-import ScoresBanner from "@/app/components/sports/ScoresBanner";
 import SponsorRotator from "@/app/components/ui/SponsorRotator";
 import { sponsors } from "@/app/data/sponsors";
 import { isPersonalMode } from "@/lib/appConfig";
@@ -64,11 +61,7 @@ export default function HomePage() {
   // Portfolio mode: show full featured home page
   return (
     <main className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
-      <div className="mx-auto flex max-w-5xl flex-col gap-4 px-4 pb-16 pt-10">
-        <div className="p-8 bg-white rounded-lg border">
-          <h2 className="text-2xl font-bold">Portfolio Test</h2>
-          <p>Testing which component breaks the page...</p>
-        </div>
+      <div className="mx-auto flex max-w-5xl flex-col gap-8 px-4 pb-16 pt-10">
         <FadeIn delay={0}>
           <SponsorRotator sponsors={sponsors} visibleCount={2} intervalMs={8000} />
         </FadeIn>

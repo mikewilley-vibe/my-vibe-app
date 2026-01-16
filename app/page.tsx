@@ -9,8 +9,6 @@ import LatestVibesSection from "@/app/components/content/LatestVibesSection";
 import VibeOfTheDay from "@/app/components/vibes/VibeOfTheDay";
 import UvaNextGames from "@/app/components/uva/UvaNextGames";
 import SponsorRotator from "@/app/components/ui/SponsorRotator";
-import WeatherCard from "@/app/components/weather/WeatherCard";
-import ScoresBanner from "@/app/components/sports/ScoresBanner";
 import { sponsors } from "@/app/data/sponsors";
 import { isPersonalMode } from "@/lib/appConfig";
 
@@ -30,13 +28,6 @@ function PersonalHome() {
     <main className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
       <div className="mx-auto max-w-5xl px-4 py-16">
         <FadeIn delay={0}>
-          <WeatherCard />
-        </FadeIn>
-        <FadeIn delay={0.1}>
-          <ScoresBanner />
-        </FadeIn>
-        
-        <FadeIn delay={0.2}>
           <h1 className="mb-2 text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
             Welcome Back
           </h1>
@@ -45,7 +36,7 @@ function PersonalHome() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {personalCards.map((card, index) => (
-            <FadeIn key={card.href} delay={0.3 + index * 0.05}>
+            <FadeIn key={card.href} delay={0.1 + index * 0.05}>
               <Link href={card.href}>
                 <div className={`h-32 rounded-xl bg-gradient-to-br ${card.color} p-6 text-white shadow-lg hover:shadow-2xl hover:scale-105 transition-all cursor-pointer flex flex-col items-center justify-center text-center group`}>
                   <div className="text-4xl mb-2 group-hover:scale-125 transition-transform">{card.emoji}</div>
@@ -68,24 +59,18 @@ function PortfolioHome() {
           <SponsorRotator sponsors={sponsors} visibleCount={2} intervalMs={8000} />
         </FadeIn>
         <FadeIn delay={0.1}>
-          <WeatherCard />
-        </FadeIn>
-        <FadeIn delay={0.2}>
-          <ScoresBanner />
-        </FadeIn>
-        <FadeIn delay={0.3}>
           <HomeHeroSection />
         </FadeIn>
-        <FadeIn delay={0.4}>
+        <FadeIn delay={0.2}>
           <LatestVibesSection />
         </FadeIn>
-        <FadeIn delay={0.5}>
+        <FadeIn delay={0.3}>
           <FeaturedProjectsSection />
         </FadeIn>
-        <FadeIn delay={0.6}>
+        <FadeIn delay={0.4}>
           <VibeOfTheDay />
         </FadeIn>
-        <FadeIn delay={0.7}>
+        <FadeIn delay={0.5}>
           <UvaNextGames count={2} />
         </FadeIn>
       </div>

@@ -2,6 +2,16 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import FadeIn from "@/app/components/motion/FadeIn";
+import HomeHeroSection from "@/app/components/hero/HomeHeroSection";
+import FeaturedProjectsSection from "@/app/components/content/FeaturedProjectsSection";
+import LatestVibesSection from "@/app/components/content/LatestVibesSection";
+import VibeOfTheDay from "@/app/components/vibes/VibeOfTheDay";
+import UvaNextGames from "@/app/components/uva/UvaNextGames";
+import SponsorRotator from "@/app/components/ui/SponsorRotator";
+import WeatherCard from "@/app/components/weather/WeatherCard";
+import ScoresBanner from "@/app/components/sports/ScoresBanner";
+import { sponsors } from "@/app/data/sponsors";
 import { isPersonalMode } from "@/lib/appConfig";
 
 const personalCards = [
@@ -42,31 +52,35 @@ function PersonalHome() {
 function PortfolioHome() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
-      <div className="mx-auto max-w-5xl px-4 py-20">
-        <h1 className="text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-600">
-          Mike Willey
-        </h1>
-        <p className="text-xl text-slate-600 mb-8">
-          Full-stack developer • Creative technologist • Building cool stuff on the internet
-        </p>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Link href="/projects" className="p-6 border border-slate-200 rounded-lg hover:shadow-lg transition-all">
-            <h2 className="text-2xl font-bold mb-2">Projects</h2>
-            <p className="text-slate-600">Check out what I've built</p>
-          </Link>
-          <Link href="/vibes" className="p-6 border border-slate-200 rounded-lg hover:shadow-lg transition-all">
-            <h2 className="text-2xl font-bold mb-2">Vibes</h2>
-            <p className="text-slate-600">My thoughts and learnings</p>
-          </Link>
-          <Link href="/about" className="p-6 border border-slate-200 rounded-lg hover:shadow-lg transition-all">
-            <h2 className="text-2xl font-bold mb-2">About</h2>
-            <p className="text-slate-600">Learn more about me</p>
-          </Link>
-          <Link href="/contact" className="p-6 border border-slate-200 rounded-lg hover:shadow-lg transition-all">
-            <h2 className="text-2xl font-bold mb-2">Contact</h2>
-            <p className="text-slate-600">Get in touch</p>
-          </Link>
+      <div className="mx-auto flex max-w-5xl flex-col gap-4 px-4 pb-16 pt-10">
+        <div className="mb-8 space-y-6">
+          <FadeIn delay={0}>
+            <SponsorRotator sponsors={sponsors} visibleCount={2} intervalMs={8000} />
+          </FadeIn>
+          <div className="mb-2 mt-4 flex flex-col gap-8">
+            <FadeIn delay={0.1}>
+              <WeatherCard />
+            </FadeIn>
+          </div>
+          <FadeIn delay={0.2}>
+            <ScoresBanner />
+          </FadeIn>
         </div>
+        <FadeIn delay={0.3}>
+          <HomeHeroSection />
+        </FadeIn>
+        <FadeIn delay={0.4}>
+          <LatestVibesSection />
+        </FadeIn>
+        <FadeIn delay={0.5}>
+          <FeaturedProjectsSection />
+        </FadeIn>
+        <FadeIn delay={0.6}>
+          <VibeOfTheDay />
+        </FadeIn>
+        <FadeIn delay={0.7}>
+          <UvaNextGames count={2} />
+        </FadeIn>
       </div>
     </main>
   );

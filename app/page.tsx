@@ -25,43 +25,35 @@ const personalCards = [
   { title: "Local Sausage", emoji: "🌭", href: "https://local-sausage.vercel.app/", color: "from-yellow-500 to-amber-600" },
 ];
 
-export default function HomePage() {
-  const [isPersonal, setIsPersonal] = useState(false);
+function PersonalHome() {
+  return (
+    <main className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
+      <div className="mx-auto max-w-5xl px-4 py-16">
+        <FadeIn delay={0}>
+          <h1 className="mb-2 text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
+            Welcome Back
+          </h1>
+          <p className="mb-12 text-lg text-slate-600">Quick access to your favorite apps and utilities</p>
+        </FadeIn>
 
-  useEffect(() => {
-    setIsPersonal(isPersonalMode());
-  }, []);
-
-  // Personal mode: show card grid
-  if (isPersonal) {
-    return (
-      <main className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
-        <div className="mx-auto max-w-5xl px-4 py-16">
-          <FadeIn delay={0}>
-            <h1 className="mb-2 text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
-              Welcome Back
-            </h1>
-            <p className="mb-12 text-lg text-slate-600">Quick access to your favorite apps and utilities</p>
-          </FadeIn>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {personalCards.map((card, index) => (
-              <FadeIn key={card.href} delay={0.1 + index * 0.05}>
-                <Link href={card.href}>
-                  <div className={`h-32 rounded-xl bg-gradient-to-br ${card.color} p-6 text-white shadow-lg hover:shadow-2xl hover:scale-105 transition-all cursor-pointer flex flex-col items-center justify-center text-center group`}>
-                    <div className="text-4xl mb-2 group-hover:scale-125 transition-transform">{card.emoji}</div>
-                    <h3 className="font-bold text-lg">{card.title}</h3>
-                  </div>
-                </Link>
-              </FadeIn>
-            ))}
-          </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {personalCards.map((card, index) => (
+            <FadeIn key={card.href} delay={0.1 + index * 0.05}>
+              <Link href={card.href}>
+                <div className={`h-32 rounded-xl bg-gradient-to-br ${card.color} p-6 text-white shadow-lg hover:shadow-2xl hover:scale-105 transition-all cursor-pointer flex flex-col items-center justify-center text-center group`}>
+                  <div className="text-4xl mb-2 group-hover:scale-125 transition-transform">{card.emoji}</div>
+                  <h3 className="font-bold text-lg">{card.title}</h3>
+                </div>
+              </Link>
+            </FadeIn>
+          ))}
         </div>
-      </main>
-    );
-  }
+      </div>
+    </main>
+  );
+}
 
-  // Portfolio mode: show full featured home page
+function PortfolioHome() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
       <div className="mx-auto flex max-w-5xl flex-col gap-4 px-4 pb-16 pt-10">
@@ -96,4 +88,21 @@ export default function HomePage() {
       </div>
     </main>
   );
+}
+
+export default function HomePage() {
+  const [isPersonal, setIsPersonal] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setIsPersonal(isPersonalMode());
+    setMounted(true);
+  }, []);
+
+  // Avoid hydration mismatch - show portfolio by default until mode is detected
+  if (!mounted) {
+    return <PortfolioHome />;
+  }
+
+  return isPersonal ? <PersonalHome /> : <PortfolioHome />;
 }

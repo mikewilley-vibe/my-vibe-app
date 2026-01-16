@@ -28,7 +28,7 @@ const personalCards = [
   { title: "Girl Scouts", emoji: "🍪", href: "https://bea-troop-site.vercel.app/", color: "from-green-500 to-emerald-600", cta: "Visit" },
   { title: "Orchard House", emoji: "🏀", href: "https://www.orchardhousebasketball.org/", color: "from-amber-500 to-orange-600", cta: "Learn" },
   { title: "HIIT Timer", emoji: "⏱️", href: "/workout-timer", color: "from-red-500 to-rose-600", cta: "Start" },
-  { title: "Recipe Maker", emoji: "🌭", href: "https://local-sausage.vercel.app/", color: "from-yellow-500 to-amber-600", cta: "Browse" },
+  { title: "Seasonal Sous Chef", emoji: "🍽️", href: "https://local-sausage.vercel.app/", color: "from-yellow-500 to-amber-600", cta: "Browse" },
 ];
 
 export default function HomePage() {

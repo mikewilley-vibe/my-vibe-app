@@ -77,7 +77,7 @@ export default function SiteHeader() {
                       <DropdownLink href="/workout-timer">HIIT Timer</DropdownLink>
                       <DropdownLink href="https://www.orchardhousebasketball.org/">OHMS Basketball</DropdownLink>
                       <DropdownLink href="/poster-generator">Poster Maker</DropdownLink>
-                      <DropdownLink href="https://local-sausage.vercel.app/">Recipe Maker & Local Produce</DropdownLink>
+                      <DropdownLink href="https://local-sausage.vercel.app/">Seasonal Sous Chef</DropdownLink>
                       <DropdownLink href="https://vandy-dance.vercel.app/">Vandy Dance</DropdownLink>
                       <DropdownLink href="https://vandy-accounting-migration.vercel.app/">Vandy Accounting</DropdownLink>
                     </div>
@@ -164,7 +164,7 @@ export default function SiteHeader() {
                     <MobileNavLink href="https://www.orchardhousebasketball.org/">OHMS Basketball</MobileNavLink>
                     <MobileNavLink href="/poster-generator">Poster Maker</MobileNavLink>
                     {/* Other */}
-                    <MobileNavLink href="https://local-sausage.vercel.app/">Recipe Maker & Local Produce</MobileNavLink>
+                    <MobileNavLink href="https://local-sausage.vercel.app/">Seasonal Sous Chef</MobileNavLink>
                     <MobileNavLink href="https://vandy-dance.vercel.app/">Vandy Dance</MobileNavLink>
                     <MobileNavLink href="https://vandy-accounting-migration.vercel.app/">Vandy Accounting</MobileNavLink>
                   </div>

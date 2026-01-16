@@ -9,7 +9,7 @@ export default function SiteHeader() {
   const [open, setOpen] = useState(false);
   const [otherOpen, setOtherOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [isPersonal, setIsPersonal] = useState(false);
+  const [isPersonal, setIsPersonal] = useState<boolean | null>(null);
   const ref = useRef<HTMLDivElement>(null);
   const otherRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
@@ -45,8 +45,8 @@ export default function SiteHeader() {
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-1">
-          {/* Portfolio Mode: Full navigation */}
-          {!isPersonal && (
+          {/* Portfolio Mode: Full navigation (default while loading) */}
+          {isPersonal !== true && (
             <>
               <div className="flex items-center gap-1">
                 <NavLink href="/about">About</NavLink>
@@ -104,7 +104,7 @@ export default function SiteHeader() {
           )}
 
           {/* Personal Mode: Simplified utility navigation */}
-          {isPersonal && (
+          {isPersonal === true && (
             <div className="flex items-center gap-1">
               <NavLink href="/shows">Shows</NavLink>
               <NavLink href="/uva">UVA</NavLink>
@@ -131,8 +131,8 @@ export default function SiteHeader() {
       {/* Mobile Menu */}
       {mobileOpen && (
         <div className="md:hidden border-t border-slate-200/50 bg-white/95 backdrop-blur-sm px-4 py-3 space-y-2">
-          {/* Portfolio Mode Mobile Menu */}
-          {!isPersonal && (
+          {/* Portfolio Mode Mobile Menu (default while loading) */}
+          {isPersonal !== true && (
             <>
               <MobileNavLink href="/about">About</MobileNavLink>
               <MobileNavLink href="/projects">Projects</MobileNavLink>
@@ -182,7 +182,7 @@ export default function SiteHeader() {
           )}
 
           {/* Personal Mode Mobile Menu */}
-          {isPersonal && (
+          {isPersonal === true && (
             <>
               <MobileNavLink href="/shows">Shows</MobileNavLink>
               <MobileNavLink href="/uva">UVA</MobileNavLink>

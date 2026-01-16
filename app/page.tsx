@@ -91,16 +91,14 @@ function PortfolioHome() {
 }
 
 export default function HomePage() {
-  const [isPersonal, setIsPersonal] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const [isPersonal, setIsPersonal] = useState<boolean | null>(null);
 
   useEffect(() => {
     setIsPersonal(isPersonalMode());
-    setMounted(true);
   }, []);
 
-  // Avoid hydration mismatch - show portfolio by default until mode is detected
-  if (!mounted) {
+  // Show portfolio mode until we detect the actual mode
+  if (isPersonal === null) {
     return <PortfolioHome />;
   }
 

@@ -13,6 +13,26 @@ export type VibePost = {
 };
 
 export const vibePosts: VibePost[] = [
+  {
+  id: 42,
+  slug: "day-42-new-projects-seasonal-rebrand",
+  title: "Day 42 — New Projects & Seasonal Sous Chef Rebrand",
+  date: "2026-01-17",
+  emoji: "🍽️",
+  summary: "Added St. Patrick's Basketball and Howlett Law projects. Rebranded Local Sausage to Seasonal Sous Chef.",
+  message: "Day 42 expanded the portfolio with two new client projects: St. Patrick's Wolfhounds basketball team site and Howlett Law firm website. Also rebranded the Local Sausage project to Seasonal Sous Chef—better reflecting its focus on seasonal produce and recipe discovery.",
+  tags: ["day-42", "new-projects", "rebrand", "basketball", "legal"],
+},
+  {
+  id: 41,
+  slug: "day-41-dual-deployment-personal-redesign",
+  title: "Day 41 — Dual Deployment & Personal Home Redesign",
+  date: "2026-01-16",
+  emoji: "🚀",
+  summary: "Set up dual Vercel deployments (personal & portfolio) and redesigned personal home with modern cards, calendars, and family section.",
+  message: "Day 41 was a major infrastructure day. Split the site into two Vercel deployments: mikewilley.app (personal) and mikewilley-portfolio.vercel.app (portfolio). Redesigned the personal home page with sleek CTA cards, consolidated UVA sports into one card, moved calendars to the top, and added the family section. Navigation simplified with a single 'Links to Other Sites' dropdown.",
+  tags: ["day-41", "deployment", "infrastructure", "redesign", "navigation"],
+},
     {
   id: 40,
   slug: "day-40-local-sausage",

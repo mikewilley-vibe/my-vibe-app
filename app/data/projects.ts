@@ -13,6 +13,32 @@ export type Project = {
 };
 
 export const projects: Project[] = [
+  {
+    slug: "st-patricks-basketball",
+    title: "St. Patrick's Wolfhounds Basketball",
+    emoji: "🐺",
+    message:
+      "Built a team website for a Richmond youth basketball program.",
+    longDescription:
+      "Created a comprehensive team hub for St. Patrick's Wolfhounds basketball program. The site provides schedules, rosters, game updates, and team information to keep players, families, and fans connected throughout the season.",
+    link: {
+      href: "https://st-patricks-wolfhounds.vercel.app/",
+      label: "St. Patrick's Wolfhounds",
+    },
+  },
+  {
+    slug: "howlett-law",
+    title: "Howlett Law Firm Website",
+    emoji: "⚖️",
+    message:
+      "Modern website for a professional law practice.",
+    longDescription:
+      "Designed and developed a professional website for Howlett Law. The site showcases their legal services, attorney profiles, practice areas, and provides an easy way for potential clients to get in touch and learn about their expertise.",
+    link: {
+      href: "https://howlett-law.vercel.app/",
+      label: "Howlett Law",
+    },
+  },
    {
     slug: "local-sausage",
     title: "Seasonal Sous Chef",

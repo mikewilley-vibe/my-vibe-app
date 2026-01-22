@@ -14,6 +14,36 @@ export type VibePost = {
 
 export const vibePosts: VibePost[] = [
   {
+  id: 45,
+  slug: "day-45-accessibility-audit",
+  title: "Day 45 — Accessibility Audit & Improvements",
+  date: "2026-01-22",
+  emoji: "♿",
+  summary: "Conducted comprehensive accessibility audit and implemented WCAG 2.1 improvements across the site.",
+  message: "Day 45 focused on making the site more accessible. Ran a full audit on both personal and portfolio sites, improved color contrast, added ARIA labels, enhanced keyboard navigation, and ensured screen reader compatibility. Accessibility is a first-class feature, not an afterthought.",
+  tags: ["day-45", "accessibility", "wcag", "inclusivity"],
+},
+  {
+  id: 44,
+  slug: "day-44-sow-generator-launch",
+  title: "Day 44 — SOW Generator Launch",
+  date: "2026-01-21",
+  emoji: "📋",
+  summary: "Launched a Statement of Work generator tool for streamlined project documentation.",
+  message: "Day 44 shipped the SOW Generator—a tool to quickly create professional Statements of Work for projects. Saves hours on documentation and ensures consistency across proposals. Available in the Links to Other Sites dropdown.",
+  tags: ["day-44", "tools", "productivity", "sow"],
+},
+  {
+  id: 43,
+  slug: "day-43-project-features",
+  title: "Day 43 — Project Enhancements",
+  date: "2026-01-19",
+  emoji: "🚀",
+  summary: "Enhanced project listings and improved portfolio project showcase.",
+  message: "Day 43 was a polish pass—refined project descriptions, improved image assets, and enhanced the visual presentation of all portfolio projects. Each project now has more detailed context and better visual hierarchy.",
+  tags: ["day-43", "projects", "portfolio", "design"],
+},
+  {
   id: 42,
   slug: "day-42-new-projects-seasonal-rebrand",
   title: "Day 42 — New Projects & Seasonal Sous Chef Rebrand",

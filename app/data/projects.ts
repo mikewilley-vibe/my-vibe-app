@@ -14,6 +14,32 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: "sow-generator",
+    title: "SOW Generator",
+    emoji: "📋",
+    message:
+      "Create professional Statements of Work in minutes.",
+    longDescription:
+      "A tool that streamlines the process of creating professional Statements of Work (SOWs) for projects. Fill in project details, scope, timeline, and deliverables, then generate a polished, ready-to-share document. Perfect for freelancers and agencies looking to save time on proposals.",
+    link: {
+      href: "https://sow-generator.vercel.app/",
+      label: "SOW Generator",
+    },
+  },
+  {
+    slug: "accessibility-audit",
+    title: "Accessibility Audit Tool",
+    emoji: "♿",
+    message:
+      "Comprehensive web accessibility auditing and reporting.",
+    longDescription:
+      "An accessibility audit tool that analyzes websites for WCAG 2.1 compliance. Checks color contrast, keyboard navigation, ARIA labels, screen reader compatibility, and generates detailed reports with actionable recommendations for improvement.",
+    link: {
+      href: "https://accessibility-ruby.vercel.app/",
+      label: "Accessibility Audit",
+    },
+  },
+  {
     slug: "st-patricks-basketball",
     title: "St. Patrick's Wolfhounds Basketball",
     emoji: "🐺",

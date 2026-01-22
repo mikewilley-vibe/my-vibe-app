@@ -69,6 +69,10 @@ export default function SiteHeader() {
                   {otherOpen && (
                     <div className="absolute left-0 mt-2 w-56 rounded-xl border border-slate-200 bg-white shadow-lg p-2 z-50">
                       <DropdownLink href="https://mikewilley.app/">Personal Page</DropdownLink>
+                      <DropdownLink href="https://sow-generator.vercel.app/">SOW Generator</DropdownLink>
+                      <DropdownLink href="https://accessibility-ruby.vercel.app/">Accessibility Audit</DropdownLink>
+                      <DropdownLink href="https://st-patricks-wolfhounds.vercel.app/">St. Patrick's Basketball</DropdownLink>
+                      <DropdownLink href="https://howlett-law.vercel.app/">Howlett Law</DropdownLink>
                       <DropdownLink href="/uva">UVA Games</DropdownLink>
                       <DropdownLink href="/uva/basketball/results">UVA Basketball Results</DropdownLink>
                       <DropdownLink href="/uva/football/results">UVA Football Results</DropdownLink>
@@ -152,6 +156,11 @@ export default function SiteHeader() {
                   <div className="pl-2 space-y-1 mt-1">
                     {/* Personal Site */}
                     <MobileNavLink href="https://mikewilley.app/">Personal Page</MobileNavLink>
+                    {/* Tools & Projects */}
+                    <MobileNavLink href="https://sow-generator.vercel.app/">SOW Generator</MobileNavLink>
+                    <MobileNavLink href="https://accessibility-ruby.vercel.app/">Accessibility Audit</MobileNavLink>
+                    <MobileNavLink href="https://st-patricks-wolfhounds.vercel.app/">St. Patrick's Basketball</MobileNavLink>
+                    <MobileNavLink href="https://howlett-law.vercel.app/">Howlett Law</MobileNavLink>
                     {/* UVA Links */}
                     <MobileNavLink href="/uva">UVA Games</MobileNavLink>
                     <MobileNavLink href="/uva/basketball">UVA Basketball Results</MobileNavLink>

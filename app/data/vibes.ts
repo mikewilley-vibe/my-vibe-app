@@ -14,6 +14,16 @@ export type VibePost = {
 
 export const vibePosts: VibePost[] = [
   {
+  id: 46,
+  slug: "day-46-clause-generator",
+  title: "Day 46 — Clause Generator Launch",
+  date: "2026-01-23",
+  emoji: "📜",
+  summary: "Launched a legal clause generator for quickly creating contract terms and conditions.",
+  message: "Day 46 shipped the Clause Generator—a tool for generating common legal clauses and contract language. Select clause types, customize parameters, and generate professional legal language in seconds. Perfect for contracts, agreements, and legal documents.",
+  tags: ["day-46", "tools", "legal", "productivity"],
+},
+  {
   id: 45,
   slug: "day-45-accessibility-audit",
   title: "Day 45 — Accessibility Audit & Improvements",

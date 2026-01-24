@@ -14,6 +14,19 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: "clause-generator",
+    title: "Clause Generator",
+    emoji: "📜",
+    message:
+      "Generate legal clauses and contract language instantly.",
+    longDescription:
+      "A tool for quickly generating common legal clauses and contract language. Select from various clause types including confidentiality, indemnification, limitation of liability, warranties, and more. Customize parameters and generate professional legal language in seconds for contracts, agreements, and legal documents.",
+    link: {
+      href: "https://clause-generator.vercel.app/",
+      label: "Clause Generator",
+    },
+  },
+  {
     slug: "sow-generator",
     title: "SOW Generator",
     emoji: "📋",

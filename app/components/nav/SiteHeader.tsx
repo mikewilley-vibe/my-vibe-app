@@ -69,6 +69,7 @@ export default function SiteHeader() {
                   {otherOpen && (
                     <div className="absolute left-0 mt-2 w-56 rounded-xl border border-slate-200 bg-white shadow-lg p-2 z-50">
                       <DropdownLink href="https://mikewilley.app/">Personal Page</DropdownLink>
+                      <DropdownLink href="https://clause-generator.vercel.app/">Clause Generator</DropdownLink>
                       <DropdownLink href="https://sow-generator.vercel.app/">SOW Generator</DropdownLink>
                       <DropdownLink href="https://accessibility-ruby.vercel.app/">Accessibility Audit</DropdownLink>
                       <DropdownLink href="https://st-patricks-wolfhounds.vercel.app/">St. Patrick's Basketball</DropdownLink>
@@ -157,6 +158,7 @@ export default function SiteHeader() {
                     {/* Personal Site */}
                     <MobileNavLink href="https://mikewilley.app/">Personal Page</MobileNavLink>
                     {/* Tools & Projects */}
+                    <MobileNavLink href="https://clause-generator.vercel.app/">Clause Generator</MobileNavLink>
                     <MobileNavLink href="https://sow-generator.vercel.app/">SOW Generator</MobileNavLink>
                     <MobileNavLink href="https://accessibility-ruby.vercel.app/">Accessibility Audit</MobileNavLink>
                     <MobileNavLink href="https://st-patricks-wolfhounds.vercel.app/">St. Patrick's Basketball</MobileNavLink>

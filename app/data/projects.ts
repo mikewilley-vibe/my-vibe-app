@@ -34,21 +34,8 @@ export const projects: Project[] = [
       message: "A playful card generator for your first memorable food experience.",
       longDescription: "Card of First Food lets you create and share a digital card commemorating your first memorable food or meal. Add a photo, description, and a fun story, then generate a shareable card to celebrate your culinary beginnings!",
       link: {
-        href: "https://card-of-first-food.vercel.app/",
+        href: "https://first-food.vercel.app/",
         label: "Card of First Food",
-      },
-    },
-    {
-      slug: "clause-generator",
-      title: "Clause Generator (Beta)",
-      emoji: "📜",
-      message:
-        "Generate legal clauses and contract language instantly.",
-      longDescription:
-        "A tool for quickly generating common legal clauses and contract language. Select from various clause types including confidentiality, indemnification, limitation of liability, warranties, and more. Customize parameters and generate professional legal language in seconds for contracts, agreements, and legal documents.",
-      link: {
-        href: "https://clause-generator.vercel.app/",
-        label: "Clause Generator (Beta)",
       },
     },
     {
@@ -60,7 +47,7 @@ export const projects: Project[] = [
       longDescription:
         "A tool that streamlines the process of creating professional Statements of Work (SOWs) for projects. Fill in project details, scope, timeline, and deliverables, then generate a polished, ready-to-share document. Perfect for freelancers and agencies looking to save time on proposals.",
       link: {
-        href: "https://sow-generator.vercel.app/",
+        href: "https://sow-clause-creator.vercel.app/",
         label: "SOW Generator (Beta)",
       },
     },

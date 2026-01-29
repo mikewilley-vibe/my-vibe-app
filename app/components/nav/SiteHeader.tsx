@@ -69,9 +69,7 @@ export default function SiteHeader() {
                   {otherOpen && (
                     <div className="absolute left-0 mt-2 w-56 rounded-xl border border-slate-200 bg-white shadow-lg p-2 z-50">
                       <DropdownLink href="https://mikewilley.app/">Personal Page</DropdownLink>
-                      <DropdownLink href="https://clause-generator.vercel.app/">Clause Generator (Beta) — Main</DropdownLink>
-                      <DropdownLink href="https://clause-generator.vercel.app/?lang=es">Clause Generator (Beta) — Español</DropdownLink>
-                      <DropdownLink href="https://sow-generator.vercel.app/">SOW Generator (Beta) — Main</DropdownLink>
+                      <DropdownLink href="https://sow-clause-creator.vercel.app/">SOW Generator (Beta)</DropdownLink>
                       <DropdownLink href="https://accessibility-ruby.vercel.app/">Accessibility Audit</DropdownLink>
                       <DropdownLink href="https://st-patricks-wolfhounds.vercel.app/">St. Patrick's Basketball</DropdownLink>
                       <DropdownLink href="https://howlett-law.vercel.app/">Howlett Law</DropdownLink>
@@ -87,7 +85,7 @@ export default function SiteHeader() {
                       <DropdownLink href="https://vandy-dance.vercel.app/">Vandy Dance</DropdownLink>
                       <DropdownLink href="https://vandy-accounting-migration.vercel.app/">Vandy Accounting</DropdownLink>
                       <DropdownLink href="https://card-of-first-food.vercel.app/">Card of First Food</DropdownLink>
-                      <DropdownLink href="https://explain-it-beta.vercel.app/">Explain It (Beta)</DropdownLink>
+                      <DropdownLink href="https://explain-it-peach.vercel.app/">Explain It (Beta)</DropdownLink>
                     </div>
                   )}
                 </div>
@@ -103,7 +101,7 @@ export default function SiteHeader() {
               <NavLink href="https://bea-troop-site.vercel.app/">Girl Scouts</NavLink>
               <NavLink href="https://www.orchardhousebasketball.org/">Orchard House</NavLink>
               <NavLink href="/workout-timer" highlight>HIIT Timer</NavLink>
-              <NavLink href="https://card-of-first-food.vercel.app/">First Food</NavLink>
+              <NavLink href="https://first-food.vercel.app/">First Food</NavLink>
             </div>
           )}
         </div>
@@ -161,9 +159,7 @@ export default function SiteHeader() {
                     {/* Personal Site */}
                     <MobileNavLink href="https://mikewilley.app/">Personal Page</MobileNavLink>
                     {/* Tools & Projects */}
-                    <MobileNavLink href="https://clause-generator.vercel.app/">Clause Generator (Beta) — Main</MobileNavLink>
-                    <MobileNavLink href="https://clause-generator.vercel.app/?lang=es">Clause Generator (Beta) — Español</MobileNavLink>
-                    <MobileNavLink href="https://sow-generator.vercel.app/">SOW Generator (Beta) — Main</MobileNavLink>
+                    <MobileNavLink href="https://sow-clause-creator.vercel.app/">SOW Generator (Beta)</MobileNavLink>
                     <MobileNavLink href="https://accessibility-ruby.vercel.app/">Accessibility Audit</MobileNavLink>
                     <MobileNavLink href="https://st-patricks-wolfhounds.vercel.app/">St. Patrick's Basketball</MobileNavLink>
                     <MobileNavLink href="https://howlett-law.vercel.app/">Howlett Law</MobileNavLink>
@@ -183,7 +179,7 @@ export default function SiteHeader() {
                     <MobileNavLink href="https://vandy-dance.vercel.app/">Vandy Dance</MobileNavLink>
                     <MobileNavLink href="https://vandy-accounting-migration.vercel.app/">Vandy Accounting</MobileNavLink>
                     <MobileNavLink href="https://card-of-first-food.vercel.app/">Card of First Food</MobileNavLink>
-                    <MobileNavLink href="https://explain-it-beta.vercel.app/">Explain It (Beta)</MobileNavLink>
+                    <MobileNavLink href="https://explain-it-peach.vercel.app/">Explain It (Beta)</MobileNavLink>
                   </div>
                 )}
               </div>
@@ -198,7 +194,7 @@ export default function SiteHeader() {
               <MobileNavLink href="https://bea-troop-site.vercel.app/">Girl Scouts</MobileNavLink>
               <MobileNavLink href="https://www.orchardhousebasketball.org/">Orchard House</MobileNavLink>
               <MobileNavLink href="/workout-timer" highlight>HIIT Timer</MobileNavLink>
-              <MobileNavLink href="https://card-of-first-food.vercel.app/">First Food</MobileNavLink>
+              <MobileNavLink href="https://first-food.vercel.app/">First Food</MobileNavLink>
             </>
           )}
         </div>

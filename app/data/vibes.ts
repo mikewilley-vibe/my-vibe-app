@@ -14,6 +14,16 @@ export type VibePost = {
 
 export const vibePosts: VibePost[] = [
   {
+  id: 47,
+  slug: "day-47-card-of-first-food",
+  title: "Day 47 — Card of First Food Launch",
+  date: "2026-01-24",
+  emoji: "🍱",
+  summary: "Launched Card of First Food — a playful card generator to commemorate your first memorable food experience.",
+  message: "Day 47 shipped Card of First Food! This new tool lets you create and share a digital card celebrating your first memorable food or meal. Add a photo, description, and a fun story, then generate a shareable card to celebrate your culinary beginnings. Available now in the Links to Other Sites dropdown and on the projects page.",
+  tags: ["day-47", "tools", "food", "fun", "project"],
+},
+  {
   id: 46,
   slug: "day-46-clause-generator",
   title: "Day 46 — Clause Generator Launch",
@@ -403,7 +413,7 @@ export const vibePosts: VibePost[] = [
       "Kept momentum while protecting stability: change less at once, test more, commit smarter.",
     message:
       "Day 18 was about restraint.\n\n" +
-      "I kept improving the site, but I started protecting the parts that already work. Smaller edits, clearer checkpoints, and fewer \"big bang\" refactors.\n\n" +
+      "I kept improving the site, but I started protecting the parts that already work. Smaller edits, clearer checkpoints, and fewer "big bang" refactors.\n\n" +
       "I’m learning that shipping isn’t just finishing — it’s maintaining a baseline of trust while you evolve the system.\n\n" +
       "Momentum feels better when you’re not afraid of your own code.",
     tags: ["day-18", "process", "stability", "git", "momentum"],

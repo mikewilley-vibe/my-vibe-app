@@ -14,31 +14,56 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    slug: "clause-generator",
-    title: "Clause Generator",
-    emoji: "📜",
-    message:
-      "Generate legal clauses and contract language instantly.",
+    slug: "explain-it-beta",
+    title: "Explain It (Beta)",
+    emoji: "💡",
+    message: "AI-powered tool to explain anything in simple terms.",
     longDescription:
-      "A tool for quickly generating common legal clauses and contract language. Select from various clause types including confidentiality, indemnification, limitation of liability, warranties, and more. Customize parameters and generate professional legal language in seconds for contracts, agreements, and legal documents.",
+      "Explain It (Beta) is an AI-powered tool that breaks down complex topics, documents, or code into clear, simple explanations. Paste text, upload a file, or enter a question—get a plain-language summary or step-by-step breakdown. Great for students, professionals, and anyone who wants to understand faster.",
     link: {
-      href: "https://clause-generator.vercel.app/",
-      label: "Clause Generator",
+      href: "https://explain-it-beta.vercel.app/",
+      label: "Explain It (Beta)",
     },
   },
-  {
-    slug: "sow-generator",
-    title: "SOW Generator",
-    emoji: "📋",
-    message:
-      "Create professional Statements of Work in minutes.",
-    longDescription:
-      "A tool that streamlines the process of creating professional Statements of Work (SOWs) for projects. Fill in project details, scope, timeline, and deliverables, then generate a polished, ready-to-share document. Perfect for freelancers and agencies looking to save time on proposals.",
-    link: {
-      href: "https://sow-generator.vercel.app/",
-      label: "SOW Generator",
+  // ...existing code...
+    // ...existing code...
+    {
+      slug: "card-of-first-food",
+      title: "Card of First Food",
+      emoji: "🍱",
+      message: "A playful card generator for your first memorable food experience.",
+      longDescription: "Card of First Food lets you create and share a digital card commemorating your first memorable food or meal. Add a photo, description, and a fun story, then generate a shareable card to celebrate your culinary beginnings!",
+      link: {
+        href: "https://card-of-first-food.vercel.app/",
+        label: "Card of First Food",
+      },
     },
-  },
+    {
+      slug: "clause-generator",
+      title: "Clause Generator (Beta)",
+      emoji: "📜",
+      message:
+        "Generate legal clauses and contract language instantly.",
+      longDescription:
+        "A tool for quickly generating common legal clauses and contract language. Select from various clause types including confidentiality, indemnification, limitation of liability, warranties, and more. Customize parameters and generate professional legal language in seconds for contracts, agreements, and legal documents.",
+      link: {
+        href: "https://clause-generator.vercel.app/",
+        label: "Clause Generator (Beta)",
+      },
+    },
+    {
+      slug: "sow-generator",
+      title: "SOW Generator (Beta)",
+      emoji: "📋",
+      message:
+        "Create professional Statements of Work in minutes.",
+      longDescription:
+        "A tool that streamlines the process of creating professional Statements of Work (SOWs) for projects. Fill in project details, scope, timeline, and deliverables, then generate a polished, ready-to-share document. Perfect for freelancers and agencies looking to save time on proposals.",
+      link: {
+        href: "https://sow-generator.vercel.app/",
+        label: "SOW Generator (Beta)",
+      },
+    },
   {
     slug: "accessibility-audit",
     title: "Accessibility Audit Tool",
@@ -246,6 +271,17 @@ export const projects: Project[] = [
       label: "DPOR"
   },
 },
+{
+    slug: "card-of-first-food",
+    title: "Card of First Food",
+    emoji: "🍱",
+    message: "A playful card generator for your first memorable food experience.",
+    longDescription: "Card of First Food lets you create and share a digital card commemorating your first memorable food or meal. Add a photo, description, and a fun story, then generate a shareable card to celebrate your culinary beginnings!",
+    link: {
+      href: "https://card-of-first-food.vercel.app/",
+      label: "Card of First Food",
+    },
+  },
 ];
 
 export function getProjectBySlug(slug: string) {

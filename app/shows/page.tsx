@@ -4,6 +4,7 @@ import ArtistRotator from "@/app/components/concerts/ArtistRotator";
 import FadeIn from "@/app/components/motion/FadeIn";
 import Image from "next/image";
 
+export default function ShowsPage() {
   return (
     <main className="relative min-h-screen bg-gradient-to-b from-slate-50 to-white overflow-x-hidden">
       {/* Sticky hero image behind content */}

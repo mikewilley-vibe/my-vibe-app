@@ -413,7 +413,7 @@ export const vibePosts: VibePost[] = [
       "Kept momentum while protecting stability: change less at once, test more, commit smarter.",
     message:
       "Day 18 was about restraint.\n\n" +
-      "I kept improving the site, but I started protecting the parts that already work. Smaller edits, clearer checkpoints, and fewer "big bang" refactors.\n\n" +
+      "I kept improving the site, but I started protecting the parts that already work. Smaller edits, clearer checkpoints, and fewer \"big bang\" refactors.\n\n" +
       "I’m learning that shipping isn’t just finishing — it’s maintaining a baseline of trust while you evolve the system.\n\n" +
       "Momentum feels better when you’re not afraid of your own code.",
     tags: ["day-18", "process", "stability", "git", "momentum"],

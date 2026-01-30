@@ -13,29 +13,17 @@ export type Project = {
 };
 
 export const projects: Project[] = [
-  {
-    slug: "explain-it-beta",
-    title: "Explain It (Beta)",
-    emoji: "💡",
-    message: "AI-powered tool to explain anything in simple terms.",
-    longDescription:
-      "Explain It (Beta) is an AI-powered tool that breaks down complex topics, documents, or code into clear, simple explanations. Paste text, upload a file, or enter a question—get a plain-language summary or step-by-step breakdown. Great for students, professionals, and anyone who wants to understand faster.",
-    link: {
-      href: "https://explain-it-beta.vercel.app/",
-      label: "Explain It (Beta)",
-    },
-  },
   // ...existing code...
     // ...existing code...
     {
       slug: "card-of-first-food",
-      title: "Card of First Food",
+      title: "First Food",
       emoji: "🍱",
       message: "A playful card generator for your first memorable food experience.",
-      longDescription: "Card of First Food lets you create and share a digital card commemorating your first memorable food or meal. Add a photo, description, and a fun story, then generate a shareable card to celebrate your culinary beginnings!",
+      longDescription: "First Food lets you create and share a digital card commemorating your first memorable food or meal. Add a photo, description, and a fun story, then generate a shareable card to celebrate your culinary beginnings!",
       link: {
         href: "https://first-food.vercel.app/",
-        label: "Card of First Food",
+        label: "First Food",
       },
     },
     {
@@ -258,15 +246,27 @@ export const projects: Project[] = [
       label: "DPOR"
   },
 },
-{
-    slug: "card-of-first-food",
-    title: "Card of First Food",
-    emoji: "🍱",
-    message: "A playful card generator for your first memorable food experience.",
-    longDescription: "Card of First Food lets you create and share a digital card commemorating your first memorable food or meal. Add a photo, description, and a fun story, then generate a shareable card to celebrate your culinary beginnings!",
+  {
+    slug: "explain-it-beta",
+    title: "Explain It (Beta)",
+    emoji: "💡",
+    message: "AI-powered tool to explain anything in simple terms.",
+    longDescription:
+      "Explain It (Beta) is an AI-powered tool that breaks down complex topics, documents, or code into clear, simple explanations. Paste text, upload a file, or enter a question—get a plain-language summary or step-by-step breakdown. Great for students, professionals, and anyone who wants to understand faster.",
     link: {
-      href: "https://card-of-first-food.vercel.app/",
-      label: "Card of First Food",
+      href: "https://explain-it-beta.vercel.app/",
+      label: "Explain It (Beta)",
+    },
+  },
+  {
+    slug: "collector",
+    title: "Collector",
+    emoji: "📦",
+    message: "A simple tool to collect and organize anything—ideas, links, notes, and more.",
+    longDescription: "Collector is a flexible web app for gathering and organizing anything you want to keep track of—ideas, links, notes, inspiration, or even your favorite finds. Add, tag, and search your collections from any device.",
+    link: {
+      href: "https://collector-peach.vercel.app/",
+      label: "Collector",
     },
   },
 ];

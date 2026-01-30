@@ -14,6 +14,7 @@ import CalendarEmbed from "@/app/components/ui/CalendarEmbed";
 import SponsorRotator from "@/app/components/ui/SponsorRotator";
 import { sponsors } from "@/app/data/sponsors";
 import { isPersonalMode } from "@/lib/appConfig";
+import PersonalCardGrid from "@/app/components/ui/PersonalCardGrid";
 
 const personalCards = [
   { 
@@ -122,33 +123,7 @@ export default function HomePage() {
           </FadeIn>
 
           {/* Card Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-            {personalCards.map((card, index) => (
-              <FadeIn key={card.href} delay={0.35 + index * 0.05}>
-                <Link href={card.href}>
-                  <div className={`group relative h-40 rounded-2xl bg-gradient-to-br ${card.color} p-6 text-white shadow-lg hover:shadow-2xl hover:scale-105 transition-all cursor-pointer flex flex-col justify-between overflow-hidden`}>
-                    {/* Background decorative element */}
-                    <div className="absolute top-0 right-0 opacity-10 text-6xl group-hover:opacity-20 transition-opacity">
-                      {card.emoji}
-                    </div>
-                    
-                    {/* Content */}
-                    <div className="relative z-10">
-                      <div className="text-4xl mb-2 group-hover:scale-125 transition-transform origin-left">{card.emoji}</div>
-                      <h3 className="font-bold text-xl">{card.title}</h3>
-                      {card.subtitle && <p className="text-sm opacity-90">{card.subtitle}</p>}
-                    </div>
-                    
-                    {/* CTA Button */}
-                    <button className="relative z-10 self-start mt-auto inline-flex items-center gap-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm px-4 py-2 rounded-lg font-semibold text-sm transition-all border border-white/30 hover:border-white/50">
-                      {card.cta}
-                      <span className="text-lg">→</span>
-                    </button>
-                  </div>
-                </Link>
-              </FadeIn>
-            ))}
-          </div>
+          <PersonalCardGrid cards={personalCards} />
 
           {/* Family Section */}
           <FadeIn delay={0.65}>

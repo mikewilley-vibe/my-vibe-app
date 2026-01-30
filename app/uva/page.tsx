@@ -72,7 +72,8 @@ export default async function UvaPage() {
         <section className="mx-auto max-w-5xl px-4 py-10">
           <h1 className="text-3xl font-bold text-slate-900">UVA Basketball</h1>
           <p className="mt-4 text-sm text-slate-500">
-            Upcoming games are temporarily unavailable.
+            Upcoming games are temporarily unavailable.<br />
+            <span className="block mt-2 text-xs text-red-500">API debug: {JSON.stringify({ ok, data })}</span>
           </p>
         </section>
       </main>

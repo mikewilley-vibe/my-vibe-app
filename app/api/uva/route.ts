@@ -1,5 +1,7 @@
 // app/api/uva/route.ts
+
 import { NextResponse } from "next/server";
+import { uvaGames as staticUvaGames } from "@/app/data/UvaSports";
 
 const SCHEDULE_URL = "https://virginiasports.com/sports/mbball/schedule/";
 
@@ -14,7 +16,7 @@ type UvaGame = {
   sourceUrl?: string;
 };
 
-function normalizeOpponent(name?: string) {
+export async function GET() {
   const n = (name ?? "").trim();
   const lower = n.toLowerCase();
 
@@ -42,7 +44,7 @@ function pickCityState(ev: any) {
   return String(loc).trim();
 }
 
-export async function GET() {
+  let response;
   try {
     const res = await fetch(SCHEDULE_URL, {
       next: { revalidate: 3600 }, // Cache for 1 hour
@@ -53,109 +55,117 @@ export async function GET() {
       },
     });
 
-    // ✅ WRAP #1
-    if (!res.ok) {
-      console.error("[UVA] Upstream not ok:", res.status, res.statusText);
-      return NextResponse.json({
-        ok: false,
-        status: res.status,
-        updatedAt: new Date().toISOString(),
-        games: [],
-        count: 0,
-        source: SCHEDULE_URL,
-      });
-    }
+    let games: UvaGame[] = [];
+    let scrapeError: string | undefined = undefined;
 
-    // ✅ WRAP #2
-    const contentType = res.headers.get("content-type") || "";
-    const html = await res.text();
+    if (res.ok) {
+      const contentType = res.headers.get("content-type") || "";
+      const html = await res.text();
 
-    if (!html || (!contentType.includes("text/html") && !html.includes("<html"))) {
-      console.error("[UVA] Non-HTML response:", contentType, html.slice(0, 120));
-      return NextResponse.json({
-        ok: false,
-        status: 200,
-        updatedAt: new Date().toISOString(),
-        games: [],
-        count: 0,
-        source: SCHEDULE_URL,
-      });
-    }
+      if (html && (contentType.includes("text/html") || html.includes("<html"))) {
+        // Pull JSON-LD scripts
+        const blocks = Array.from(
+          html.matchAll(
+            /<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi
+          )
+        ).map((m) => m[1]);
 
-    // Pull JSON-LD scripts
-    const blocks = Array.from(
-      html.matchAll(
-        /<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi
-      )
-    ).map((m) => m[1]);
+        const events: any[] = [];
 
-    const events: any[] = [];
+        function pushPossibleEvents(node: any) {
+          if (!node) return;
+          if (Array.isArray(node)) return void node.forEach(pushPossibleEvents);
+          if (Array.isArray(node["@graph"])) node["@graph"].forEach(pushPossibleEvents);
+          if (Array.isArray(node.itemListElement)) {
+            node.itemListElement.forEach((el: any) => pushPossibleEvents(el?.item ?? el));
+          }
+          if (node.startDate || node.name || node["@type"]) events.push(node);
+        }
 
-    function pushPossibleEvents(node: any) {
-      if (!node) return;
-      if (Array.isArray(node)) return void node.forEach(pushPossibleEvents);
-      if (Array.isArray(node["@graph"])) node["@graph"].forEach(pushPossibleEvents);
-      if (Array.isArray(node.itemListElement)) {
-        node.itemListElement.forEach((el: any) => pushPossibleEvents(el?.item ?? el));
+        for (const raw of blocks) {
+          try {
+            const parsed = JSON.parse(raw.trim());
+            pushPossibleEvents(parsed);
+          } catch {}
+        }
+
+        const eventItems = events.filter(
+          (e) =>
+            (e?.["@type"] === "Event" || e?.["@type"] === "SportsEvent" || !!e?.startDate) &&
+            !!e?.startDate &&
+            !!e?.name
+        );
+
+        games = eventItems.map((ev: any) => {
+          const { opponent, location } = normalizeOpponent(ev.name);
+          const dateIso = ev.startDate
+            ? new Date(ev.startDate).toISOString()
+            : new Date().toISOString();
+          const place = pickCityState(ev);
+
+          return {
+            id: `uva-mbb-${dateIso}-${opponent.replace(/\s+/g, "-").toLowerCase()}`,
+            sport: "basketball",
+            opponent,
+            date: dateIso,
+            location,
+            result: "pending",
+            note: place ? `Location: ${place}` : undefined,
+            sourceUrl: ev.url || undefined,
+          };
+        });
+
+        games = Array.from(
+          new Map(games.map((g) => [g.id, g])).values()
+        ).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+      } else {
+        scrapeError = "Non-HTML response or missing HTML content.";
       }
-      if (node.startDate || node.name || node["@type"]) events.push(node);
+    } else {
+      scrapeError = `Upstream not ok: ${res.status} ${res.statusText}`;
     }
 
-    for (const raw of blocks) {
-      try {
-        const parsed = JSON.parse(raw.trim());
-        pushPossibleEvents(parsed);
-      } catch {}
+    // Fallback to static data if no games found
+    if (!games.length) {
+      games = (staticUvaGames || [])
+        .filter((g) => g.sport === "basketball")
+        .map((g) => ({
+          ...g,
+          result: g.result ?? "pending",
+          id: typeof g.id === "number" ? `uva-static-${g.id}` : g.id,
+        }));
+      scrapeError = scrapeError || "No games found in scrape; using static fallback.";
     }
 
-    const eventItems = events.filter(
-      (e) =>
-        (e?.["@type"] === "Event" || e?.["@type"] === "SportsEvent" || !!e?.startDate) &&
-        !!e?.startDate &&
-        !!e?.name
-    );
-
-    const games: UvaGame[] = eventItems.map((ev: any) => {
-      const { opponent, location } = normalizeOpponent(ev.name);
-      const dateIso = ev.startDate
-        ? new Date(ev.startDate).toISOString()
-        : new Date().toISOString();
-      const place = pickCityState(ev);
-
-      return {
-        id: `uva-mbb-${dateIso}-${opponent.replace(/\s+/g, "-").toLowerCase()}`,
-        sport: "basketball",
-        opponent,
-        date: dateIso,
-        location,
-        result: "pending",
-        note: place ? `Location: ${place}` : undefined,
-        sourceUrl: ev.url || undefined,
-      };
-    });
-
-    const deduped: UvaGame[] = Array.from(
-      new Map(games.map((g) => [g.id, g])).values()
-    ).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-
-    return NextResponse.json({
+    response = {
       ok: true,
       status: 200,
       updatedAt: new Date().toISOString(),
-      games: deduped,
-      count: deduped.length,
+      games,
+      count: games.length,
       source: SCHEDULE_URL,
-    });
+      fallback: !!scrapeError,
+      scrapeError,
+    };
   } catch (err: any) {
-    console.error("[UVA] Exception:", err);
-    return NextResponse.json({
-      ok: false,
+    // On error, fallback to static data
+    const games = (staticUvaGames || [])
+      .filter((g) => g.sport === "basketball")
+      .map((g) => ({
+        ...g,
+        result: g.result ?? "pending",
+        id: typeof g.id === "number" ? `uva-static-${g.id}` : g.id,
+      }));
+    response = {
+      ok: true,
       status: 200,
       updatedAt: new Date().toISOString(),
-      games: [],
-      count: 0,
+      games,
+      count: games.length,
       source: SCHEDULE_URL,
-      error: String(err?.message ?? err),
-    });
+      fallback: true,
+      scrapeError: String(err?.message ?? err),
+    };
   }
+  return NextResponse.json(response);
 }

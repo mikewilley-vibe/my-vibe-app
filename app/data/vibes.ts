@@ -14,6 +14,16 @@ export type VibePost = {
 
 export const vibePosts: VibePost[] = [
   {
+  id: 48,
+  slug: "day-48-collector-launch",
+  title: "Day 48 — Collector Launch",
+  date: "2026-02-04",
+  emoji: "💎",
+  summary: "Launched Collector — upload photos of coins, bills, or sports cards to get instant identification and eBay selling guidance.",
+  message: "Day 48 shipped Collector (Rookie Collector)! A new tool for collectibles enthusiasts. Upload photos of coins, bills, or sports cards and get immediate identification plus practical eBay selling guidance. Perfect for collectors looking to understand their collection's value and maximize sales. Available now in the Links to Other Sites dropdown and on the projects page.",
+  tags: ["day-48", "tools", "collectibles", "project", "project-launch"],
+},
+  {
   id: 47,
   slug: "day-47-card-of-first-food",
   title: "Day 47 — Card of First Food Launch",

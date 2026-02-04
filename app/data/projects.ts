@@ -261,11 +261,11 @@ export const projects: Project[] = [
   {
     slug: "collector",
     title: "Collector",
-    emoji: "📦",
-    message: "A simple tool to collect and organize anything—ideas, links, notes, and more.",
-    longDescription: "Collector is a flexible web app for gathering and organizing anything you want to keep track of—ideas, links, notes, inspiration, or even your favorite finds. Add, tag, and search your collections from any device.",
+    emoji: "💎",
+    message: "Upload photos of coins, bills, or sports cards. Get an ID and selling guidance.",
+    longDescription: "Rookie Collector helps you identify and catalog your collectibles. Upload photos of coins, bills, or sports cards to get immediate identification and practical eBay selling guidance. Perfect for collectors looking to understand their collection's value.",
     link: {
-      href: "https://collector-peach.vercel.app/",
+      href: "https://collector-gold.vercel.app/",
       label: "Collector",
     },
   },

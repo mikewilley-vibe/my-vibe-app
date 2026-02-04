@@ -86,6 +86,7 @@ export default function SiteHeader() {
                       <DropdownLink href="https://vandy-accounting-migration.vercel.app/">Vandy Accounting</DropdownLink>
                       <DropdownLink href="https://card-of-first-food.vercel.app/">Card of First Food</DropdownLink>
                       <DropdownLink href="https://explain-it-peach.vercel.app/">Explain It (Beta)</DropdownLink>
+                      <DropdownLink href="https://collector-gold.vercel.app/">Collector</DropdownLink>
                     </div>
                   )}
                 </div>
@@ -180,6 +181,7 @@ export default function SiteHeader() {
                     <MobileNavLink href="https://vandy-accounting-migration.vercel.app/">Vandy Accounting</MobileNavLink>
                     <MobileNavLink href="https://card-of-first-food.vercel.app/">Card of First Food</MobileNavLink>
                     <MobileNavLink href="https://explain-it-peach.vercel.app/">Explain It (Beta)</MobileNavLink>
+                    <MobileNavLink href="https://collector-gold.vercel.app/">Collector</MobileNavLink>
                   </div>
                 )}
               </div>

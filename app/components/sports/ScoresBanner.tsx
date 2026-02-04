@@ -121,7 +121,7 @@ useEffect(() => {
     cancelled = true;
     clearInterval(t);
   };
-}, [preset, date]); // 👈 state drives URL[dateOverride]);
+}, [preset, date]);
 
   const top = useMemo(() => {
   const list: ScoreGame[] = games ?? [];

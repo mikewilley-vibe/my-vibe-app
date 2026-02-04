@@ -7,13 +7,14 @@ const SCHEDULE_URL = "https://virginiasports.com/sports/mbball/schedule/";
 
 type UvaGame = {
   id: string;
-  sport: "basketball";
+  sport: "basketball" | "football";
   opponent: string;
   date: string; // ISO
   location: "home" | "away" | "neutral";
-  result: "pending"; // schedule-only here
+  result?: "win" | "loss" | "pending";
   note?: string;
   sourceUrl?: string;
+  score?: string;
 };
 
 export async function GET() {
@@ -128,13 +129,13 @@ export async function GET() {
 
     // Fallback to static data if no games found
     if (!games.length) {
-      games = (staticUvaGames || [])
+      games = ((staticUvaGames || [])
         .filter((g) => g.sport === "basketball")
         .map((g) => ({
           ...g,
           result: g.result ?? "pending",
           id: typeof g.id === "number" ? `uva-static-${g.id}` : g.id,
-        }));
+        })) as UvaGame[]);
       scrapeError = scrapeError || "No games found in scrape; using static fallback.";
     }
 
@@ -150,13 +151,13 @@ export async function GET() {
     };
   } catch (err: any) {
     // On error, fallback to static data
-    const games = (staticUvaGames || [])
+    const games = ((staticUvaGames || [])
       .filter((g) => g.sport === "basketball")
       .map((g) => ({
         ...g,
         result: g.result ?? "pending",
         id: typeof g.id === "number" ? `uva-static-${g.id}` : g.id,
-      }));
+      })) as UvaGame[]);
     response = {
       ok: true,
       status: 200,

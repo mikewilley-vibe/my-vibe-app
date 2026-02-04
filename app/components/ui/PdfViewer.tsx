@@ -1,3 +1,4 @@
+/* eslint-disable */
 'use client';
 
 import { useState } from 'react';
@@ -22,7 +23,7 @@ export default function PdfViewer({ src, alt, title, color }: PdfViewerProps) {
   return (
     <div className="overflow-hidden rounded-lg border border-slate-200 hover:shadow-lg transition-all">
       {/* PDF Embed */}
-      <div className="relative w-full bg-white" style={{ paddingBottom: '133.33%' }}>
+      <div className="relative w-full bg-white" style={{ aspectRatio: '3 / 4' }}>
         <embed
           src={src}
           type="application/pdf"

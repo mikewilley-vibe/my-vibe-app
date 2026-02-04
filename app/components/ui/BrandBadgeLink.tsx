@@ -31,6 +31,7 @@ export default function BrandBadgeLink({
       href={href}
       target="_blank"
       rel="noreferrer"
+      title={alt}
       className="inline-flex items-center mt-3 transition-all duration-300
                   hover:opacity-100 opacity-80
                  hover:scale-[1.02]"

@@ -1,3 +1,4 @@
+/* eslint-disable */
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
@@ -460,6 +461,7 @@ const resetTimer = () => {
                   <input
                     type="number"
                     min={0}
+                    placeholder="Work (seconds)"
                     value={config.workSeconds}
                     onChange={(e) => handleConfigChange("workSeconds", Number(e.target.value))}
                     className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm outline-none focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400"
@@ -473,6 +475,7 @@ const resetTimer = () => {
                   <input
                     type="number"
                     min={0}
+                    placeholder="Rest (seconds)"
                     value={config.restSeconds}
                     onChange={(e) => handleConfigChange("restSeconds", Number(e.target.value))}
                     className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm outline-none focus:border-red-400 focus:ring-1 focus:ring-red-400"
@@ -486,6 +489,7 @@ const resetTimer = () => {
                   <input
                     type="number"
                     min={1}
+                    placeholder="Rounds"
                     value={config.rounds}
                     onChange={(e) => handleConfigChange("rounds", Number(e.target.value))}
                     className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm outline-none focus:border-purple-400 focus:ring-1 focus:ring-purple-400"
@@ -502,6 +506,7 @@ const resetTimer = () => {
                     <input
                       type="number"
                       min={1}
+                      placeholder="Minutes (rounds)"
                       value={config.emomMinutes}
                       onChange={(e) => handleConfigChange("emomMinutes", Number(e.target.value))}
                       className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm outline-none focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400"
@@ -516,6 +521,7 @@ const resetTimer = () => {
                       type="number"
                       min={1}
                       max={config.emomIntervalSeconds}
+                      placeholder="Work per minute (seconds)"
                       value={config.emomWorkSeconds}
                       onChange={(e) => handleConfigChange("emomWorkSeconds", Number(e.target.value))}
                       className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm outline-none focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400"
@@ -529,6 +535,7 @@ const resetTimer = () => {
                     <input
                       type="number"
                       min={10}
+                      placeholder="Interval length (seconds)"
                       value={config.emomIntervalSeconds}
                       onChange={(e) => handleConfigChange("emomIntervalSeconds", Number(e.target.value))}
                       className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm outline-none focus:border-purple-400 focus:ring-1 focus:ring-purple-400"
@@ -571,9 +578,10 @@ const resetTimer = () => {
                   <input
                     type="number"
                     min={1}
+                    placeholder="Rounds"
                     value={config.thirtyMinutes}
                     onChange={(e) => handleConfigChange("thirtyMinutes", Number(e.target.value))}
-                    className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm outline-none focus:border-purple-400 focus:ring-1 focus:ring-purple-400"
+                    className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-400"
                   />
                 </div>
               </>

@@ -17,32 +17,33 @@ type UvaGame = {
 };
 
 export async function GET() {
-  const n = (name ?? "").trim();
-  const lower = n.toLowerCase();
+  function normalizeOpponent(name: string) {
+    const n = (name ?? "").trim();
+    const lower = n.toLowerCase();
 
-  if (lower.includes(" vs. ")) {
-    return {
-      opponent: n.split(/ vs\. /i)[1]?.trim() || "Opponent TBA",
-      location: "home" as const,
-    };
+    if (lower.includes(" vs. ")) {
+      return {
+        opponent: n.split(/ vs\. /i)[1]?.trim() || "Opponent TBA",
+        location: "home" as const,
+      };
+    }
+    if (lower.includes(" at ")) {
+      return {
+        opponent: n.split(/ at /i)[1]?.trim() || "Opponent TBA",
+        location: "away" as const,
+      };
+    }
+    return { opponent: n || "Opponent TBA", location: "neutral" as const };
   }
-  if (lower.includes(" at ")) {
-    return {
-      opponent: n.split(/ at /i)[1]?.trim() || "Opponent TBA",
-      location: "away" as const,
-    };
-  }
-  return { opponent: n || "Opponent TBA", location: "neutral" as const };
-}
 
-function pickCityState(ev: any) {
-  const loc =
-    ev.location?.address?.addressLocality ||
-    ev.location?.address?.name ||
-    ev.location?.name ||
-    "";
-  return String(loc).trim();
-}
+  function pickCityState(ev: any) {
+    const loc =
+      ev.location?.address?.addressLocality ||
+      ev.location?.address?.name ||
+      ev.location?.name ||
+      "";
+    return String(loc).trim();
+  }
 
   let response;
   try {

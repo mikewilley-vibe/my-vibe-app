@@ -46,7 +46,14 @@ export async function GET() {
     return String(loc).trim();
   }
 
-  let response;
+  let response: any = {
+    ok: false,
+    status: 500,
+    updatedAt: new Date().toISOString(),
+    games: [],
+    error: "Unknown error",
+  };
+
   try {
     const res = await fetch(SCHEDULE_URL, {
       next: { revalidate: 3600 }, // Cache for 1 hour

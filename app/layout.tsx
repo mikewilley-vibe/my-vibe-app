@@ -1,5 +1,5 @@
 import "./globals.css";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import TransitionProvider from "@/app/components/motion/TransitionProvider";
 import { Inter } from "next/font/google";
 import { CommandPalette } from "@/app/components/ui";
@@ -12,11 +12,6 @@ export const metadata: Metadata = {
   },
   description:
     "Portfolio + dev journal built with Next.js, TypeScript, and Tailwind.",
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 1,
-  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
@@ -24,6 +19,12 @@ export const metadata: Metadata = {
   formatDetection: {
     telephone: false,
   },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
 };
 
 const inter = Inter({ subsets: ["latin"] });

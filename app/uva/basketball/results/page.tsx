@@ -2,6 +2,7 @@
 import { getBaseUrl } from "@/lib/baseUrl";
 import TwoColumnSection from "@/app/components/ui/TwoColumnSection";
 import { safeFetch } from "@/lib/safeFetch";
+import UvaTabs from "@/app/components/uva/UvaTabs";
 export const dynamic = "force-dynamic";
 
 const UVA_ORANGE = "#F84C1E";
@@ -151,6 +152,9 @@ export default async function UvaBasketballResultsPage() {
       style={{ background: `linear-gradient(135deg, ${UVA_BLUE}11, ${UVA_ORANGE}11)` }}
     >
       <section className="mx-auto max-w-5xl px-4 py-12">
+        {/* Tabs */}
+        <UvaTabs />
+
         {/* Header */}
         <div className="mb-8 flex items-center justify-between">
           <div>

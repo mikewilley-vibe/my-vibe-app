@@ -2,6 +2,7 @@
 import { getBaseUrl } from "@/lib/baseUrl";
 import { safeFetch } from "@/lib/safeFetch";
 import ScoresBanner from "@/app/components/sports/ScoresBanner";
+import UvaTabs from "@/app/components/uva/UvaTabs";
 
 export const dynamic = "force-dynamic";
 
@@ -98,6 +99,9 @@ export default async function UvaPage() {
       style={{ backgroundImage: `linear-gradient(135deg, ${UVA_BLUE}11, ${UVA_ORANGE}11)` }}
     >
       <section className="mx-auto max-w-5xl px-4 py-12">
+        {/* Tabs */}
+        <UvaTabs />
+
         {/* Header */}
         <div className="mb-8 flex items-center justify-between">
           <div>

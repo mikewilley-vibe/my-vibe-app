@@ -62,9 +62,10 @@ function LocationChip({ location }: { location: ApiUvaGame["location"] }) {
 
 export default async function UvaPage() {
   const baseUrl = await getBaseUrl();
+  const apiUrl = `${baseUrl}/api/uva`;
 
-  const { ok, data } = await safeFetch<UvaApiResponse>(
-    `${baseUrl}/api/uva`,
+  const { ok, data, error } = await safeFetch<UvaApiResponse>(
+    apiUrl,
     { cache: "no-store" }
   );
 
@@ -77,7 +78,7 @@ export default async function UvaPage() {
             Upcoming games are temporarily unavailable.
           </p>
           <div className="mt-2 text-xs text-red-500">
-            API debug: {JSON.stringify({ ok, data })}
+            API debug: {JSON.stringify({ ok, data, error, apiUrl })}
           </div>
         </section>
       </main>

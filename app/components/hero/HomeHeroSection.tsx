@@ -1,6 +1,8 @@
 import Link from "next/link";
 import FadeIn from "@/app/components/motion/FadeIn";
 import AvatarHero from "@/app/components/hero/AvatarHero";
+import PremiumButton from "@/app/components/ui/PremiumButton";
+import StatusBadge from "@/app/components/ui/StatusBadge";
 
 type Props = {
   title?: string;
@@ -33,54 +35,76 @@ export default function HomeHeroSection({
 }: Props) {
   return (
     <FadeIn>
-      <section className="flex flex-col gap-10 md:flex-row md:items-center">
-        <div className="flex-1 space-y-4">
-          <p className="text-sm font-semibold uppercase tracking-wide text-blue-600">
-            {subtitle}
-          </p>
+      <section className="relative py-8">
+        {/* Premium radial glow */}
+        <div className="pointer-events-none absolute -top-40 left-1/4 w-96 h-96 bg-blue-400/10 rounded-full blur-3xl" />
+        <div className="pointer-events-none absolute -top-20 right-1/4 w-72 h-72 bg-purple-400/10 rounded-full blur-3xl" />
 
-          <h1 className="text-balance text-4xl font-bold leading-tight md:text-5xl">
-            {title}
-          </h1>
+        <div className="relative flex flex-col gap-12 md:flex-row md:items-center md:gap-16">
+          {/* Left Content - Strong Hierarchy */}
+          <div className="flex-1 space-y-6">
+            {/* Status Badge */}
+            <div>
+              <StatusBadge label="Actively Coding" status="live" size="sm" />
+            </div>
 
-          <p className="max-w-xl whitespace-pre-line text-base text-slate-600">
-            {blurb}
-          </p>
+            {/* Headline with underline */}
+            <div>
+              <h1 className="headline-lg bg-clip-text text-transparent bg-gradient-to-r from-slate-900 via-blue-800 to-slate-900 leading-tight">
+                {title}
+              </h1>
+              <div className="mt-3 h-1 w-20 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full" />
+            </div>
 
-          <div className="flex flex-wrap gap-3 pt-2">
-            <Link
-              href={primaryCtaHref}
-              className="rounded-full bg-blue-600 px-5 py-2 text-sm font-semibold text-white shadow-md shadow-blue-600/20 transition hover:bg-blue-700"
-            >
-              {primaryCtaLabel}
-            </Link>
+            {/* Subtitle */}
+            <p className="label-sm text-blue-600 uppercase">
+              {subtitle}
+            </p>
 
-            <Link
-              href={secondaryCtaHref}
-              className="rounded-full border border-slate-300 px-5 py-2 text-sm font-semibold text-slate-800 transition hover:border-blue-700 hover:bg-white"
-            >
-              {secondaryCtaLabel}
-            </Link>
-              <Link
-      href={tertiaryCtaHref}
-      className="rounded-full px-4 py-2 text-sm font-semibold text-slate-500 transition hover:text-slate-700"
-    >
-      {tertiaryCtaLabel} →
-    </Link>
+            {/* Blurb with better hierarchy */}
+            <p className="text-lg text-slate-700 leading-relaxed max-w-xl font-normal">
+              {blurb}
+            </p>
+
+            {/* CTA Buttons with proper spacing */}
+            <div className="flex flex-col sm:flex-row gap-4 pt-4">
+              <PremiumButton 
+                href={primaryCtaHref} 
+                label={primaryCtaLabel}
+                variant="primary"
+                size="md"
+              />
+              <PremiumButton 
+                href={secondaryCtaHref} 
+                label={secondaryCtaLabel}
+                variant="secondary"
+                size="md"
+              />
+              <PremiumButton 
+                href={tertiaryCtaHref} 
+                label={tertiaryCtaLabel}
+                variant="tertiary"
+                size="md"
+              />
+            </div>
+
+            {/* Footer note with better typography */}
+            <p className="text-xs text-slate-500 tracking-wide pt-2">{footerNote}</p>
           </div>
 
-          <p className="text-xs text-slate-500">{footerNote}</p>
+          {/* Right Side - Avatar with Premium Effects */}
+          <div className="flex w-full flex-1 justify-center md:justify-end">
+            <div className="relative">
+              {/* Floating glow behind avatar */}
+              <div className="absolute -inset-8 bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-2xl" />
+              <AvatarHero
+                src="/images/mike-headshot.jpeg"
+                alt="Mike Willey avatar"
+                size="lg"
+              />
+            </div>
+          </div>
         </div>
-
-        {/* Avatar side */}
-        {/* Avatar side */}
-<div className="flex w-full flex-1 justify-center md:justify-end">
-  <AvatarHero
-    src="/images/mike-headshot.jpeg"
-    alt="Mike Willey avatar"
-    size="lg"
-  />
-</div>
       </section>
     </FadeIn>
   );

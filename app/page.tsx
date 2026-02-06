@@ -19,7 +19,6 @@ import PersonalCardGrid from "@/app/components/ui/PersonalCardGrid";
 const personalCards = [
   { 
     title: "UVA Sports", 
-    subtitle: "Games, Basketball & Football",
     emoji: "🏀", 
     href: "/uva", 
     color: "from-blue-500 to-indigo-600",

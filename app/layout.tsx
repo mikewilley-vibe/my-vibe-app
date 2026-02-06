@@ -45,9 +45,14 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
       </head>
       <body className={`${inter.className} grain-texture`}>
-        <div className="min-h-screen flex flex-col bg-slate-50 relative">
-          {/* Subtle animated background glow */}
-          <div className="fixed inset-0 pointer-events-none -z-50">
+        <div className="min-h-screen flex flex-col bg-slate-50 relative" style={{
+          backgroundImage: "url('/images/background.png')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundAttachment: "fixed",
+        }}>
+          {/* Subtle animated background glow overlay */}
+          <div className="fixed inset-0 pointer-events-none -z-40">
             <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-400/5 rounded-full blur-3xl" />
             <div className="absolute bottom-1/4 right-1/4 w-72 h-72 bg-purple-400/5 rounded-full blur-3xl" />
           </div>

@@ -87,7 +87,7 @@ export default function SiteHeader() {
                       <DropdownLink href="https://card-of-first-food.vercel.app/">Card of First Food</DropdownLink>
                       <DropdownLink href="https://explain-it-peach.vercel.app/">Explain It (Beta)</DropdownLink>
                       <DropdownLink href="https://collector-gold.vercel.app/">Collector</DropdownLink>
-                      <DropdownLink href="https://prompt-wizard-woad.vercel.app/">Prompt Wizard</DropdownLink>
+                      <DropdownLink href="https://prompt-wizard-ebon.vercel.app/">Prompt Wizard</DropdownLink>
                     </div>
                   )}
                 </div>
@@ -105,7 +105,7 @@ export default function SiteHeader() {
               <NavLink href="/workout-timer" highlight>HIIT Timer</NavLink>
               <NavLink href="https://first-food.vercel.app/">First Food</NavLink>
               <NavLink href="https://collector-gold.vercel.app/">Collector</NavLink>
-              <NavLink href="https://prompt-wizard-woad.vercel.app/">Prompt Wizard</NavLink>
+              <NavLink href="https://prompt-wizard-ebon.vercel.app/">Prompt Wizard</NavLink>
             </div>
           )}
         </div>
@@ -185,7 +185,7 @@ export default function SiteHeader() {
                     <MobileNavLink href="https://card-of-first-food.vercel.app/">Card of First Food</MobileNavLink>
                     <MobileNavLink href="https://explain-it-peach.vercel.app/">Explain It (Beta)</MobileNavLink>
                     <MobileNavLink href="https://collector-gold.vercel.app/">Collector</MobileNavLink>
-                    <MobileNavLink href="https://prompt-wizard-woad.vercel.app/">Prompt Wizard</MobileNavLink>
+                    <MobileNavLink href="https://prompt-wizard-ebon.vercel.app/">Prompt Wizard</MobileNavLink>
                   </div>
                 )}
               </div>
@@ -202,7 +202,7 @@ export default function SiteHeader() {
               <MobileNavLink href="/workout-timer" highlight>HIIT Timer</MobileNavLink>
               <MobileNavLink href="https://first-food.vercel.app/">First Food</MobileNavLink>
               <MobileNavLink href="https://collector-gold.vercel.app/">Collector</MobileNavLink>
-              <MobileNavLink href="https://prompt-wizard-woad.vercel.app/">Prompt Wizard</MobileNavLink>
+              <MobileNavLink href="https://prompt-wizard-ebon.vercel.app/">Prompt Wizard</MobileNavLink>
             </>
           )}
         </div>

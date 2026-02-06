@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import FadeIn from "@/app/components/motion/FadeIn";
 
 export type PersonalCard = {
@@ -8,6 +9,7 @@ export type PersonalCard = {
   href: string;
   color: string; // keep using "from-x via-y to-z"
   cta: string;
+  image?: string; // optional image to use instead of emoji
 };
 
 export default function PersonalCardGrid({ cards }: { cards: PersonalCard[] }) {
@@ -40,14 +42,24 @@ export default function PersonalCardGrid({ cards }: { cards: PersonalCard[] }) {
 
                 {/* Decorative emoji watermark */}
                 <div className="pointer-events-none absolute top-0 right-0 select-none opacity-10 text-6xl transition-opacity group-hover:opacity-20">
-                  {card.emoji}
+                  {card.image ? "" : card.emoji}
                 </div>
 
                 {/* Content */}
                 <div className="relative flex h-full flex-col justify-between p-6">
                   <div>
                     <div className="text-4xl mb-2 origin-left transition-transform group-hover:scale-125">
-                      {card.emoji}
+                      {card.image ? (
+                        <Image 
+                          src={card.image} 
+                          alt={card.title}
+                          width={48}
+                          height={48}
+                          className="rounded-lg object-cover"
+                        />
+                      ) : (
+                        card.emoji
+                      )}
                     </div>
                     <h3 className="font-bold text-xl text-slate-900">
                       {card.title}

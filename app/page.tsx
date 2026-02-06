@@ -23,7 +23,8 @@ const personalCards = [
     emoji: "🏀", 
     href: "/uva", 
     color: "from-blue-500 to-indigo-600",
-    cta: "View All"
+    cta: "View All",
+    image: "/images/scott.png"
   },
   { title: "Shows", emoji: "🎸", href: "/shows", color: "from-purple-500 to-pink-600", cta: "Explore" },
   { title: "Girl Scouts", emoji: "🍪", href: "https://bea-troop-site.vercel.app/", color: "from-green-500 to-emerald-600", cta: "Visit" },

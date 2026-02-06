@@ -30,10 +30,21 @@ export default function PersonalCardGrid({ cards }: { cards: PersonalCard[] }) {
                   hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-black/10
                   focus-within:ring-2 focus-within:ring-blue-500/40
                 `}
+                style={card.image ? {
+                  backgroundImage: `url(${card.image})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  backgroundAttachment: "fixed"
+                } : undefined}
               >
+                {/* Image overlay to darken and improve text readability */}
+                {card.image && (
+                  <div className="pointer-events-none absolute inset-0 -z-10 bg-black/40" />
+                )}
+
                 {/* Tint layer (your existing gradient), behind the glass */}
                 <div
-                  className={`pointer-events-none absolute inset-0 -z-10 bg-gradient-to-br ${card.color} opacity-35`}
+                  className={`pointer-events-none absolute inset-0 -z-10 bg-gradient-to-br ${card.color} ${card.image ? "opacity-20" : "opacity-35"}`}
                 />
 
                 {/* Soft glow blobs */}
@@ -42,24 +53,14 @@ export default function PersonalCardGrid({ cards }: { cards: PersonalCard[] }) {
 
                 {/* Decorative emoji watermark */}
                 <div className="pointer-events-none absolute top-0 right-0 select-none opacity-10 text-6xl transition-opacity group-hover:opacity-20">
-                  {card.image ? "" : card.emoji}
+                  {card.emoji}
                 </div>
 
                 {/* Content */}
                 <div className="relative flex h-full flex-col justify-between p-6">
                   <div>
                     <div className="text-4xl mb-2 origin-left transition-transform group-hover:scale-125">
-                      {card.image ? (
-                        <Image 
-                          src={card.image} 
-                          alt={card.title}
-                          width={48}
-                          height={48}
-                          className="rounded-lg object-cover"
-                        />
-                      ) : (
-                        card.emoji
-                      )}
+                      {card.emoji}
                     </div>
                     <h3 className="font-bold text-xl text-slate-900">
                       {card.title}

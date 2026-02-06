@@ -269,6 +269,17 @@ export const projects: Project[] = [
       label: "Collector",
     },
   },
+  {
+    slug: "prompt-wizard",
+    title: "Prompt Wizard",
+    emoji: "🧙",
+    message: "Craft better AI prompts with guided templates and best practices.",
+    longDescription: "Prompt Wizard helps you write better prompts for ChatGPT, Claude, and other AI models. Get guided templates, learn prompt engineering best practices, refine your questions, and save your best prompts for future use. Perfect for anyone looking to get better results from AI.",
+    link: {
+      href: "https://prompt-wizard-woad.vercel.app/",
+      label: "Prompt Wizard",
+    },
+  },
 ];
 
 export function getProjectBySlug(slug: string) {

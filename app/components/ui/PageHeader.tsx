@@ -12,27 +12,39 @@ export default function PageHeader({
   rightSlot,
 }: Props) {
   return (
-    <header className="mb-8">
-      {eyebrow ? (
-        <p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-500 truncate">
-          {eyebrow}
-        </p>
-      ) : null}
+    <header className="mb-16 relative">
+      {/* Subtle background glow */}
+      <div className="pointer-events-none absolute -top-20 left-0 w-96 h-96 bg-blue-400/5 rounded-full blur-3xl" />
 
-      <div className="mt-2 flex items-start justify-between gap-4">
-        <div>
-          <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-slate-900 dark:text-slate-50">
-            {title}
-          </h1>
+      <div className="relative">
+        {eyebrow ? (
+          <p className="label-xs text-blue-600 uppercase tracking-wider mb-3">
+            {eyebrow}
+          </p>
+        ) : null}
 
-          {description ? (
-            <p className="mt-3 text-sm text-slate-600 dark:text-slate-300 max-w-2xl">
-              {description}
-            </p>
+        <div className="flex items-start justify-between gap-8 flex-wrap">
+          <div className="flex-1 space-y-4">
+            <h1 className="headline-lg text-slate-900">
+              {title}
+            </h1>
+
+            {/* Signature accent line */}
+            <div className="h-1 w-24 bg-gradient-to-r from-blue-500 via-purple-500 to-transparent rounded-full" />
+
+            {description ? (
+              <p className="text-lg text-slate-600 max-w-3xl leading-relaxed font-normal">
+                {description}
+              </p>
+            ) : null}
+          </div>
+
+          {rightSlot ? (
+            <div className="shrink-0 flex items-center">
+              {rightSlot}
+            </div>
           ) : null}
         </div>
-
-        {rightSlot ? <div className="shrink-0">{rightSlot}</div> : null}
       </div>
     </header>
   );

@@ -49,7 +49,6 @@ export default function PersonalCardGrid({ cards }: { cards: PersonalCard[] }) {
                   backgroundImage: `url(${card.image})`,
                   backgroundSize: "cover",
                   backgroundPosition: "center",
-                  backgroundAttachment: "fixed"
                 } : undefined}
               >
                 {/* Glass layer with enhanced blur */}
@@ -57,7 +56,7 @@ export default function PersonalCardGrid({ cards }: { cards: PersonalCard[] }) {
 
                 {/* Image overlay gradient */}
                 {card.image && (
-                  <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-br from-black/50 via-black/40 to-black/50" />
+                  <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-br from-black/40 via-black/30 to-black/40" />
                 )}
 
                 {/* Tint layer with reduced opacity for glass effect */}

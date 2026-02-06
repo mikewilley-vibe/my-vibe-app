@@ -60,7 +60,7 @@ const personalCards = [
   { 
     title: "Seasonal Sous Chef", 
     emoji: "🍽️", 
-    href: "https://local-sausage.vercel.app/", 
+    href: "/projects/card-of-first-food", 
     color: "from-yellow-500 to-amber-600", 
     cta: "Browse",
     image: "/images/kitchen.png"

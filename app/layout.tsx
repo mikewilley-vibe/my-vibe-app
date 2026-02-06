@@ -2,6 +2,7 @@
 import "./globals.css";
 import type { Metadata, Viewport } from "next";
 import TransitionProvider from "@/app/components/motion/TransitionProvider";
+import DynamicBackground from "@/app/components/layout/DynamicBackground";
 import { Inter } from "next/font/google";
 import { CommandPalette } from "@/app/components/ui";
 import SiteHeader from "@/app/components/nav/SiteHeader";
@@ -45,12 +46,7 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
       </head>
       <body className={`${inter.className} grain-texture`}>
-        <div className="min-h-screen flex flex-col bg-slate-50 relative" style={{
-          backgroundImage: "url('/images/background.png')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundAttachment: "fixed",
-        }}>
+        <DynamicBackground>
           {/* Subtle animated background glow overlay */}
           <div className="fixed inset-0 pointer-events-none -z-40">
             <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-400/5 rounded-full blur-3xl" />
@@ -83,7 +79,7 @@ export default function RootLayout({
               </div>
             </div>
           </footer>
-        </div>
+        </DynamicBackground>
         <CommandPalette />
       </body>
     </html>

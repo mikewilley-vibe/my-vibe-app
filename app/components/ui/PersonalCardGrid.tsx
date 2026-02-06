@@ -37,31 +37,36 @@ export default function PersonalCardGrid({ cards }: { cards: PersonalCard[] }) {
               <div
                 className={`
                   group relative h-40 overflow-hidden rounded-2xl 
-                  border border-white/50
-                  bg-white/15 backdrop-blur-3xl backdrop-saturate-150 backdrop-brightness-110
-                  shadow-xl shadow-black/8 transition-all duration-300
+                  border border-white/50 shadow-xl shadow-black/8 transition-all duration-300
                   hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-black/12
-                  hover:border-white/70 hover:bg-white/25
+                  hover:border-white/70
                   focus-within:ring-2 focus-within:ring-blue-400/60
                   sheen-on-hover edge-highlight
                 `}
-                style={card.image ? {
-                  backgroundImage: `url(${card.image})`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                } : undefined}
               >
-                {/* Glass layer with enhanced blur */}
-                <div className="pointer-events-none absolute inset-0 -z-10 backdrop-blur-xl" />
-
-                {/* Image overlay gradient */}
+                {/* Background image layer */}
                 {card.image && (
-                  <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-br from-black/40 via-black/30 to-black/40" />
+                  <div 
+                    className="absolute inset-0 -z-20"
+                    style={{
+                      backgroundImage: `url(${card.image})`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                    }}
+                  />
                 )}
+
+                {/* Image overlay gradient - darker for readability */}
+                {card.image && (
+                  <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-br from-black/35 via-black/25 to-black/35" />
+                )}
+
+                {/* Glass backdrop layer */}
+                <div className="pointer-events-none absolute inset-0 -z-10 bg-white/10 backdrop-blur-xl backdrop-saturate-150" />
 
                 {/* Tint layer with reduced opacity for glass effect */}
                 <div
-                  className={`pointer-events-none absolute inset-0 -z-10 bg-gradient-to-br ${card.color} ${card.image ? "opacity-10" : "opacity-20"}`}
+                  className={`pointer-events-none absolute inset-0 -z-10 bg-gradient-to-br ${card.color} ${card.image ? "opacity-5" : "opacity-15"}`}
                 />
 
                 {/* Soft glow blobs on hover */}

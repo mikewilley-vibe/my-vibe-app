@@ -79,42 +79,24 @@ export default function HomePage() {
   if (isPersonal) {
     return (
       <main className="min-h-screen bg-gradient-to-b from-slate-50 via-blue-50/10 to-white">
-        <div className="mx-auto max-w-6xl px-4 py-20 space-y-20">
-          {/* Top Section: Status & Quick Info */}
+        <div className="mx-auto max-w-6xl px-4 py-12 space-y-8">
+          {/* Top Section: Weather & Status */}
           <FadeIn delay={0}>
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-8">
-              <div className="flex-1">
-                <h1 className="headline-lg text-slate-900 mb-3">
-                  Welcome back, Mike
-                </h1>
-                <p className="text-lg text-slate-600 max-w-2xl">
-                  Here's your family hub. Weather, schedules, games, and quick access to everything that matters.
-                </p>
-              </div>
-              <div className="flex-shrink-0">
-                <WeatherCard />
-              </div>
-            </div>
+            <WeatherCard />
           </FadeIn>
 
-          {/* Divider */}
-          <div className="h-px bg-gradient-to-r from-transparent via-blue-200 to-transparent" />
-
           {/* Games & Sports Section */}
-          <FadeIn delay={0.1}>
+          <FadeIn delay={0.05}>
             <ScoresBanner />
           </FadeIn>
 
-          {/* Divider */}
-          <div className="h-px bg-gradient-to-r from-transparent via-blue-200 to-transparent" />
-
           {/* Calendar Section - Left Heavy (Asymmetric) */}
-          <FadeIn delay={0.15}>
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
+          <FadeIn delay={0.1}>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
               {/* Calendar - 2 cols */}
               <div className="lg:col-span-2">
-                <p className="label-xs text-blue-600 uppercase mb-4">Upcoming Events</p>
-                <h2 className="headline-md text-slate-900 mb-6">
+                <p className="label-xs text-blue-600 uppercase mb-3">Upcoming Events</p>
+                <h2 className="headline-md text-slate-900 mb-4">
                   Family Calendar
                 </h2>
                 <div className="overflow-hidden rounded-3xl shadow-lg">
@@ -181,19 +163,13 @@ export default function HomePage() {
             </div>
           </FadeIn>
 
-          {/* Divider */}
-          <div className="h-px bg-gradient-to-r from-transparent via-blue-200 to-transparent" />
-
           {/* Card Grid */}
-          <FadeIn delay={0.25}>
+          <FadeIn delay={0.15}>
             <PersonalCardGrid cards={personalCards} />
           </FadeIn>
 
-          {/* Divider */}
-          <div className="h-px bg-gradient-to-r from-transparent via-blue-200 to-transparent" />
-
           {/* Family Section */}
-          <FadeIn delay={0.4}>
+          <FadeIn delay={0.25}>
             <FamilySection />
           </FadeIn>
         </div>
@@ -204,22 +180,19 @@ export default function HomePage() {
   // Portfolio mode: show full featured home page
   return (
     <main className="min-h-screen bg-gradient-to-b from-slate-50 via-blue-50/5 to-white">
-      <div className="mx-auto flex max-w-6xl flex-col gap-24 px-4 pb-24 pt-12">
+      <div className="mx-auto flex max-w-6xl flex-col gap-12 px-4 pb-16 pt-12">
         {/* Top Banner */}
         <FadeIn delay={0}>
           <SponsorRotator sponsors={sponsors} visibleCount={2} intervalMs={8000} />
         </FadeIn>
 
         {/* Premium Hero Section */}
-        <FadeIn delay={0.1}>
+        <FadeIn delay={0.05}>
           <HomeHeroSection />
         </FadeIn>
 
-        {/* Divider with breathing room */}
-        <div className="h-px bg-gradient-to-r from-transparent via-blue-200 to-transparent" />
-
         {/* Weather & Vibe */}
-        <FadeIn delay={0.2}>
+        <FadeIn delay={0.1}>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="md:col-span-1">
               <WeatherCard />
@@ -230,27 +203,18 @@ export default function HomePage() {
           </div>
         </FadeIn>
 
-        {/* Divider */}
-        <div className="h-px bg-gradient-to-r from-transparent via-blue-200 to-transparent" />
-
         {/* Latest Vibes */}
-        <FadeIn delay={0.3}>
+        <FadeIn delay={0.15}>
           <LatestVibesSection />
         </FadeIn>
 
-        {/* Divider */}
-        <div className="h-px bg-gradient-to-r from-transparent via-blue-200 to-transparent" />
-
         {/* Featured Projects */}
-        <FadeIn delay={0.4}>
+        <FadeIn delay={0.2}>
           <FeaturedProjectsSection />
         </FadeIn>
 
-        {/* Divider */}
-        <div className="h-px bg-gradient-to-r from-transparent via-blue-200 to-transparent" />
-
         {/* Vibe of the Day */}
-        <FadeIn delay={0.5}>
+        <FadeIn delay={0.25}>
           <VibeOfTheDay />
         </FadeIn>
       </div>

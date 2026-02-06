@@ -44,19 +44,38 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
       </head>
-      <body className={inter.className}>
-        <div className="min-h-screen flex flex-col bg-slate-50">
+      <body className={`${inter.className} grain-texture`}>
+        <div className="min-h-screen flex flex-col bg-slate-50 relative">
+          {/* Subtle animated background glow */}
+          <div className="fixed inset-0 pointer-events-none -z-50">
+            <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-400/5 rounded-full blur-3xl" />
+            <div className="absolute bottom-1/4 right-1/4 w-72 h-72 bg-purple-400/5 rounded-full blur-3xl" />
+          </div>
+
           {/* NAVBAR */}
 <SiteHeader />
 
           {/* PAGE CONTENT */}
-          <main className="flex-1">
+          <main className="flex-1 relative z-10">
   <TransitionProvider>{children}</TransitionProvider>
 </main>
-          {/* FOOTER */}
-          <footer className="border-t bg-white">
-            <div className="mx-auto max-w-5xl px-4 py-4 text-xs text-slate-500">
-              © {new Date().getFullYear()} Mike's Vibe Coder HQ
+          
+          {/* FOOTER - Premium styling */}
+          <footer className="relative z-20 border-t border-white/20 bg-white/40 backdrop-blur-md">
+            <div className="mx-auto max-w-6xl px-4 py-8 text-xs text-slate-500">
+              <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+                <div>
+                  © {new Date().getFullYear()} Mike's Vibe Coder HQ · Engineered with Next.js
+                </div>
+                <div className="flex gap-4 text-slate-400">
+                  <a href="https://github.com/mikewilley-vibe" target="_blank" rel="noopener noreferrer" className="hover:text-slate-600 transition-colors">
+                    GitHub
+                  </a>
+                  <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="hover:text-slate-600 transition-colors">
+                    Twitter
+                  </a>
+                </div>
+              </div>
             </div>
           </footer>
         </div>

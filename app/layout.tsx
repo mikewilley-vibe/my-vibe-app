@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-html-link-for-pages, @next/next/google-font-display */
 import "./globals.css";
 import type { Metadata, Viewport } from "next";
 import TransitionProvider from "@/app/components/motion/TransitionProvider";

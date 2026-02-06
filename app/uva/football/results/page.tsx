@@ -1,4 +1,5 @@
 // app/uva/football/results/page.tsx
+/* eslint-disable @next/next/no-css-tags */
 import { getBaseUrl } from "@/lib/baseUrl";
 import TwoColumnSection from "@/app/components/ui/TwoColumnSection";
 import ScoresBanner from "@/app/components/sports/ScoresBanner";

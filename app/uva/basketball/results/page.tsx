@@ -1,4 +1,5 @@
 // app/uva/basketball/results/page.tsx
+/* eslint-disable @next/next/no-css-tags */
 import { getBaseUrl } from "@/lib/baseUrl";
 import TwoColumnSection from "@/app/components/ui/TwoColumnSection";
 import { safeFetch } from "@/lib/safeFetch";

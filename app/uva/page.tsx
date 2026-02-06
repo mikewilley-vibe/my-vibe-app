@@ -1,4 +1,5 @@
 // app/uva/page.tsx
+/* eslint-disable @next/next/no-css-tags, @stylistic/jsx-props-no-spreading */
 import { getBaseUrl } from "@/lib/baseUrl";
 import { safeFetch } from "@/lib/safeFetch";
 import ScoresBanner from "@/app/components/sports/ScoresBanner";

@@ -26,11 +26,46 @@ const personalCards = [
     cta: "View All",
     image: "/images/scott.png"
   },
-  { title: "Shows", emoji: "🎸", href: "/shows", color: "from-purple-500 to-pink-600", cta: "Explore" },
-  { title: "Girl Scouts", emoji: "🍪", href: "https://bea-troop-site.vercel.app/", color: "from-green-500 to-emerald-600", cta: "Visit" },
-  { title: "Orchard House", emoji: "🏀", href: "https://www.orchardhousebasketball.org/", color: "from-amber-500 to-orange-600", cta: "Learn" },
-  { title: "HIIT Timer", emoji: "⏱️", href: "/workout-timer", color: "from-red-500 to-rose-600", cta: "Start" },
-  { title: "Seasonal Sous Chef", emoji: "🍽️", href: "https://local-sausage.vercel.app/", color: "from-yellow-500 to-amber-600", cta: "Browse" },
+  { 
+    title: "Shows", 
+    emoji: "🎸", 
+    href: "/shows", 
+    color: "from-purple-500 to-pink-600", 
+    cta: "Explore",
+    image: "/images/rock.png"
+  },
+  { 
+    title: "Girl Scouts", 
+    emoji: "🍪", 
+    href: "https://bea-troop-site.vercel.app/", 
+    color: "from-green-500 to-emerald-600", 
+    cta: "Visit",
+    image: "/images/cookie.png"
+  },
+  { 
+    title: "Orchard House", 
+    emoji: "🏀", 
+    href: "https://www.orchardhousebasketball.org/", 
+    color: "from-amber-500 to-orange-600", 
+    cta: "Learn",
+    image: "/images/ohball.png"
+  },
+  { 
+    title: "HIIT Timer", 
+    emoji: "⏱️", 
+    href: "/workout-timer", 
+    color: "from-red-500 to-rose-600", 
+    cta: "Start",
+    image: "/images/hiit.png"
+  },
+  { 
+    title: "Seasonal Sous Chef", 
+    emoji: "🍽️", 
+    href: "https://local-sausage.vercel.app/", 
+    color: "from-yellow-500 to-amber-600", 
+    cta: "Browse",
+    image: "/images/kitchen.png"
+  },
 ];
 
 export default function HomePage() {

@@ -43,94 +43,123 @@ export default function HomePage() {
   // Personal mode: show card grid with family and calendar
   if (isPersonal) {
     return (
-      <main className="min-h-screen bg-gradient-to-b from-slate-50 via-blue-50/20 to-white">
-        <div className="mx-auto max-w-5xl px-4 py-16">
+      <main className="min-h-screen bg-gradient-to-b from-slate-50 via-blue-50/10 to-white">
+        <div className="mx-auto max-w-6xl px-4 py-20 space-y-20">
+          {/* Top Section: Status & Quick Info */}
           <FadeIn delay={0}>
-            <WeatherCard />
-          </FadeIn>
-          <FadeIn delay={0.1}>
-            <ScoresBanner />
-          </FadeIn>
-
-          {/* Calendar Section at Top */}
-          <FadeIn delay={0.2}>
-            <div className="mb-16">
-              <CalendarEmbed
-                title="My Calendar"
-                description="Public events I've shared"
-                src="https://calendar.google.com/calendar/embed?src=mikewilley%40gmail.com&ctz=America%2FNew_York"
-                view="MONTH"
-                height={500}
-              />
-            </div>
-          </FadeIn>
-
-          {/* School Calendars */}
-          <FadeIn delay={0.25}>
-            <div className="mb-16">
-              <h2 className="mb-6 text-2xl font-bold text-slate-900">Family School Calendars</h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {/* Katie School */}
-                <Link
-                  href="https://www.npsk12.com/our-division/academic-calendar/2025-2026-academic-calendar"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group overflow-hidden rounded-xl border border-slate-200 hover:border-blue-400 transition-all hover:shadow-lg hover:scale-105"
-                >
-                  <div className="bg-gradient-to-br from-blue-50 to-slate-50 p-6 flex flex-col items-center justify-center hover:from-blue-100 hover:to-slate-100 transition-all h-48">
-                    <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">📚</div>
-                    <h4 className="text-sm font-bold text-slate-900 text-center mb-2">Katie</h4>
-                    <p className="text-xs text-slate-600 text-center leading-relaxed">2025-26<br/>Academic<br/>Calendar</p>
-                  </div>
-                </Link>
-
-                {/* Bea School */}
-                <Link
-                  href="https://resources.finalsite.net/images/v1760363929/rvaschoolsnet/pivmboyjibodqzoiiqx8/ENG_2025-26RPS200Calendar1.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group overflow-hidden rounded-xl border border-slate-200 hover:border-amber-400 transition-all hover:shadow-lg hover:scale-105"
-                >
-                  <div className="bg-gradient-to-br from-amber-50 to-slate-50 p-6 flex flex-col items-center justify-center hover:from-amber-100 hover:to-slate-100 transition-all h-48">
-                    <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">📖</div>
-                    <h4 className="text-sm font-bold text-slate-900 text-center mb-2">Bea</h4>
-                    <p className="text-xs text-slate-600 text-center leading-relaxed">RPS 2025-26<br/>Academic<br/>Calendar</p>
-                  </div>
-                </Link>
-
-                {/* Mary School */}
-                <Link
-                  href="https://bloomerang-bee.s3.amazonaws.com/images/clapton_cysx6cjdvalm_us_west_2_rds_amazonaws_com_orchardhouse/Documents%20to%20Link/Calendar%20-%20Academic%20Calendar%2025-26%20%288.11.25%29.pdf?blm_aid=128083"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group overflow-hidden rounded-xl border border-slate-200 hover:border-emerald-400 transition-all hover:shadow-lg hover:scale-105"
-                >
-                  <div className="bg-gradient-to-br from-emerald-50 to-slate-50 p-6 flex flex-col items-center justify-center hover:from-emerald-100 hover:to-slate-100 transition-all h-48">
-                    <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">✏️</div>
-                    <h4 className="text-sm font-bold text-slate-900 text-center mb-2">Mary</h4>
-                    <p className="text-xs text-slate-600 text-center leading-relaxed">Academic<br/>Calendar<br/>2025-26</p>
-                  </div>
-                </Link>
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-8">
+              <div className="flex-1">
+                <h1 className="headline-lg text-slate-900 mb-3">
+                  Welcome back, Mike
+                </h1>
+                <p className="text-lg text-slate-600 max-w-2xl">
+                  Here's your family hub. Weather, schedules, games, and quick access to everything that matters.
+                </p>
+              </div>
+              <div className="flex-shrink-0">
+                <WeatherCard />
               </div>
             </div>
           </FadeIn>
 
-          {/* Welcome Section */}
-          <FadeIn delay={0.3}>
-            <h1 className="mb-2 text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
-              Welcome Back
-            </h1>
-            <p className="mb-12 text-lg text-slate-600">Quick access to your favorite apps and utilities</p>
+          {/* Divider */}
+          <div className="h-px bg-gradient-to-r from-transparent via-blue-200 to-transparent" />
+
+          {/* Games & Sports Section */}
+          <FadeIn delay={0.1}>
+            <ScoresBanner />
           </FadeIn>
 
+          {/* Divider */}
+          <div className="h-px bg-gradient-to-r from-transparent via-blue-200 to-transparent" />
+
+          {/* Calendar Section - Left Heavy (Asymmetric) */}
+          <FadeIn delay={0.15}>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
+              {/* Calendar - 2 cols */}
+              <div className="lg:col-span-2">
+                <p className="label-xs text-blue-600 uppercase mb-4">Upcoming Events</p>
+                <h2 className="headline-md text-slate-900 mb-6">
+                  Family Calendar
+                </h2>
+                <div className="overflow-hidden rounded-3xl shadow-lg">
+                  <CalendarEmbed
+                    title="My Calendar"
+                    description="Public events I've shared"
+                    src="https://calendar.google.com/calendar/embed?src=mikewilley%40gmail.com&ctz=America%2FNew_York"
+                    view="MONTH"
+                    height={500}
+                  />
+                </div>
+              </div>
+
+              {/* School Calendars - 1 col */}
+              <div className="lg:col-span-1">
+                <p className="label-xs text-blue-600 uppercase mb-4">Quick Links</p>
+                <h3 className="headline-md text-slate-900 mb-6">
+                  School Calendars
+                </h3>
+                <div className="space-y-3">
+                  {/* Katie School */}
+                  <Link
+                    href="https://www.npsk12.com/our-division/academic-calendar/2025-2026-academic-calendar"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group overflow-hidden rounded-2xl border border-blue-200/50 hover:border-blue-400 transition-all hover:shadow-md hover:-translate-y-0.5 block"
+                  >
+                    <div className="bg-gradient-to-br from-blue-50/60 to-slate-50/60 backdrop-blur-sm p-4 flex flex-col items-center justify-center hover:from-blue-100/60 hover:to-slate-100/60 transition-all h-auto py-6">
+                      <div className="text-3xl mb-2 group-hover:scale-110 transition-transform">📚</div>
+                      <h4 className="text-xs font-bold text-slate-900 text-center">Katie</h4>
+                      <p className="text-xs text-slate-600 text-center mt-1">2025-26</p>
+                    </div>
+                  </Link>
+
+                  {/* Bea School */}
+                  <Link
+                    href="https://resources.finalsite.net/images/v1760363929/rvaschoolsnet/pivmboyjibodqzoiiqx8/ENG_2025-26RPS200Calendar1.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group overflow-hidden rounded-2xl border border-amber-200/50 hover:border-amber-400 transition-all hover:shadow-md hover:-translate-y-0.5 block"
+                  >
+                    <div className="bg-gradient-to-br from-amber-50/60 to-slate-50/60 backdrop-blur-sm p-4 flex flex-col items-center justify-center hover:from-amber-100/60 hover:to-slate-100/60 transition-all h-auto py-6">
+                      <div className="text-3xl mb-2 group-hover:scale-110 transition-transform">📖</div>
+                      <h4 className="text-xs font-bold text-slate-900 text-center">Bea</h4>
+                      <p className="text-xs text-slate-600 text-center mt-1">RPS</p>
+                    </div>
+                  </Link>
+
+                  {/* Mary School */}
+                  <Link
+                    href="https://bloomerang-bee.s3.amazonaws.com/images/clapton_cysx6cjdvalm_us_west_2_rds_amazonaws_com_orchardhouse/Documents%20to%20Link/Calendar%20-%20Academic%20Calendar%2025-26%20%288.11.25%29.pdf?blm_aid=128083"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group overflow-hidden rounded-2xl border border-emerald-200/50 hover:border-emerald-400 transition-all hover:shadow-md hover:-translate-y-0.5 block"
+                  >
+                    <div className="bg-gradient-to-br from-emerald-50/60 to-slate-50/60 backdrop-blur-sm p-4 flex flex-col items-center justify-center hover:from-emerald-100/60 hover:to-slate-100/60 transition-all h-auto py-6">
+                      <div className="text-3xl mb-2 group-hover:scale-110 transition-transform">✏️</div>
+                      <h4 className="text-xs font-bold text-slate-900 text-center">Mary</h4>
+                      <p className="text-xs text-slate-600 text-center mt-1">Orchard</p>
+                    </div>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </FadeIn>
+
+          {/* Divider */}
+          <div className="h-px bg-gradient-to-r from-transparent via-blue-200 to-transparent" />
+
           {/* Card Grid */}
-          <PersonalCardGrid cards={personalCards} />
+          <FadeIn delay={0.25}>
+            <PersonalCardGrid cards={personalCards} />
+          </FadeIn>
+
+          {/* Divider */}
+          <div className="h-px bg-gradient-to-r from-transparent via-blue-200 to-transparent" />
 
           {/* Family Section */}
-          <FadeIn delay={0.65}>
-            <div className="mb-16">
-              <FamilySection />
-            </div>
+          <FadeIn delay={0.4}>
+            <FamilySection />
           </FadeIn>
         </div>
       </main>
@@ -139,27 +168,54 @@ export default function HomePage() {
 
   // Portfolio mode: show full featured home page
   return (
-    <main className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
-      <div className="mx-auto flex max-w-5xl flex-col gap-8 px-4 pb-16 pt-10">
+    <main className="min-h-screen bg-gradient-to-b from-slate-50 via-blue-50/5 to-white">
+      <div className="mx-auto flex max-w-6xl flex-col gap-24 px-4 pb-24 pt-12">
+        {/* Top Banner */}
         <FadeIn delay={0}>
           <SponsorRotator sponsors={sponsors} visibleCount={2} intervalMs={8000} />
         </FadeIn>
+
+        {/* Premium Hero Section */}
         <FadeIn delay={0.1}>
-          <WeatherCard />
-        </FadeIn>
-        <FadeIn delay={0.2}>
-          <ScoresBanner />
-        </FadeIn>
-        <FadeIn delay={0.3}>
           <HomeHeroSection />
         </FadeIn>
-        <FadeIn delay={0.4}>
+
+        {/* Divider with breathing room */}
+        <div className="h-px bg-gradient-to-r from-transparent via-blue-200 to-transparent" />
+
+        {/* Weather & Vibe */}
+        <FadeIn delay={0.2}>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="md:col-span-1">
+              <WeatherCard />
+            </div>
+            <div className="md:col-span-2">
+              <ScoresBanner />
+            </div>
+          </div>
+        </FadeIn>
+
+        {/* Divider */}
+        <div className="h-px bg-gradient-to-r from-transparent via-blue-200 to-transparent" />
+
+        {/* Latest Vibes */}
+        <FadeIn delay={0.3}>
           <LatestVibesSection />
         </FadeIn>
-        <FadeIn delay={0.5}>
+
+        {/* Divider */}
+        <div className="h-px bg-gradient-to-r from-transparent via-blue-200 to-transparent" />
+
+        {/* Featured Projects */}
+        <FadeIn delay={0.4}>
           <FeaturedProjectsSection />
         </FadeIn>
-        <FadeIn delay={0.6}>
+
+        {/* Divider */}
+        <div className="h-px bg-gradient-to-r from-transparent via-blue-200 to-transparent" />
+
+        {/* Vibe of the Day */}
+        <FadeIn delay={0.5}>
           <VibeOfTheDay />
         </FadeIn>
       </div>

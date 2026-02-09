@@ -49,7 +49,7 @@ export default async function ShowsPage() {
       </div>
       <section className="relative z-10 mx-auto max-w-5xl px-4 py-10">
         <ScrollReveal direction="down">
-          <div className="flex items-baseline justify-between gap-4 mb-4">
+          <div className="flex items-baseline justify-between gap-4 mb-6">
             <div className="space-y-2">
               <h1 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-700">Shows</h1>
               <p className="text-base text-slate-600">My favorite artists + venues across Hampton Roads, Richmond, and DC</p>
@@ -65,6 +65,40 @@ export default async function ShowsPage() {
           </div>
         </ScrollReveal>
 
+        {/* Monitored Venues Banner - Compact */}
+        {venues && venues.length > 0 && (
+          <FadeIn delay={0.08}>
+            <div className="mb-8 rounded-lg border border-slate-200 bg-white/40 backdrop-blur-sm p-3">
+              <div className="flex items-center justify-between gap-4">
+                <div className="flex items-center gap-3 flex-1 overflow-x-auto pb-1">
+                  <span className="text-xs font-semibold text-slate-600 uppercase tracking-wide whitespace-nowrap">Venues:</span>
+                  <div className="flex gap-2 flex-1 overflow-x-auto">
+                    {venues.map((v: any) => (
+                      <a
+                        key={v.id}
+                        href={v.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-slate-100 hover:bg-slate-200 transition-colors text-xs font-medium text-slate-700 whitespace-nowrap"
+                      >
+                        {v.name}
+                        {unseenByVenue.get(v.id) ? (
+                          <span className="ml-1 rounded-full bg-blue-500 text-white px-1.5 text-xs font-bold">
+                            {unseenByVenue.get(v.id)}
+                          </span>
+                        ) : null}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+                <Link href="/shows/new" className="text-xs underline opacity-70 hover:opacity-100 whitespace-nowrap">
+                  View all
+                </Link>
+              </div>
+            </div>
+          </FadeIn>
+        )}
+
         <FadeIn delay={0.1}>
           <div className="hidden md:block">
             <InteractiveHover scaleOnHover={1.01} shadowOnHover>
@@ -73,51 +107,8 @@ export default async function ShowsPage() {
           </div>
         </FadeIn>
 
-        {/* Venue Status Section */}
+        {/* Local Shows - Main Content */}
         <ScrollReveal direction="up" delay={0.15}>
-          <div className="mt-12">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-semibold text-slate-900">Monitored Venues</h2>
-              <Link href="/shows/new" className="text-sm underline opacity-80 hover:opacity-100">
-                View new shows
-              </Link>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {venues?.map((v: any) => (
-                <div key={v.id} className="rounded-xl border border-slate-200 p-4 bg-white/50 backdrop-blur-sm hover:bg-white/70 transition-colors">
-                  <a href={v.url} target="_blank" rel="noreferrer" className="font-semibold text-slate-900 hover:text-blue-600 transition-colors">
-                    {v.name}
-                  </a>
-                  <div className="mt-3 space-y-1 text-sm text-slate-600">
-                    <div>
-                      Last checked:{" "}
-                      <span className="text-slate-900 font-medium">
-                        {v.last_checked_at
-                          ? new Date(v.last_checked_at).toLocaleString()
-                          : "Never"}
-                      </span>
-                    </div>
-                    <div>
-                      Unseen:{" "}
-                      <span className="text-slate-900 font-semibold">
-                        {unseenByVenue.get(v.id) ?? 0}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {venues && venues.length === 0 && (
-              <div className="rounded-xl border border-slate-200 p-6 text-center text-sm text-slate-600">
-                No venues configured yet.
-              </div>
-            )}
-          </div>
-        </ScrollReveal>
-
-        <ScrollReveal direction="up" delay={0.2}>
           <ShowTabs myArtists={myArtists} />
         </ScrollReveal>
       </section>

@@ -27,7 +27,9 @@ export default function ShowsPage() {
         </FadeIn>
 
         <FadeIn delay={0.1}>
-          <ArtistRotator artists={myArtists} visibleCount={3} intervalMs={6000} />
+          <div className="hidden md:block">
+            <ArtistRotator artists={myArtists} visibleCount={3} intervalMs={6000} />
+          </div>
         </FadeIn>
 
         <FadeIn delay={0.2}>

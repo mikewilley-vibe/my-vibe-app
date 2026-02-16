@@ -16,6 +16,20 @@ export const projects: Project[] = [
   // ...existing code...
     // ...existing code...
     {
+      slug: "fairfax-community-revitalization-migration",
+      title: "Fairfax Community Revitalization Migration",
+      emoji: "📊",
+      message:
+        "Migrating a community initiative to the Fairfax County planning system.",
+      longDescription:
+        "Working on integrating the Orchard Community Revitalization (OCR) site into Fairfax County's Planning and Development department infrastructure. In progress—awaiting county email access to finalize the transition and unlock seamless integration.",
+      image: "/images/fairfax-ocr2.png",
+      link: {
+        href: "https://www.fcrevite.org/",
+        label: "fcrevite.org",
+      },
+    },
+    {
       slug: "card-of-first-food",
       title: "First Food",
       emoji: "🍱",
@@ -99,7 +113,7 @@ export const projects: Project[] = [
       "Built a team hub to keep the squad organized and connected.",
     longDescription:
       "Coaching my daughter's middle school basketball team, I realized there was no centralized place for schedules, game locations, jersey assignments, or team updates. So I built one. It's become the go-to resource for families to stay in sync on practices, games, and everything in between.",
-    image: "/images/gryphons.png",
+    image: "/images/FullSizeRender.jpeg",
     link: {
       href: "https://orchardhousebasketball.org",
       label: "Orchard House Hoops",
@@ -217,20 +231,6 @@ export const projects: Project[] = [
     link: {
       href: "https://www.mikewilley.app/gallery",
       label: "Gallery"
-    },
-  },
-  {
-    slug: "fairfax-community-revitalization-migration",
-    title: "Fairfax Community Revitalization Migration",
-    emoji: "📊",
-    message:
-      "Migrating a community initiative to the Fairfax County planning system.",
-    longDescription:
-      "Working on integrating the Orchard Community Revitalization (OCR) site into Fairfax County's Planning and Development department infrastructure. In progress—awaiting county email access to finalize the transition and unlock seamless integration.",
-    image: "/images/fairfax-ocr2.png",
-    link: {
-      href: "https://www.fcrevite.org/",
-      label: "fcrevite.org",
     },
   },
   {

@@ -14,6 +14,16 @@ export type VibePost = {
 
 export const vibePosts: VibePost[] = [
   {
+  id: 49,
+  slug: "day-49-fairfax-migrations",
+  title: "Day 49 — Fairfax Pages Migrated",
+  date: "2026-02-16",
+  emoji: "🏙️",
+  summary: "Migrated Fairfax pages for urban design, placemaking, economic development, demographics, revitalization partners, and publications/resources.",
+  message: "Day 49 shipped a big Fairfax content migration. The Urban Design, Placemaking, Economic Development, Demographics, Revitalization Partners, and Publications & Resources pages are now fully migrated into the new system. This brings key program content into a unified, maintainable structure and clears the way for future updates.",
+  tags: ["day-49", "fairfax", "migration", "content", "planning"],
+},
+  {
   id: 48,
   slug: "day-48-collector-launch",
   title: "Day 48 — Collector Launch",

@@ -1,0 +1,178 @@
+export type MyShow = {
+  artist: string;
+  venue: string;
+  location: string;
+  date: string; // YYYY-MM-DD format
+  ticketUrl?: string;
+};
+
+export const myShows: MyShow[] = [
+  {
+    artist: "OV",
+    venue: "St Pats Parade",
+    location: "Norfolk",
+    date: "2026-03-13",
+    ticketUrl: "https://www.ticketmaster.com",
+  },
+  {
+    artist: "Moe",
+    venue: "The Broadberry",
+    location: "Richmond",
+    date: "2026-03-17",
+    ticketUrl: "https://www.ticketmaster.com",
+  },
+  {
+    artist: "Moe",
+    venue: "The Broadberry",
+    location: "Richmond",
+    date: "2026-03-18",
+    ticketUrl: "https://www.ticketmaster.com",
+  },
+  {
+    artist: "Full Moon Fever",
+    venue: "The Annex",
+    location: "Norfolk",
+    date: "2026-03-20",
+    ticketUrl: "https://www.ticketmaster.com",
+  },
+  {
+    artist: "Grateful Jed",
+    venue: "The Annex",
+    location: "Norfolk",
+    date: "2026-03-21",
+    ticketUrl: "https://www.ticketmaster.com",
+  },
+  {
+    artist: "Daniel Donato",
+    venue: "The Broadberry",
+    location: "Richmond",
+    date: "2026-03-31",
+    ticketUrl: "https://www.ticketmaster.com",
+  },
+  {
+    artist: "Daniel Donato",
+    venue: "The Broadberry",
+    location: "Richmond",
+    date: "2026-04-01",
+    ticketUrl: "https://www.ticketmaster.com",
+  },
+  {
+    artist: "Old 97s",
+    venue: "The Broadberry",
+    location: "Richmond",
+    date: "2026-04-08",
+    ticketUrl: "https://www.ticketmaster.com",
+  },
+  {
+    artist: "Full Moon Fever",
+    venue: "The Broadberry",
+    location: "Richmond",
+    date: "2026-04-11",
+    ticketUrl: "https://www.ticketmaster.com",
+  },
+  {
+    artist: "Kishi Bashi",
+    venue: "The Annex",
+    location: "Norfolk",
+    date: "2026-04-14",
+    ticketUrl: "https://www.ticketmaster.com",
+  },
+  {
+    artist: "Old 97s",
+    venue: "Elevation 27",
+    location: "Virginia Beach",
+    date: "2026-04-09",
+    ticketUrl: "https://www.ticketmaster.com",
+  },
+  {
+    artist: "Spafford",
+    venue: "Elevation 27",
+    location: "Virginia Beach",
+    date: "2026-04-15",
+    ticketUrl: "https://www.ticketmaster.com",
+  },
+  {
+    artist: "Daniel Donato",
+    venue: "Elevation 27",
+    location: "Virginia Beach",
+    date: "2026-04-18",
+    ticketUrl: "https://www.ticketmaster.com",
+  },
+  {
+    artist: "St. Paul and the Broken Bones",
+    venue: "Lewis Ginter Park",
+    location: "Richmond",
+    date: "2026-04-21",
+    ticketUrl: "https://www.ticketmaster.com",
+  },
+  {
+    artist: "David Byrne",
+    venue: "The Dome",
+    location: "Virginia Beach",
+    date: "2026-05-13",
+    ticketUrl: "https://www.ticketmaster.com",
+  },
+  {
+    artist: "JRAD",
+    venue: "Allianz",
+    location: "Richmond",
+    date: "2026-05-21",
+    ticketUrl: "https://www.ticketmaster.com",
+  },
+  {
+    artist: "Goose",
+    venue: "The Dome",
+    location: "Virginia Beach",
+    date: "2026-06-15",
+    ticketUrl: "https://www.ticketmaster.com",
+  },
+  {
+    artist: "Goose",
+    venue: "The Dome",
+    location: "Virginia Beach",
+    date: "2026-06-16",
+    ticketUrl: "https://www.ticketmaster.com",
+  },
+  {
+    artist: "Modest Mouse",
+    venue: "The Dome",
+    location: "Virginia Beach",
+    date: "2026-06-07",
+    ticketUrl: "https://www.ticketmaster.com",
+  },
+  {
+    artist: "Everclear",
+    venue: "Lewis Ginter Park",
+    location: "Richmond",
+    date: "2026-06-17",
+    ticketUrl: "https://www.ticketmaster.com",
+  },
+  {
+    artist: "Lor Huirom",
+    venue: "Richmond Amphitheater",
+    location: "Richmond",
+    date: "2026-06-19",
+    ticketUrl: "https://www.ticketmaster.com",
+  },
+  {
+    artist: "Billy Strings",
+    venue: "Portsmouth Pavilion",
+    location: "Portsmouth",
+    date: "2026-07-17",
+    ticketUrl: "https://www.ticketmaster.com",
+  },
+  {
+    artist: "Billy Strings",
+    venue: "Portsmouth Pavilion",
+    location: "Portsmouth",
+    date: "2026-07-18",
+    ticketUrl: "https://www.ticketmaster.com",
+  },
+  {
+    artist: "Pavement",
+    venue: "The National",
+    location: "Richmond",
+    date: "2026-07-25",
+    ticketUrl: "https://www.ticketmaster.com",
+  },
+];

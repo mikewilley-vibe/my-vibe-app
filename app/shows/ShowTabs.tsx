@@ -7,8 +7,9 @@ import type { MyArtist } from "@/app/data/myArtists";
 import type { VenueRegion } from "@/app/data/localVenues";
 import { localVenuesByRegion } from "@/app/data/localVenues";
 import { __debug_localVenuesByRegion_exists } from "@/app/data/localVenues";
+import { myShows } from "@/app/data/myShows";
 
-type Tab = "artists" | "venues";
+type Tab = "artists" | "venues" | "myshows";
 
 type Props = {
   myArtists: MyArtist[];
@@ -68,6 +69,10 @@ export default function ShowTabs({ myArtists, venuesByRegion }: Props) {
           <TabButton active={tab === "venues"} onClick={() => setTab("venues")}>
             Local Venues <span className="text-slate-400">({venueCount})</span>
           </TabButton>
+
+          <TabButton active={tab === "myshows"} onClick={() => setTab("myshows")}>
+            My Shows
+          </TabButton>
         </div>
       </div>
 
@@ -87,6 +92,47 @@ export default function ShowTabs({ myArtists, venuesByRegion }: Props) {
                 imageSrc={a.image}
                 subtitle={a.url ? "Shows →" : "Add a link →"}
               />
+              </FadeIn>
+            ))
+          )}
+        </div>
+      ) : tab === "myshows" ? (
+        <div className="space-y-3">
+          {myShows.length === 0 ? (
+            <div className="rounded-xl border border-slate-200 bg-white p-6 text-center text-sm text-slate-600">
+              <p className="mb-3">Your personal show calendar is empty.</p>
+              <p className="text-xs">Add shows you're planning to attend!</p>
+            </div>
+          ) : (
+            myShows.map((show, idx) => (
+              <FadeIn key={`${show.artist}-${show.date}`} delay={idx * 0.05}>
+                <div className="rounded-xl border border-slate-200 bg-white p-4 hover:shadow-md transition-shadow">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <h3 className="font-semibold text-slate-900">{show.artist}</h3>
+                      <p className="text-sm text-slate-600">{show.venue}</p>
+                      <p className="text-xs text-slate-500">{show.location}</p>
+                      <p className="mt-2 text-xs font-medium text-slate-600">
+                        {new Date(show.date).toLocaleDateString("en-US", {
+                          weekday: "short",
+                          month: "short",
+                          day: "numeric",
+                          year: "numeric",
+                        })}
+                      </p>
+                    </div>
+                    {show.ticketUrl && (
+                      <a
+                        href={show.ticketUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="px-3 py-1 rounded-md bg-blue-500 text-white text-xs font-semibold hover:bg-blue-600 transition-colors whitespace-nowrap"
+                      >
+                        Tickets
+                      </a>
+                    )}
+                  </div>
+                </div>
               </FadeIn>
             ))
           )}

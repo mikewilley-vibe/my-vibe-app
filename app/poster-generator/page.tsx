@@ -528,21 +528,35 @@ export default function PosterGeneratorPage() {
       : "none";
 
   return (
-    <main className="min-h-screen bg-slate-950 text-slate-100 p-6">
-      <div className="mx-auto max-w-6xl grid grid-cols-1 gap-6 md:grid-cols-3">
-        {/* Controls */}
-        <div className="space-y-6 rounded-xl bg-slate-900 p-5">
-          <h1 className="text-xl font-semibold">Poster Generator 🎨</h1>
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 via-blue-50/20 to-white p-4 text-slate-900 sm:p-6">
+      <div className="mx-auto mb-6 max-w-6xl">
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-600">
+          Creative tool
+        </p>
+        <h1 className="mt-1 text-3xl font-bold tracking-tight text-slate-900">
+          Poster generator
+        </h1>
+        <p className="mt-2 max-w-2xl text-sm text-slate-600 sm:text-base">
+          Upload a photo, style the text, and export a shareable poster.
+        </p>
+      </div>
 
+      <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 md:grid-cols-3">
+        {/* Controls */}
+        <div className="space-y-6 rounded-3xl border border-slate-800 bg-slate-950 p-5 text-slate-100 shadow-xl sm:p-6">
           {/* Template */}
           <div>
-            <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-slate-400">
+            <label
+              htmlFor="poster-template"
+              className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-slate-400"
+            >
               Template
             </label>
             <select
+              id="poster-template"
               value={template}
               onChange={(e) => applyTemplate(e.target.value as TemplateKey)}
-              className="w-full rounded bg-slate-800 px-3 py-2 text-sm"
+              className="w-full rounded-xl border border-slate-700 bg-slate-900 px-3 py-2.5 text-sm outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-500/40"
               title="Select a poster template"
             >
               {Object.entries(TEMPLATES).map(([key, t]) => (
@@ -555,15 +569,19 @@ export default function PosterGeneratorPage() {
 
           {/* Export Size */}
           <div>
-            <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-slate-400">
+            <label
+              htmlFor="poster-export-size"
+              className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-slate-400"
+            >
               Export Size
             </label>
             <select
+              id="poster-export-size"
               value={exportSize}
               onChange={(e) =>
                 setExportSize(e.target.value as ExportSizeKey)
               }
-              className="w-full rounded bg-slate-800 px-3 py-2 text-sm"
+              className="w-full rounded-xl border border-slate-700 bg-slate-900 px-3 py-2.5 text-sm outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-500/40"
               title="Select export size"
             >
               {Object.entries(EXPORT_SIZES).map(([key, s]) => (
@@ -574,41 +592,45 @@ export default function PosterGeneratorPage() {
             </select>
           </div>
 
-          {/* Upload (card is fully clickable) */}
-          <div
-            className="group cursor-pointer rounded-lg border border-slate-700 bg-slate-900/70 p-3 transition-transform duration-150 hover:-translate-y-1"
-            onClick={() => fileInputRef.current?.click()}
-          >
-            <label className="mb-1 block text-sm text-slate-300 transition-transform duration-150 group-hover:-translate-y-0.5">
-              Upload Image
-            </label>
-            <div className="rounded bg-slate-800/60 px-3 py-2 text-xs text-slate-300 group-hover:bg-slate-800">
-              {image ? "Change image…" : "Click anywhere in this box to choose a file"}
-            </div>
-            <p className="mt-1 text-[10px] text-slate-500 group-hover:text-slate-300">
-              Opens your file picker.
+          {/* Upload */}
+          <div>
+            <p className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-slate-400">
+              Upload image
             </p>
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              className="w-full rounded-2xl border border-dashed border-slate-600 bg-slate-900/80 px-4 py-4 text-left transition hover:border-blue-400 hover:bg-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+            >
+              <span className="block text-sm font-semibold text-slate-100">
+                {image ? "Change image" : "Choose an image"}
+              </span>
+              <span className="mt-1 block text-xs text-slate-400">
+                JPG, PNG, or WebP. Click to open your file picker.
+              </span>
+            </button>
             <input
               ref={fileInputRef}
               type="file"
               accept="image/*"
               onChange={handleImageUpload}
-              className="hidden"
+              className="sr-only"
               aria-label="Upload image file"
             />
           </div>
 
           {/* AI: Generate Tagline */}
           <div>
-            <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-slate-400">
-              AI Tagline Generator
+            <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-slate-400">
+              Tagline generator
             </label>
             <button
+              type="button"
               onClick={generateTagline}
               disabled={generatingTagline || !title}
-              className="w-full rounded-lg bg-purple-500 py-2 text-sm font-semibold text-white hover:bg-purple-400 disabled:opacity-60"
+              className="w-full rounded-xl bg-blue-600 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 disabled:cursor-not-allowed disabled:opacity-60"
             >
-              {generatingTagline ? "Generating…" : "✨ Generate Tagline"}
+              {generatingTagline ? "Generating…" : "Generate tagline"}
             </button>
           </div>
 
@@ -882,6 +904,6 @@ export default function PosterGeneratorPage() {
           </div>
         </div>
       </div>
-    </main>
+    </div>
   );
 }

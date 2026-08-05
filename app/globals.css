@@ -7,8 +7,16 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-harbor: var(--harbor);
+  --color-fog: var(--fog);
+  --color-signal: var(--signal);
 
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -60,8 +68,16 @@
 :root {
   --radius: 0.625rem;
 
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
+  /* Warm HQ palette */
+  --paper: #f2f3f1;
+  --ink: #1a2330;
+  --ink-muted: #5c6672;
+  --harbor: #3a6361;
+  --fog: #d5dad7;
+  --signal: #c45c26;
+
+  --background: var(--paper);
+  --foreground: var(--ink);
 
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
@@ -160,15 +176,15 @@
   }
 }
 
-/* Premium background with subtle noise texture */
+/* Soft stone / harbor atmosphere */
 @layer base {
   body::before {
     content: "";
     position: fixed;
     inset: 0;
-    background-image: 
-      radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
-      radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.06) 0%, transparent 50%);
+    background-image:
+      radial-gradient(circle at 18% 40%, color-mix(in srgb, var(--harbor) 12%, transparent) 0%, transparent 52%),
+      radial-gradient(circle at 82% 78%, color-mix(in srgb, var(--signal) 8%, transparent) 0%, transparent 48%);
     pointer-events: none;
     z-index: 0;
   }
@@ -193,11 +209,11 @@
 /* Premium glow effects */
 @layer utilities {
   .glow-accent {
-    box-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
+    box-shadow: 0 0 20px color-mix(in srgb, var(--harbor) 18%, transparent);
   }
 
   .glow-accent-sm {
-    box-shadow: 0 0 12px rgba(59, 130, 246, 0.1);
+    box-shadow: 0 0 12px color-mix(in srgb, var(--harbor) 12%, transparent);
   }
 
   .radial-glow {
@@ -209,8 +225,12 @@
     content: "";
     position: absolute;
     inset: 0;
-    background: radial-gradient(circle at 60% 40%, rgba(59, 130, 246, 0.15) 0%, transparent 60%);
+    background: radial-gradient(circle at 60% 40%, color-mix(in srgb, var(--harbor) 14%, transparent) 0%, transparent 60%);
     pointer-events: none;
+  }
+
+  .font-display {
+    font-family: var(--font-fraunces), ui-serif, Georgia, serif;
   }
 
   /* Specular sheen effect for cards */
@@ -382,36 +402,41 @@
 
   /* Typography refinements */
   .headline-xl {
-    @apply text-5xl font-black leading-tight tracking-tight;
+    font-family: var(--font-fraunces), ui-serif, Georgia, serif;
+    @apply text-5xl font-semibold leading-tight tracking-tight text-[var(--ink)];
   }
 
   .headline-lg {
-    @apply text-4xl font-bold leading-snug tracking-tight;
+    font-family: var(--font-fraunces), ui-serif, Georgia, serif;
+    @apply text-4xl font-semibold leading-snug tracking-tight text-[var(--ink)];
   }
 
   .headline-md {
-    @apply text-3xl font-bold leading-snug tracking-tight;
+    font-family: var(--font-fraunces), ui-serif, Georgia, serif;
+    @apply text-3xl font-semibold leading-snug tracking-tight text-[var(--ink)];
   }
 
   .label-xs {
-    @apply text-xs font-semibold uppercase tracking-widest;
+    @apply text-xs font-semibold uppercase tracking-widest text-[var(--harbor)];
   }
 
   .label-sm {
-    @apply text-sm font-semibold uppercase tracking-wide;
+    @apply text-sm font-semibold uppercase tracking-wide text-[var(--harbor)];
+  }
+
+  .accent-rule {
+    @apply mt-3 h-0.5 w-14 bg-[var(--signal)];
   }
 }
 
 @layer components {
-  /* Define ONCE */
   .card-base {
-    @apply rounded-2xl bg-white/90 shadow-sm ring-1 ring-slate-200/70;
+    @apply rounded-2xl bg-white/90 shadow-sm ring-1 ring-[var(--fog)];
   }
 
-  /* IMPORTANT: do NOT @apply card-base (custom class). Repeat utilities instead. */
   .card-interactive {
-    @apply rounded-2xl bg-white/90 shadow-sm ring-1 ring-slate-200/70
-           transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-lg
-           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400/60;
+    @apply rounded-2xl bg-white/90 shadow-sm ring-1 ring-[var(--fog)]
+           transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md
+           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--harbor)]/40;
   }
 }

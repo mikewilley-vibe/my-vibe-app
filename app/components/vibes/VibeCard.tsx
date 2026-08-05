@@ -1,4 +1,3 @@
-// app/components/VibeCard.tsx
 "use client";
 
 import { useMemo } from "react";
@@ -7,13 +6,11 @@ import type { VibePost } from "@/app/data/vibes";
 
 type Props = {
   post: VibePost;
-  isNew?: boolean;     // you decide in the parent
+  isNew?: boolean;
   className?: string;
 };
 
 function formatVibeDate(dateStr: string) {
-  // Expecting YYYY-MM-DD (zero padded). If not, JS date parsing can be weird.
-  // We force local parsing by appending T00:00:00.
   const d = new Date(`${dateStr}T00:00:00`);
   return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
 }
@@ -24,43 +21,42 @@ export default function VibeCard({ post, isNew = false, className }: Props) {
   return (
     <details
       className={
-        "group rounded-2xl border border-slate-200 bg-white/80 px-4 py-3 shadow-sm transition hover:border-blue-400 " +
-        "dark:border-slate-700 dark:bg-slate-800/90 " +
+        "group rounded-2xl border border-[var(--fog)] bg-white/90 px-4 py-3 shadow-sm transition hover:border-[var(--harbor)]/35 " +
         (className ?? "")
       }
     >
       <summary className="cursor-pointer list-none">
         <div className="flex items-start justify-between gap-3">
-          <div>
-            <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
-              <span className="rounded-full bg-slate-100 px-2 py-0.5 font-medium dark:bg-slate-700">
+          <div className="min-w-0">
+            <div className="flex items-center gap-2 text-xs text-[var(--ink-muted)]">
+              <span className="rounded-lg bg-[var(--paper)] px-2 py-0.5 font-medium">
                 {prettyDate}
               </span>
 
               {isNew && (
-                <span className="rounded-full bg-blue-50 px-2 py-0.5 text-[0.7rem] font-semibold uppercase tracking-wide text-blue-600 dark:bg-blue-500/10 dark:text-blue-300">
+                <span className="rounded-lg bg-[var(--signal)]/10 px-2 py-0.5 text-[0.7rem] font-semibold uppercase tracking-wide text-[var(--signal)]">
                   New
                 </span>
               )}
             </div>
 
-            <h2 className="mt-2 text-base font-semibold text-slate-900 dark:text-slate-50">
+            <h2 className="mt-2 font-display text-base font-semibold text-[var(--ink)]">
               {post.title}
             </h2>
 
-            <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
-              {post.summary}
-            </p>
+            <p className="mt-1 text-sm text-[var(--ink-muted)]">{post.summary}</p>
           </div>
 
-          <span className="text-2xl shrink-0 transition-transform group-open:rotate-180">
-            {post.emoji}
+          <span
+            aria-hidden="true"
+            className="mt-1 shrink-0 text-[var(--harbor)] transition-transform group-open:rotate-180"
+          >
+            ▾
           </span>
         </div>
       </summary>
 
-      {/* Accordion body */}
-      <div className="mt-4 border-t border-slate-200 pt-4 text-sm text-slate-700 dark:border-slate-700 dark:text-slate-300 whitespace-pre-wrap">
+      <div className="mt-4 border-t border-[var(--fog)] pt-4 text-sm text-[var(--ink-muted)] whitespace-pre-wrap">
         {post.message}
 
         {post.tags?.length > 0 && (
@@ -68,7 +64,7 @@ export default function VibeCard({ post, isNew = false, className }: Props) {
             {post.tags.map((tag) => (
               <span
                 key={tag}
-                className="inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-[0.7rem] font-medium text-slate-600 dark:bg-slate-700 dark:text-slate-200"
+                className="inline-flex items-center rounded-lg border border-[var(--fog)] bg-[var(--paper)] px-2 py-0.5 text-[0.7rem] font-medium text-[var(--ink-muted)]"
               >
                 #{tag}
               </span>
@@ -76,11 +72,10 @@ export default function VibeCard({ post, isNew = false, className }: Props) {
           </div>
         )}
 
-        {/* Optional: deep link to detail page if you have /vibes/[slug] */}
         <div className="mt-4">
           <Link
             href={`/vibes/${post.slug}`}
-            className="text-xs font-semibold text-blue-600 hover:text-blue-700"
+            className="text-xs font-semibold text-[var(--harbor)] hover:underline"
           >
             Open full post →
           </Link>

@@ -5,7 +5,7 @@ type EntityCardProps = {
   href: string;
   subtitle?: string;
   imageSrc?: string;
-  fallbackImageSrc?: string; // optional override
+  fallbackImageSrc?: string;
 };
 
 export default function EntityCard({
@@ -15,7 +15,6 @@ export default function EntityCard({
   imageSrc,
   fallbackImageSrc = "/images/concert-fallback.jpg",
 }: EntityCardProps) {
-  // If imageSrc is missing/blank, use fallback
   const src = (imageSrc ?? "").trim() ? imageSrc! : fallbackImageSrc;
 
   return (
@@ -23,22 +22,15 @@ export default function EntityCard({
       href={href}
       target="_blank"
       rel="noreferrer"
-      className="
-        group flex items-center gap-4
-        rounded-xl border border-slate-200 bg-white p-4
-        shadow-sm transition
-        hover:-translate-y-1 hover:shadow-md
-        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400
-      "
+      className="group flex items-center gap-4 rounded-2xl border border-[var(--fog)] bg-white/90 p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-[var(--harbor)]/30 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--harbor)]/40"
     >
-      {/* Image / Initial */}
-      <div className="h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-slate-100">
+      <div className="h-14 w-14 shrink-0 overflow-hidden rounded-xl bg-[var(--paper)] ring-1 ring-[var(--fog)]">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={src}
           alt=""
-          className="h-full w-full object-cover"
+          className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
           onError={(e) => {
-            // If the provided image path 404s, fall back gracefully
             const img = e.currentTarget;
             if (img.src.endsWith(fallbackImageSrc)) return;
             img.src = fallbackImageSrc;
@@ -46,10 +38,11 @@ export default function EntityCard({
         />
       </div>
 
-      {/* Text */}
-      <div className="min-w-0">
-        <div className="truncate text-sm font-semibold text-slate-900">{title}</div>
-        <div className="text-xs text-slate-500">{subtitle}</div>
+      <div className="min-w-0 flex-1">
+        <div className="truncate text-sm font-semibold text-[var(--ink)]">{title}</div>
+        <div className="mt-0.5 text-xs text-[var(--ink-muted)] transition-colors group-hover:text-[var(--harbor)]">
+          {subtitle}
+        </div>
       </div>
     </Link>
   );

@@ -4,18 +4,16 @@ import FadeIn from "@/app/components/motion/FadeIn";
 
 export default function AboutPage() {
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-white">
-      <div className="mx-auto max-w-6xl px-6 py-12 space-y-12">
-        {/* Header */}
+    <div className="min-h-screen pb-16">
+      <div className="mx-auto max-w-6xl px-4 py-12 sm:py-16 space-y-12">
         <FadeIn>
           <IntroSection />
         </FadeIn>
 
-        {/* Full Width: How to Reach Me */}
-        <FadeIn delay={0.3}>
+        <FadeIn delay={0.12}>
           <ContactCard />
         </FadeIn>
       </div>
-    </main>
+    </div>
   );
 }

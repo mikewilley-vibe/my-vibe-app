@@ -86,7 +86,8 @@ export default function CalendarEmbed({
   view = "AGENDA",
   timezone = "America/New_York",
   className = "",
-}: CalendarEmbedProps) {
+  showHeader = true,
+}: CalendarEmbedProps & { showHeader?: boolean }) {
   const safe = isSafeGoogleCalendarUrl(src);
 
   if (!safe) {
@@ -101,21 +102,21 @@ export default function CalendarEmbed({
 
   return (
     <section className={`space-y-3 ${className}`}>
-      {/* ✅ Title + description OUTSIDE the card */}
-      <div className="space-y-1">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-600">
-          {title}
-        </h2>
+      {showHeader ? (
+        <div className="space-y-1">
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-[var(--ink-muted)]">
+            {title}
+          </h2>
 
-        {description && (
-          <p className="text-sm text-slate-600">
-            {description}
-          </p>
-        )}
-      </div>
+          {description && (
+            <p className="text-sm text-[var(--ink-muted)]">
+              {description}
+            </p>
+          )}
+        </div>
+      ) : null}
 
-      {/* ✅ White card ONLY wraps the iframe */}
-      <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+      <div className="overflow-hidden rounded-2xl border border-[var(--fog)] bg-white shadow-sm">
         <iframe
           title={title}
           src={finalSrc}

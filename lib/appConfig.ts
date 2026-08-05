@@ -1,34 +1,37 @@
 // lib/appConfig.ts
 // Feature flags based on deployment domain or environment variable
 
-export type AppMode = 'personal' | 'portfolio';
+export type AppMode = "personal" | "portfolio";
+
+export type NavItem = {
+  label: string;
+  href: string;
+  highlight?: boolean;
+};
 
 export function getAppMode(): AppMode {
-  // Check environment variable first
   const envMode = process.env.NEXT_PUBLIC_APP_MODE;
-  if (envMode === 'personal' || envMode === 'portfolio') {
+  if (envMode === "personal" || envMode === "portfolio") {
     return envMode;
   }
 
-  // Fallback to domain-based detection (for production)
-  if (typeof window !== 'undefined') {
+  if (typeof window !== "undefined") {
     const hostname = window.location.hostname;
-    if (hostname === 'mikewilley.app' || hostname.includes('localhost')) {
-      return 'personal';
+    if (hostname === "mikewilley.app" || hostname.includes("localhost")) {
+      return "personal";
     }
-    if (hostname.includes('portfolio')) {
-      return 'portfolio';
+    if (hostname.includes("portfolio")) {
+      return "portfolio";
     }
   }
 
-  // Default to personal for server-side
-  return 'personal';
+  return "personal";
 }
 
 export const appConfig = {
   personal: {
-    name: 'Mike\'s Vibe',
-    description: 'Personal use - Shows, UVA, Girl Scouts, Orchard House, HIIT, Local Sausage',
+    name: "Mike's Vibe HQ",
+    description: "Personal use - Shows, UVA, Girl Scouts, Orchard House, HIIT, Sous Chef",
     showProjects: false,
     showVibes: false,
     showAbout: false,
@@ -36,38 +39,38 @@ export const appConfig = {
     showContact: false,
     hidePortfolioFeatures: true,
     navItems: [
-      { label: 'Shows', href: '/shows' },
-      { label: 'UVA', href: '/uva' },
-      { label: 'Girl Scouts', href: 'https://bea-troop-site.vercel.app/' },
-      { label: 'Orchard House', href: 'https://www.orchardhousebasketball.org/' },
-      { label: 'HIIT Timer', href: '/workout-timer' },
-      { label: 'Local Sausage', href: 'https://local-sausage.vercel.app/' },
-    ],
+      { label: "Shows", href: "/shows" },
+      { label: "UVA", href: "/uva" },
+      { label: "Girl Scouts", href: "https://bea-troop-site.vercel.app/" },
+      { label: "Orchard House", href: "https://www.orchardhousebasketball.org/" },
+      { label: "HIIT Timer", href: "/workout-timer", highlight: true },
+      { label: "Sous Chef", href: "https://local-sausage.vercel.app/" },
+    ] satisfies NavItem[],
   },
   portfolio: {
-    name: 'Mike Willey - Portfolio',
-    description: 'Portfolio showcase - Projects, Vibes, Work, and more',
+    name: "Mike Willey - Portfolio",
+    description: "Portfolio showcase - Projects, Vibes, Work, and more",
     showProjects: true,
     showVibes: true,
     showAbout: true,
-    showGallery: true,
+    showGallery: false,
     showContact: true,
     hidePortfolioFeatures: false,
     navItems: [
-      { label: 'About', href: '/about' },
-      { label: 'Projects', href: '/projects' },
-      { label: 'Vibes', href: '/vibes' },
-      { label: 'Contact', href: '/contact' },
-    ],
+      { label: "About", href: "/about" },
+      { label: "Projects", href: "/projects" },
+      { label: "Vibes", href: "/vibes" },
+      { label: "Contact", href: "/contact" },
+    ] satisfies NavItem[],
   },
 };
 
 export function isPersonalMode(): boolean {
-  return getAppMode() === 'personal';
+  return getAppMode() === "personal";
 }
 
 export function isPortfolioMode(): boolean {
-  return getAppMode() === 'portfolio';
+  return getAppMode() === "portfolio";
 }
 
 export function getConfig() {

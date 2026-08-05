@@ -1,9 +1,10 @@
 import ShowTabs from "./ShowTabs";
 import { myArtists } from "@/app/data/myArtists";
+import { myShows } from "@/app/data/myShows";
 import ArtistRotator from "@/app/components/concerts/ArtistRotator";
 import FadeIn from "@/app/components/motion/FadeIn";
 import ScrollReveal from "@/app/components/motion/ScrollReveal";
-import InteractiveHover from "@/app/components/motion/InteractiveHover";
+import SectionHeader from "@/app/components/ui/SectionHeader";
 import Image from "next/image";
 import Link from "next/link";
 import { supabaseServer } from "@/lib/supabaseServer";
@@ -13,105 +14,172 @@ export const dynamic = "force-dynamic";
 export default async function ShowsPage() {
   const supabase = supabaseServer();
 
-  // Fetch venues with unseen event counts
-  const { data: venues, error: venuesError } = await supabase
+  const { data: venues } = await supabase
     .from("venues")
     .select("id, name, url, last_checked_at, active")
     .eq("active", true)
     .order("name");
 
-  // Fetch unseen counts per venue
-  const { data: unseenCounts, error: countsError } = await supabase
+  const { data: unseenCounts } = await supabase
     .from("venue_events")
     .select("venue_id")
     .eq("seen", false);
 
   const unseenByVenue = new Map<string, number>();
-  (unseenCounts ?? []).forEach((e: any) => {
+  (unseenCounts ?? []).forEach((e: { venue_id: string }) => {
     unseenByVenue.set(e.venue_id, (unseenByVenue.get(e.venue_id) ?? 0) + 1);
   });
 
-  // Get total unseen count
   const totalUnseen = unseenCounts?.length ?? 0;
+  const today = new Date().toISOString().slice(0, 10);
+  const upcomingCount = myShows.filter((s) => s.date >= today).length;
 
   return (
-    <main className="relative min-h-screen bg-gradient-to-b from-slate-50 to-white overflow-x-hidden">
-      {/* Sticky hero image behind content */}
-      <div className="fixed inset-0 z-0 w-full h-96 md:h-[420px] flex justify-center pointer-events-none select-none">
+    <div className="min-h-screen pb-16">
+      <section className="relative isolate min-h-[min(72vh,620px)] overflow-hidden bg-[var(--ink)] text-white">
         <Image
           src="/images/shows-hero.png"
-          alt="Shows Hero"
+          alt="Live music"
           fill
-          style={{ objectFit: 'cover', objectPosition: 'center top' }}
-          className="opacity-60 blur-sm md:blur-0"
           priority
+          className="object-cover object-[center_25%] opacity-70"
+          sizes="100vw"
         />
-      </div>
-      <section className="relative z-10 mx-auto max-w-5xl px-4 py-10">
-        <ScrollReveal direction="down">
-          <div className="flex items-baseline justify-between gap-4 mb-6">
-            <div className="space-y-2">
-              <h1 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-700">Shows</h1>
-              <p className="text-base text-slate-600">My favorite artists + venues across Hampton Roads, Richmond, and DC</p>
-            </div>
-            {totalUnseen > 0 && (
-              <Link href="/shows/new" className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-blue-200 bg-blue-50 text-sm font-semibold text-blue-600 hover:bg-blue-100 transition-colors whitespace-nowrap">
-                New{" "}
-                <span className="rounded-full bg-blue-600 text-white px-2 py-0.5 text-xs font-bold">
-                  {totalUnseen}
-                </span>
-              </Link>
-            )}
-          </div>
-        </ScrollReveal>
+        <div className="absolute inset-0 bg-gradient-to-r from-[var(--ink)]/92 via-[var(--ink)]/60 to-[var(--ink)]/20" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[var(--ink)] via-transparent to-[var(--ink)]/30" />
 
-        {/* Monitored Venues Banner - Compact */}
-        {venues && venues.length > 0 && (
-          <FadeIn delay={0.08}>
-            <div className="mb-8 rounded-lg border border-slate-200 bg-white/40 backdrop-blur-sm p-3">
-              <div className="flex items-center justify-between gap-4">
-                <div className="flex items-center gap-3 flex-1 overflow-x-auto pb-1">
-                  <span className="text-xs font-semibold text-slate-600 uppercase tracking-wide whitespace-nowrap">Venues:</span>
-                  <div className="flex gap-2 flex-1 overflow-x-auto">
-                    {venues.map((v: any) => (
-                      <a
-                        key={v.id}
-                        href={v.url}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-slate-100 hover:bg-slate-200 transition-colors text-xs font-medium text-slate-700 whitespace-nowrap"
-                      >
-                        {v.name}
-                        {unseenByVenue.get(v.id) ? (
-                          <span className="ml-1 rounded-full bg-blue-500 text-white px-1.5 text-xs font-bold">
-                            {unseenByVenue.get(v.id)}
-                          </span>
-                        ) : null}
-                      </a>
-                    ))}
-                  </div>
-                </div>
-                <Link href="/shows/new" className="text-xs underline opacity-70 hover:opacity-100 whitespace-nowrap">
-                  View all
-                </Link>
+        <div className="relative z-10 mx-auto flex min-h-[min(72vh,620px)] max-w-6xl flex-col justify-between px-4 py-10 sm:py-14">
+          <FadeIn>
+            <div className="max-w-2xl space-y-4 pt-2 sm:pt-6">
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-white/70">
+                Live music
+              </p>
+              <h1 className="font-display text-5xl font-semibold tracking-tight text-white sm:text-6xl md:text-7xl">
+                Shows
+              </h1>
+              <p className="max-w-lg text-base leading-relaxed text-white/85 sm:text-lg">
+                Favorite artists and venues across Hampton Roads, Richmond, and DC —
+                plus the shows already on your list.
+              </p>
+            </div>
+          </FadeIn>
+
+          <FadeIn delay={0.1}>
+            <div className="flex flex-col gap-3 border-t border-white/15 pt-6 sm:flex-row sm:flex-wrap sm:items-center">
+              <Link
+                href="#browse"
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--signal)] px-5 py-3 text-sm font-semibold text-white transition hover:brightness-110"
+              >
+                Browse artists & venues
+              </Link>
+
+              <Link
+                href="/shows/new"
+                className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/25 bg-white/10 px-5 py-3 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/18"
+              >
+                New from venues
+                {totalUnseen > 0 ? (
+                  <span className="rounded-md bg-white/20 px-2 py-0.5 text-xs font-bold tabular-nums">
+                    {totalUnseen}
+                  </span>
+                ) : null}
+              </Link>
+
+              <div className="sm:ml-auto flex flex-wrap gap-4 text-sm text-white/75">
+                <span>
+                  <span className="font-semibold text-white">{myArtists.length}</span> artists
+                </span>
+                <span className="text-white/35">·</span>
+                <span>
+                  <span className="font-semibold text-white">{upcomingCount}</span> upcoming
+                </span>
+                {venues && venues.length > 0 ? (
+                  <>
+                    <span className="text-white/35">·</span>
+                    <span>
+                      <span className="font-semibold text-white">{venues.length}</span> monitored
+                    </span>
+                  </>
+                ) : null}
               </div>
             </div>
           </FadeIn>
+        </div>
+      </section>
+
+      <div className="mx-auto max-w-6xl px-4 space-y-16 pt-12 sm:pt-16">
+        {venues && venues.length > 0 && (
+          <ScrollReveal>
+            <section>
+              <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+                <SectionHeader
+                  eyebrow="Radar"
+                  title="Monitored venues"
+                  description="Venue pages we watch for new listings."
+                  className="mb-0"
+                />
+                <Link
+                  href="/shows/new"
+                  className="inline-flex shrink-0 items-center gap-2 self-start rounded-xl border border-[var(--fog)] bg-white px-4 py-2.5 text-sm font-semibold text-[var(--harbor)] transition hover:border-[var(--harbor)]/35"
+                >
+                  Inbox
+                  {totalUnseen > 0 ? (
+                    <span className="rounded-md bg-[var(--signal)] px-2 py-0.5 text-xs font-bold text-white">
+                      {totalUnseen}
+                    </span>
+                  ) : (
+                    <span className="text-xs font-medium text-[var(--ink-muted)]">clear</span>
+                  )}
+                </Link>
+              </div>
+
+              <div className="flex gap-2 overflow-x-auto pb-1">
+                {venues.map((v: { id: string; name: string; url: string }) => {
+                  const count = unseenByVenue.get(v.id) ?? 0;
+                  return (
+                    <a
+                      key={v.id}
+                      href={v.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex shrink-0 items-center gap-2 rounded-xl border border-[var(--fog)] bg-white/90 px-3.5 py-2.5 text-sm font-medium text-[var(--ink)] transition hover:border-[var(--harbor)]/35 hover:shadow-sm"
+                    >
+                      {v.name}
+                      {count > 0 ? (
+                        <span className="rounded-md bg-[var(--harbor)] px-1.5 py-0.5 text-[11px] font-bold text-white tabular-nums">
+                          {count}
+                        </span>
+                      ) : null}
+                    </a>
+                  );
+                })}
+              </div>
+            </section>
+          </ScrollReveal>
         )}
 
-        <FadeIn delay={0.1}>
-          <div className="hidden md:block">
-            <InteractiveHover scaleOnHover={1.01} shadowOnHover>
-              <ArtistRotator artists={myArtists} visibleCount={3} intervalMs={6000} />
-            </InteractiveHover>
-          </div>
-        </FadeIn>
-
-        {/* Local Shows - Main Content */}
-        <ScrollReveal direction="up" delay={0.15}>
-          <ShowTabs myArtists={myArtists} />
+        <ScrollReveal>
+          <section className="hidden md:block">
+            <SectionHeader
+              eyebrow="Spinning"
+              title="On rotation"
+              description="A few artists from the list — tap through to their show pages."
+            />
+            <ArtistRotator artists={myArtists} visibleCount={3} intervalMs={6000} />
+          </section>
         </ScrollReveal>
-      </section>
-    </main>
+
+        <ScrollReveal>
+          <section id="browse" className="scroll-mt-24">
+            <SectionHeader
+              eyebrow="Library"
+              title="Browse"
+              description="Artists you follow, local rooms, and shows already on the calendar."
+            />
+            <ShowTabs myArtists={myArtists} />
+          </section>
+        </ScrollReveal>
+      </div>
+    </div>
   );
 }

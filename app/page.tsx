@@ -3,194 +3,193 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import FadeIn from "@/app/components/motion/FadeIn";
+import ScrollReveal from "@/app/components/motion/ScrollReveal";
 import FeaturedProjectsSection from "@/app/components/content/FeaturedProjectsSection";
 import HomeHeroSection from "@/app/components/hero/HomeHeroSection";
+import PersonalHomeHero from "@/app/components/hero/PersonalHomeHero";
 import LatestVibesSection from "@/app/components/content/LatestVibesSection";
 import VibeOfTheDay from "@/app/components/vibes/VibeOfTheDay";
 import WeatherCard from "@/app/components/weather/WeatherCard";
 import ScoresBanner from "@/app/components/sports/ScoresBanner";
 import FamilySection from "@/app/components/content/FamilySection";
 import CalendarEmbed from "@/app/components/ui/CalendarEmbed";
+import SectionHeader from "@/app/components/ui/SectionHeader";
 import SponsorRotator from "@/app/components/ui/SponsorRotator";
 import { sponsors } from "@/app/data/sponsors";
 import { isPersonalMode } from "@/lib/appConfig";
 import PersonalCardGrid from "@/app/components/ui/PersonalCardGrid";
 
 const personalCards = [
-  { 
-    title: "UVA Sports", 
-    emoji: "🏀", 
-    href: "/uva", 
-    color: "from-blue-500 to-indigo-600",
-    cta: "View All",
-    image: "/images/scott.png"
+  {
+    title: "Shows",
+    subtitle: "Hampton Roads, Richmond, and DC",
+    href: "/shows",
+    cta: "Find a show",
+    image: "/images/rock.png",
+    featured: true,
   },
-  { 
-    title: "Shows", 
-    emoji: "🎸", 
-    href: "/shows", 
-    color: "from-purple-500 to-pink-600", 
-    cta: "Explore",
-    image: "/images/rock.png"
+  {
+    title: "UVA Sports",
+    subtitle: "Upcoming Cavaliers games",
+    href: "/uva",
+    cta: "View games",
+    image: "/images/scott.png",
+    featured: true,
   },
-  { 
-    title: "Girl Scouts", 
-    emoji: "🍪", 
-    href: "https://bea-troop-site.vercel.app/", 
-    color: "from-green-500 to-emerald-600", 
-    cta: "Visit",
-    image: "/images/cookie.png"
+  {
+    title: "HIIT Timer",
+    subtitle: "Work • rest • repeat",
+    href: "/workout-timer",
+    cta: "Start session",
+    image: "/images/hiit.png",
+    featured: true,
   },
-  { 
-    title: "Orchard House", 
-    emoji: "🏀", 
-    href: "https://www.orchardhousebasketball.org/", 
-    color: "from-amber-500 to-orange-600", 
-    cta: "Learn",
-    image: "/images/ohball.png"
+  {
+    title: "Girl Scouts",
+    href: "https://bea-troop-site.vercel.app/",
+    cta: "Visit troop",
+    image: "/images/cookie.png",
   },
-  { 
-    title: "HIIT Timer", 
-    emoji: "⏱️", 
-    href: "/workout-timer", 
-    color: "from-red-500 to-rose-600", 
-    cta: "Start",
-    image: "/images/hiit.png"
+  {
+    title: "Orchard House",
+    href: "https://www.orchardhousebasketball.org/",
+    cta: "Open site",
+    image: "/images/ohbball.png",
   },
-  { 
-    title: "Seasonal Sous Chef", 
-    emoji: "🍽️", 
-    href: "/projects/card-of-first-food", 
-    color: "from-yellow-500 to-amber-600", 
-    cta: "Browse",
-    image: "/images/kitchen.png"
+  {
+    title: "Sous Chef",
+    href: "https://local-sausage.vercel.app/",
+    cta: "Browse recipes",
+    image: "/images/kitchen.png",
+  },
+];
+
+const schoolLinks = [
+  {
+    name: "Katie",
+    detail: "Norfolk Public Schools · 2025–26",
+    href: "https://www.npsk12.com/our-division/academic-calendar/2025-2026-academic-calendar",
+  },
+  {
+    name: "Bea",
+    detail: "Richmond Public Schools",
+    href: "https://resources.finalsite.net/images/v1760363929/rvaschoolsnet/pivmboyjibodqzoiiqx8/ENG_2025-26RPS200Calendar1.pdf",
+  },
+  {
+    name: "Mary",
+    detail: "Orchard House academic calendar",
+    href: "https://bloomerang-bee.s3.amazonaws.com/images/clapton_cysx6cjdvalm_us_west_2_rds_amazonaws_com_orchardhouse/Documents%20to%20Link/Calendar%20-%20Academic%20Calendar%2025-26%20%288.11.25%29.pdf?blm_aid=128083",
   },
 ];
 
 export default function HomePage() {
-  const [isPersonal, setIsPersonal] = useState(false);
+  const [isPersonal, setIsPersonal] = useState<boolean | null>(null);
 
   useEffect(() => {
     setIsPersonal(isPersonalMode());
   }, []);
 
-  // Personal mode: show card grid with family and calendar
+  if (isPersonal === null) {
+    return <div className="min-h-[50vh] bg-[var(--paper)]" aria-hidden="true" />;
+  }
+
   if (isPersonal) {
     return (
-      <main className="min-h-screen bg-gradient-to-b from-slate-50 via-blue-50/10 to-white">
-        <div className="mx-auto max-w-6xl px-4 py-12 space-y-8">
-          {/* Top Section: Weather & Status */}
-          <FadeIn delay={0}>
-            <WeatherCard />
-          </FadeIn>
+      <div className="min-h-screen pb-16">
+        <PersonalHomeHero />
 
-          {/* Games & Sports Section */}
-          <FadeIn delay={0.05}>
-            <ScoresBanner />
-          </FadeIn>
+        <div className="mx-auto max-w-6xl px-4 space-y-20 pt-14 sm:pt-16">
+          <ScrollReveal>
+            <section id="today" className="scroll-mt-24">
+              <SectionHeader
+                eyebrow="Today"
+                title="Family calendar"
+                description="What’s ahead at home — plus the school calendars in one place."
+              />
 
-          {/* Calendar Section - Left Heavy (Asymmetric) */}
-          <FadeIn delay={0.1}>
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-              {/* Calendar - 2 cols */}
-              <div className="lg:col-span-2">
-                <p className="label-xs text-blue-600 uppercase mb-3">Upcoming Events</p>
-                <h2 className="headline-md text-slate-900 mb-4">
-                  Family Calendar
-                </h2>
-                <div className="overflow-hidden rounded-3xl shadow-lg">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
+                <div className="lg:col-span-8 overflow-hidden rounded-2xl ring-1 ring-[var(--fog)] bg-white shadow-sm">
                   <CalendarEmbed
-                    title="My Calendar"
+                    title="Family Calendar"
                     description="Public events I've shared"
                     src="https://calendar.google.com/calendar/embed?src=mikewilley%40gmail.com&ctz=America%2FNew_York"
                     view="MONTH"
-                    height={500}
+                    height={520}
+                    showHeader={false}
                   />
                 </div>
+
+                <aside className="lg:col-span-4">
+                  <div className="rounded-2xl border border-[var(--fog)] bg-white/80 p-5 sm:p-6">
+                    <p className="label-xs mb-1">School year</p>
+                    <h3 className="font-display text-2xl font-semibold text-[var(--ink)] mb-5">
+                      Calendars
+                    </h3>
+                    <ul className="space-y-3">
+                      {schoolLinks.map((school) => (
+                        <li key={school.name}>
+                          <Link
+                            href={school.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="group flex items-start justify-between gap-3 rounded-xl border border-transparent bg-[var(--paper)] px-4 py-3.5 transition hover:border-[var(--harbor)]/30 hover:bg-white"
+                          >
+                            <div>
+                              <div className="font-semibold text-[var(--ink)]">{school.name}</div>
+                              <div className="mt-0.5 text-sm text-[var(--ink-muted)]">
+                                {school.detail}
+                              </div>
+                            </div>
+                            <span
+                              aria-hidden="true"
+                              className="mt-0.5 text-[var(--harbor)] transition-transform group-hover:translate-x-0.5"
+                            >
+                              →
+                            </span>
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </aside>
               </div>
+            </section>
+          </ScrollReveal>
 
-              {/* School Calendars - 1 col */}
-              <div className="lg:col-span-1">
-                <p className="label-xs text-blue-600 uppercase mb-4">Quick Links</p>
-                <h3 className="headline-md text-slate-900 mb-6">
-                  School Calendars
-                </h3>
-                <div className="space-y-3">
-                  {/* Katie School */}
-                  <Link
-                    href="https://www.npsk12.com/our-division/academic-calendar/2025-2026-academic-calendar"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group overflow-hidden rounded-2xl border border-blue-200/50 hover:border-blue-400 transition-all hover:shadow-md hover:-translate-y-0.5 block"
-                  >
-                    <div className="bg-gradient-to-br from-blue-50/60 to-slate-50/60 backdrop-blur-sm p-4 flex flex-col items-center justify-center hover:from-blue-100/60 hover:to-slate-100/60 transition-all h-auto py-6">
-                      <div className="text-3xl mb-2 group-hover:scale-110 transition-transform">📚</div>
-                      <h4 className="text-xs font-bold text-slate-900 text-center">Katie</h4>
-                      <p className="text-xs text-slate-600 text-center mt-1">2025-26</p>
-                    </div>
-                  </Link>
+          <ScrollReveal>
+            <section>
+              <SectionHeader
+                eyebrow="Watch"
+                title="Scores"
+                description="Live and upcoming — UVA stays pinned when it matters."
+              />
+              <ScoresBanner />
+            </section>
+          </ScrollReveal>
 
-                  {/* Bea School */}
-                  <Link
-                    href="https://resources.finalsite.net/images/v1760363929/rvaschoolsnet/pivmboyjibodqzoiiqx8/ENG_2025-26RPS200Calendar1.pdf"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group overflow-hidden rounded-2xl border border-amber-200/50 hover:border-amber-400 transition-all hover:shadow-md hover:-translate-y-0.5 block"
-                  >
-                    <div className="bg-gradient-to-br from-amber-50/60 to-slate-50/60 backdrop-blur-sm p-4 flex flex-col items-center justify-center hover:from-amber-100/60 hover:to-slate-100/60 transition-all h-auto py-6">
-                      <div className="text-3xl mb-2 group-hover:scale-110 transition-transform">📖</div>
-                      <h4 className="text-xs font-bold text-slate-900 text-center">Bea</h4>
-                      <p className="text-xs text-slate-600 text-center mt-1">RPS</p>
-                    </div>
-                  </Link>
-
-                  {/* Mary School */}
-                  <Link
-                    href="https://bloomerang-bee.s3.amazonaws.com/images/clapton_cysx6cjdvalm_us_west_2_rds_amazonaws_com_orchardhouse/Documents%20to%20Link/Calendar%20-%20Academic%20Calendar%2025-26%20%288.11.25%29.pdf?blm_aid=128083"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group overflow-hidden rounded-2xl border border-emerald-200/50 hover:border-emerald-400 transition-all hover:shadow-md hover:-translate-y-0.5 block"
-                  >
-                    <div className="bg-gradient-to-br from-emerald-50/60 to-slate-50/60 backdrop-blur-sm p-4 flex flex-col items-center justify-center hover:from-emerald-100/60 hover:to-slate-100/60 transition-all h-auto py-6">
-                      <div className="text-3xl mb-2 group-hover:scale-110 transition-transform">✏️</div>
-                      <h4 className="text-xs font-bold text-slate-900 text-center">Mary</h4>
-                      <p className="text-xs text-slate-600 text-center mt-1">Orchard</p>
-                    </div>
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </FadeIn>
-
-          {/* Card Grid */}
-          <FadeIn delay={0.15}>
+          <ScrollReveal>
             <PersonalCardGrid cards={personalCards} />
-          </FadeIn>
+          </ScrollReveal>
 
-          {/* Family Section */}
-          <FadeIn delay={0.25}>
+          <ScrollReveal>
             <FamilySection />
-          </FadeIn>
+          </ScrollReveal>
         </div>
-      </main>
+      </div>
     );
   }
 
-  // Portfolio mode: show full featured home page
   return (
-    <main className="min-h-screen bg-gradient-to-b from-slate-50 via-blue-50/5 to-white">
-      <div className="mx-auto flex max-w-6xl flex-col gap-12 px-4 pb-16 pt-12">
-        {/* Top Banner */}
+    <div className="min-h-screen">
+      <div className="mx-auto flex max-w-6xl flex-col gap-14 px-4 pb-16 pt-10 sm:pt-12">
         <FadeIn delay={0}>
           <SponsorRotator sponsors={sponsors} visibleCount={2} intervalMs={8000} />
         </FadeIn>
 
-        {/* Premium Hero Section */}
         <FadeIn delay={0.05}>
           <HomeHeroSection />
         </FadeIn>
 
-        {/* Weather & Vibe */}
         <FadeIn delay={0.1}>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="md:col-span-1">
@@ -202,21 +201,18 @@ export default function HomePage() {
           </div>
         </FadeIn>
 
-        {/* Latest Vibes */}
         <FadeIn delay={0.15}>
           <LatestVibesSection />
         </FadeIn>
 
-        {/* Featured Projects */}
         <FadeIn delay={0.2}>
           <FeaturedProjectsSection />
         </FadeIn>
 
-        {/* Vibe of the Day */}
         <FadeIn delay={0.25}>
           <VibeOfTheDay />
         </FadeIn>
       </div>
-    </main>
+    </div>
   );
 }

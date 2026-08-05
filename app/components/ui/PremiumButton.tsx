@@ -19,46 +19,39 @@ export default function PremiumButton({
 }: PremiumButtonProps) {
   const sizeClasses = {
     sm: "px-4 py-2 text-sm",
-    md: "px-6 py-3 text-base",
-    lg: "px-8 py-4 text-lg",
+    md: "px-5 py-2.5 text-sm",
+    lg: "px-7 py-3.5 text-base",
   };
 
   const variantClasses = {
     primary: `
-      relative group
-      bg-gradient-to-br from-blue-600 to-blue-700
-      text-white font-semibold
-      border border-blue-500/30
-      shadow-lg shadow-blue-600/20
-      hover:shadow-xl hover:shadow-blue-600/30
-      hover:from-blue-500 hover:to-blue-600
-      active:shadow-md active:shadow-blue-600/15
+      bg-[var(--harbor)] text-white font-semibold
+      hover:brightness-110 shadow-sm
       transition-all duration-200 ease-out
     `,
     secondary: `
-      relative group
-      bg-white/80 backdrop-blur-md
-      text-slate-900 font-semibold
-      border border-white/40 hover:border-white/60
+      bg-white/90 text-[var(--ink)] font-semibold
+      border border-[var(--fog)] hover:border-[var(--harbor)]/35
       shadow-sm hover:shadow-md
-      hover:bg-white/95
-      active:bg-white/70
       transition-all duration-200 ease-out
     `,
     tertiary: `
-      relative
-      text-slate-600 font-semibold
-      hover:text-blue-600
-      border-b-2 border-transparent hover:border-blue-600
+      text-[var(--ink-muted)] font-semibold
+      hover:text-[var(--harbor)]
+      border-b border-transparent hover:border-[var(--harbor)]
+      rounded-none
       transition-all duration-200 ease-out
     `,
   };
 
-  const baseClasses = `
+  const rounded = variant === "tertiary" ? "" : "rounded-xl";
+
+  const className = `
     inline-flex items-center justify-center gap-2
-    rounded-full
-    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 focus-visible:ring-offset-2
+    ${rounded}
+    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--harbor)]/40
     disabled:opacity-50 disabled:cursor-not-allowed
+    ${sizeClasses[size]} ${variantClasses[variant]}
   `;
 
   const content = (
@@ -67,8 +60,6 @@ export default function PremiumButton({
       <span>{label}</span>
     </>
   );
-
-  const className = `${baseClasses} ${sizeClasses[size]} ${variantClasses[variant]}`;
 
   if (isExternal) {
     return (

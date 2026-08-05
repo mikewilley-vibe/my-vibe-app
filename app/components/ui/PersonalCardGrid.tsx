@@ -1,93 +1,110 @@
 import Link from "next/link";
-import Image from "next/image";
 import FadeIn from "@/app/components/motion/FadeIn";
+import SectionHeader from "@/app/components/ui/SectionHeader";
 
 export type PersonalCard = {
   title: string;
   subtitle?: string;
-  emoji: string;
   href: string;
-  color: string; // keep using "from-x via-y to-z"
   cta: string;
-  image?: string; // optional image to use instead of emoji
+  image?: string;
+  featured?: boolean;
 };
 
 export default function PersonalCardGrid({ cards }: { cards: PersonalCard[] }) {
+  const [primary, ...rest] = [...cards].sort((a, b) => Number(!!b.featured) - Number(!!a.featured));
+
+  if (!primary) return null;
+
+  const side = rest.slice(0, 2);
+  const bottom = rest.slice(2);
+
   return (
-    <div className="relative mb-16">
-      {/* Asymmetric section background with gradients */}
-      <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute top-0 left-0 w-96 h-96 bg-blue-100/30 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-0 w-72 h-72 bg-purple-100/20 rounded-full blur-3xl" />
+    <section>
+      <SectionHeader
+        eyebrow="Go"
+        title="Launchpad"
+        description="Jump into the apps and sites you actually use this week."
+      />
+
+      <div className="space-y-4">
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:grid-rows-2 lg:min-h-[380px]">
+          <div className="lg:col-span-2 lg:row-span-2">
+            <FadeIn delay={0.04}>
+              <LaunchCard card={primary} tall />
+            </FadeIn>
+          </div>
+
+          {side.map((card, index) => (
+            <div key={card.href}>
+              <FadeIn delay={0.08 + index * 0.05}>
+                <LaunchCard card={card} />
+              </FadeIn>
+            </div>
+          ))}
+        </div>
+
+        {bottom.length > 0 && (
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            {bottom.map((card, index) => (
+              <FadeIn key={card.href} delay={0.12 + index * 0.05}>
+                <LaunchCard card={card} />
+              </FadeIn>
+            ))}
+          </div>
+        )}
       </div>
+    </section>
+  );
+}
 
-      {/* Section label */}
-      <div className="mb-8">
-        <p className="label-xs text-blue-600 uppercase mb-2">Quick Access</p>
-        <h2 className="headline-lg text-slate-900">
-          Your favorite apps & utilities
-        </h2>
-        <div className="mt-3 h-0.5 w-16 bg-gradient-to-r from-blue-500 to-purple-500" />
+function LaunchCard({
+  card,
+  tall = false,
+}: {
+  card: PersonalCard;
+  tall?: boolean;
+}) {
+  return (
+    <Link href={card.href} className="block group h-full">
+      <div
+        className={[
+          "relative overflow-hidden rounded-2xl ring-1 ring-[var(--fog)] transition duration-300",
+          "group-hover:-translate-y-0.5 group-hover:shadow-md",
+          "focus-within:ring-2 focus-within:ring-[var(--harbor)]/40",
+          tall ? "min-h-[280px] lg:min-h-[380px] h-full" : "min-h-[170px] h-full",
+        ].join(" ")}
+      >
+        {card.image && (
+          <div
+            className="absolute inset-0 scale-100 transition duration-700 group-hover:scale-[1.04]"
+            style={{
+              backgroundImage: `url(${card.image})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}
+          />
+        )}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[var(--ink)]/85 via-[var(--ink)]/30 to-transparent" />
+
+        <div className="relative flex h-full flex-col justify-end p-5 sm:p-6">
+          <h3
+            className={[
+              "font-display font-semibold text-white drop-shadow-sm",
+              tall ? "text-2xl sm:text-3xl" : "text-xl",
+            ].join(" ")}
+          >
+            {card.title}
+          </h3>
+          {card.subtitle && (
+            <p className="mt-1 text-sm text-white/80 max-w-md">{card.subtitle}</p>
+          )}
+          <span className="mt-3 inline-flex items-center gap-2 self-start text-xs font-semibold uppercase tracking-wide text-white/90">
+            {card.cta}
+            <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+          </span>
+        </div>
       </div>
-
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {cards.map((card, index) => (
-          <FadeIn key={card.href} delay={0.35 + index * 0.08}>
-            <Link href={card.href} className="block">
-              <div
-                className={`
-                  group relative h-40 overflow-hidden rounded-2xl 
-                  shadow-lg transition-all duration-300
-                  hover:-translate-y-1 hover:shadow-xl
-                  focus-within:ring-2 focus-within:ring-blue-400/60
-                `}
-              >
-                {/* Background image - full coverage */}
-                {card.image && (
-                  <div 
-                    className="absolute inset-0"
-                    style={{
-                      backgroundImage: `url(${card.image})`,
-                      backgroundSize: "cover",
-                      backgroundPosition: "center",
-                    }}
-                  />
-                )}
-
-                {/* Very light overlay for text readability */}
-                {card.image && (
-                  <div className="pointer-events-none absolute inset-0 bg-black/15" />
-                )}
-
-                {/* Content with premium spacing */}
-                <div className="relative flex h-full flex-col justify-between p-6">
-                  <div>
-                    <div className="text-5xl mb-3 origin-left transition-transform duration-300 group-hover:scale-110 drop-shadow-lg">
-                      {card.emoji}
-                    </div>
-                    <h3 className="font-bold text-lg text-white drop-shadow-md">
-                      {card.title}
-                    </h3>
-                    {card.subtitle && (
-                      <p className="text-sm text-white/95 drop-shadow-sm mt-1">
-                        {card.subtitle}
-                      </p>
-                    )}
-                  </div>
-
-                  {/* Simple CTA Button */}
-                  <div className="self-start mt-auto inline-flex items-center gap-2 rounded-lg bg-black/30 hover:bg-black/40 px-4 py-2 text-xs font-semibold text-white drop-shadow-md transition-all duration-300">
-                    {card.cta}
-                    <span className="text-sm transition-transform duration-300 group-hover:translate-x-1">
-                      →
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </Link>
-          </FadeIn>
-        ))}
-      </div>
-    </div>
+    </Link>
   );
 }

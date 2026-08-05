@@ -1,5 +1,6 @@
 import Link from "next/link";
 import FadeIn from "@/app/components/motion/FadeIn";
+import SectionHeader from "@/app/components/ui/SectionHeader";
 import { formatDate } from "@/app/lib/date";
 import { getVibesNewestFirst } from "@/app/data/vibes";
 
@@ -12,50 +13,41 @@ export default function LatestVibesSection({ count = 3 }: Props) {
 
   return (
     <FadeIn delay={0.1}>
-      <section className="space-y-8">
-        <div className="space-y-3">
-          <p className="label-xs text-blue-600 uppercase">Ongoing Log</p>
-          <div className="flex items-baseline justify-between gap-4 flex-wrap">
-            <h2 className="headline-lg text-slate-900">Latest vibes</h2>
-            <Link
-              href="/vibes"
-              className="text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors"
-            >
-              Open Log →
-            </Link>
-          </div>
-          <p className="max-w-3xl text-base text-slate-600 leading-relaxed">
-            Quick snapshots of work in progress, technical insights, and real-time reflections on building and shipping.
-          </p>
+      <section>
+        <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <SectionHeader
+            eyebrow="Ongoing log"
+            title="Latest vibes"
+            description="Quick snapshots of work in progress and notes from shipping."
+            className="mb-0"
+          />
+          <Link
+            href="/vibes"
+            className="shrink-0 text-sm font-semibold text-[var(--harbor)] hover:underline"
+          >
+            Open log →
+          </Link>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className="grid gap-5 md:grid-cols-3">
           {latestVibes.map((v, index) => (
-            <FadeIn key={v.slug} delay={index * 0.08}>
+            <FadeIn key={v.slug} delay={index * 0.06}>
               <Link href={`/vibes/${v.slug}`} className="group block h-full">
-                <article className="flex h-full flex-col gap-4 rounded-2xl border border-white/40 bg-white/80 backdrop-blur-md p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 hover:border-blue-400/60 hover:bg-white/95 sheen-on-hover edge-highlight">
-                  <div className="flex items-start gap-3">
-                    <span className="text-3xl flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
-                      {v.emoji ?? "✨"}
-                    </span>
-                    <h3 className="line-clamp-2 text-base font-bold text-slate-900 group-hover:text-blue-600 transition-colors">
-                      {v.title}
-                    </h3>
-                  </div>
-
-                  {v.date && (
-                    <p className="text-xs font-medium text-slate-500 uppercase tracking-wide">
+                <article className="flex h-full flex-col gap-3 rounded-2xl border border-[var(--fog)] bg-white/90 p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-[var(--harbor)]/30 hover:shadow-md">
+                  {v.date ? (
+                    <p className="text-xs font-semibold uppercase tracking-wide text-[var(--harbor)]">
                       {formatDate(v.date)}
                     </p>
-                  )}
-
-                  <p className="line-clamp-3 text-sm text-slate-600 flex-grow">
+                  ) : null}
+                  <h3 className="font-display text-lg font-semibold text-[var(--ink)] group-hover:text-[var(--harbor)] transition-colors line-clamp-2">
+                    {v.title}
+                  </h3>
+                  <p className="line-clamp-3 text-sm text-[var(--ink-muted)] flex-grow">
                     {v.summary}
                   </p>
-
-                  <span className="pt-2 text-sm font-semibold text-blue-600 group-hover:text-blue-700 transition-colors flex items-center gap-1">
-                    Read more
-                    <span className="group-hover:translate-x-1 transition-transform duration-300">→</span>
+                  <span className="mt-auto text-xs font-semibold uppercase tracking-wide text-[var(--harbor)] inline-flex items-center gap-1">
+                    Read
+                    <span className="transition-transform group-hover:translate-x-0.5">→</span>
                   </span>
                 </article>
               </Link>

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { CalendarDays, ExternalLink, Check, ArrowLeft, Inbox, AlertTriangle } from "lucide-react";
 import { supabaseServer } from "@/lib/supabaseServer";
+import SectionHeader from "@/app/components/ui/SectionHeader";
 
 export const dynamic = "force-dynamic";
 
@@ -57,87 +58,86 @@ export default async function NewShowsPage() {
   const count = items.length;
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-b from-slate-50 via-blue-50/20 to-white overflow-x-hidden">
-      <section className="relative z-10 mx-auto max-w-3xl px-4 py-10 sm:px-6 sm:py-14">
+    <div className="min-h-screen pb-16">
+      <div className="mx-auto max-w-3xl px-4 py-10 sm:py-14">
         <nav aria-label="Breadcrumb" className="mb-6">
           <Link
             href="/shows"
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-slate-600 transition-colors hover:text-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 rounded-md"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--ink-muted)] transition hover:text-[var(--harbor)]"
           >
             <ArrowLeft className="h-4 w-4" aria-hidden="true" />
             Back to Shows
           </Link>
         </nav>
 
-        <header className="mb-8 space-y-3">
-          <div className="flex flex-wrap items-end justify-between gap-4">
-            <div className="space-y-2">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-600">
-                Venue monitor
-              </p>
-              <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-                New shows
-              </h1>
-              <p className="max-w-xl text-base text-slate-600">
-                Unseen events from your watched venues across Hampton Roads, Richmond, and DC.
-              </p>
-            </div>
+        <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <SectionHeader
+            eyebrow="Inbox"
+            title="New shows"
+            description={
+              error
+                ? "Unseen events from monitored Hampton Roads, Richmond, and DC venues."
+                : count === 0
+                  ? "You're caught up — no unseen venue listings right now."
+                  : `${count} unseen event${count === 1 ? "" : "s"} from monitored venues.`
+            }
+            className="mb-0"
+          />
 
-            {!error && (
-              <div
-                className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-3 py-1.5 text-sm font-semibold text-blue-700"
-                aria-live="polite"
-              >
-                <span className="relative flex h-2 w-2">
-                  <span
-                    className={`absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75 ${count > 0 ? "animate-ping" : ""}`}
-                  />
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-blue-600" />
-                </span>
-                {count} unseen
-              </div>
-            )}
-          </div>
-
-          {!error && count > 0 && (
-            <div className="flex flex-wrap items-center gap-3 pt-1">
-              <form action="/shows/new/mark-all-seen" method="post">
-                <button
-                  type="submit"
-                  className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                >
-                  <Check className="h-4 w-4" aria-hidden="true" />
-                  Mark all as seen
-                </button>
-              </form>
+          {!error && (
+            <div
+              className="inline-flex shrink-0 items-center gap-2 rounded-xl border border-[var(--fog)] bg-white px-3 py-1.5 text-sm font-semibold text-[var(--harbor)]"
+              aria-live="polite"
+            >
+              <span className="relative flex h-2 w-2">
+                <span
+                  className={`absolute inline-flex h-full w-full rounded-full bg-[var(--harbor)] opacity-75 ${count > 0 ? "animate-ping" : ""}`}
+                />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--harbor)]" />
+              </span>
+              {count} unseen
             </div>
           )}
-        </header>
+        </div>
+
+        {!error && count > 0 && (
+          <div className="mb-6">
+            <form action="/shows/new/mark-all-seen" method="post">
+              <button
+                type="submit"
+                className="inline-flex items-center gap-2 rounded-xl border border-[var(--fog)] bg-white px-4 py-2.5 text-sm font-semibold text-[var(--ink)] transition hover:border-[var(--harbor)]/35"
+              >
+                <Check className="h-4 w-4" aria-hidden="true" />
+                Mark all as seen
+              </button>
+            </form>
+          </div>
+        )}
 
         {error ? (
           <div
             role="alert"
-            className="rounded-2xl border border-red-200 bg-red-50/80 p-6 sm:p-8"
+            className="rounded-2xl border border-rose-200 bg-rose-50/80 p-6"
           >
             <div className="flex gap-3">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-red-100 text-red-700">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-rose-100 text-rose-700">
                 <AlertTriangle className="h-5 w-5" aria-hidden="true" />
               </div>
               <div className="space-y-2">
-                <h2 className="text-lg font-semibold text-red-900">
+                <h2 className="font-display text-lg font-semibold text-rose-900">
                   Couldn&apos;t load new shows
                 </h2>
-                <p className="text-sm text-red-800/90">{error.message}</p>
+                <p className="text-sm text-rose-800/90">{error.message}</p>
                 <div className="flex flex-wrap gap-3 pt-2">
                   <Link
                     href="/shows/new"
-                    className="inline-flex items-center rounded-full bg-red-700 px-4 py-2 text-sm font-semibold text-white transition hover:bg-red-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
+                    className="inline-flex items-center rounded-xl bg-rose-700 px-4 py-2 text-sm font-semibold text-white transition hover:brightness-110"
                   >
                     Try again
                   </Link>
                   <Link
                     href="/shows"
-                    className="inline-flex items-center rounded-full border border-red-200 bg-white px-4 py-2 text-sm font-semibold text-red-800 transition hover:bg-red-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
+                    className="inline-flex items-center rounded-xl border border-rose-200 bg-white px-4 py-2 text-sm font-semibold text-rose-800 transition hover:bg-rose-50"
                   >
                     Back to Shows
                   </Link>
@@ -146,17 +146,19 @@ export default async function NewShowsPage() {
             </div>
           </div>
         ) : count === 0 ? (
-          <div className="rounded-2xl border border-dashed border-slate-300 bg-white/70 px-6 py-14 text-center shadow-sm backdrop-blur-sm">
-            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-100 text-slate-500">
+          <div className="rounded-2xl border border-dashed border-[var(--fog)] bg-white/70 px-6 py-14 text-center">
+            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-[var(--fog)]/60 text-[var(--ink-muted)]">
               <Inbox className="h-7 w-7" aria-hidden="true" />
             </div>
-            <h2 className="text-xl font-semibold text-slate-900">You&apos;re all caught up</h2>
-            <p className="mx-auto mt-2 max-w-sm text-sm text-slate-600">
+            <h2 className="font-display text-xl font-semibold text-[var(--ink)]">
+              You&apos;re all caught up
+            </h2>
+            <p className="mx-auto mt-2 max-w-sm text-sm text-[var(--ink-muted)]">
               No unseen venue events right now. Check back after the next scan, or browse your full show list.
             </p>
             <Link
               href="/shows"
-              className="mt-6 inline-flex items-center gap-2 rounded-full bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+              className="mt-6 inline-flex items-center gap-2 rounded-xl bg-[var(--harbor)] px-5 py-2.5 text-sm font-semibold text-white transition hover:brightness-110"
             >
               Browse shows
             </Link>
@@ -169,26 +171,26 @@ export default async function NewShowsPage() {
 
               return (
                 <li key={event.id}>
-                  <article className="group rounded-2xl border border-slate-200/80 bg-white/80 p-4 shadow-sm backdrop-blur-sm transition hover:border-blue-200 hover:shadow-md sm:p-5">
+                  <article className="rounded-2xl border border-[var(--fog)] bg-white/90 p-4 shadow-sm sm:p-5">
                     <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                       <div className="min-w-0 space-y-2">
                         <div className="flex flex-wrap items-center gap-2">
-                          <span className="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wide text-slate-600">
+                          <span className="text-xs font-semibold uppercase tracking-wide text-[var(--harbor)]">
                             {venue}
                           </span>
                           {seenLabel && (
-                            <span className="text-xs text-slate-500">
+                            <span className="text-xs text-[var(--ink-muted)]">
                               First seen {seenLabel}
                             </span>
                           )}
                         </div>
 
-                        <h2 className="text-lg font-semibold leading-snug text-slate-900">
+                        <h2 className="font-display text-lg font-semibold leading-snug text-[var(--ink)]">
                           {event.title}
                         </h2>
 
-                        <p className="inline-flex items-center gap-1.5 text-sm text-slate-600">
-                          <CalendarDays className="h-4 w-4 shrink-0 text-slate-400" aria-hidden="true" />
+                        <p className="inline-flex items-center gap-1.5 text-sm text-[var(--ink-muted)]">
+                          <CalendarDays className="h-4 w-4 shrink-0" aria-hidden="true" />
                           <time dateTime={event.event_date ?? undefined}>
                             {formatEventDate(event.event_date)}
                           </time>
@@ -201,14 +203,14 @@ export default async function NewShowsPage() {
                             href={event.event_url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center justify-center gap-1.5 rounded-full bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                            className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-[var(--harbor)] px-4 py-2 text-sm font-semibold text-white transition hover:brightness-110"
                             aria-label={`Open ${event.title} (opens in a new tab)`}
                           >
                             Open event
                             <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
                           </a>
                         ) : (
-                          <span className="inline-flex items-center justify-center rounded-full border border-dashed border-slate-200 px-4 py-2 text-sm text-slate-400">
+                          <span className="inline-flex items-center justify-center rounded-xl border border-dashed border-[var(--fog)] px-4 py-2 text-sm text-[var(--ink-muted)]">
                             No link
                           </span>
                         )}
@@ -217,7 +219,7 @@ export default async function NewShowsPage() {
                           <input type="hidden" name="id" value={event.id} />
                           <button
                             type="submit"
-                            className="inline-flex w-full items-center justify-center gap-1.5 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2"
+                            className="inline-flex w-full items-center justify-center gap-1.5 rounded-xl border border-[var(--fog)] bg-white px-4 py-2 text-sm font-semibold text-[var(--ink)] transition hover:border-[var(--harbor)]/35"
                             aria-label={`Mark ${event.title} as seen`}
                           >
                             <Check className="h-3.5 w-3.5" aria-hidden="true" />
@@ -232,7 +234,7 @@ export default async function NewShowsPage() {
             })}
           </ul>
         )}
-      </section>
+      </div>
     </div>
   );
 }

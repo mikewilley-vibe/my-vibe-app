@@ -10,4 +10,5 @@ export { default as CommandPalette } from "./CommandPalette";
 export { default as PremiumButton } from "./PremiumButton";
 export { default as StatusBadge } from "./StatusBadge";
 export { default as SectionDivider } from "./SectionDivider";
+export { default as SectionHeader } from "./SectionHeader";
 export { default as PersonalCardGrid } from "./PersonalCardGrid";

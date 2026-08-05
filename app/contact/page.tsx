@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import FadeIn from "@/app/components/motion/FadeIn";
-import { Mail, Send, CheckCircle2, AlertCircle } from "lucide-react";
+import { Send, CheckCircle2, AlertCircle } from "lucide-react";
 
 type FormState = "idle" | "submitting" | "success" | "error";
 
@@ -20,7 +20,6 @@ export default function ContactPage() {
     e.preventDefault();
     setError(null);
 
-    // basic client-side validation
     if (!name.trim() || !email.trim() || !message.trim()) {
       setError("Please fill out all fields before sending.");
       return;
@@ -53,79 +52,69 @@ export default function ContactPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-white">
-      <section className="max-w-2xl mx-auto px-4 py-16 sm:py-24">
-        {/* Header */}
+    <div className="min-h-screen pb-16">
+      <section className="max-w-2xl mx-auto px-4 py-12 sm:py-16">
         <FadeIn>
-          <div className="mb-12 space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-lg">
-                <Mail className="w-6 h-6 text-white" />
-              </div>
-              <h1 className="text-4xl sm:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-slate-900 via-blue-800 to-slate-900">
-                Let&apos;s connect
-              </h1>
-            </div>
-            <p className="text-base sm:text-lg text-slate-600 max-w-lg">
-              Got a project idea, accessibility question, or just want to talk vibes, public-sector tech, or finance? Drop a note and I&apos;ll get back to you.
+          <div className="mb-10 space-y-3">
+            <p className="label-xs">Contact</p>
+            <h1 className="headline-lg">Let&apos;s connect</h1>
+            <div className="accent-rule" />
+            <p className="text-base sm:text-lg text-[var(--ink-muted)] max-w-lg">
+              Got a project idea, accessibility question, or just want to talk public-sector tech
+              or finance? Drop a note and I&apos;ll get back to you.
             </p>
           </div>
         </FadeIn>
 
-        {/* Form */}
         <FadeIn delay={0.1}>
           <form
             onSubmit={handleSubmit}
-            className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 p-8 sm:p-10 space-y-6"
+            className="bg-white/90 rounded-2xl shadow-sm border border-[var(--fog)] p-6 sm:p-8 space-y-6"
           >
             <div className="grid gap-5 md:grid-cols-2">
-              <div className="group">
-                <label className="block text-sm font-semibold text-slate-900 mb-2">
-                  Name
-                </label>
+              <div>
+                <label className="block text-sm font-semibold text-[var(--ink)] mb-2">Name</label>
                 <input
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full rounded-xl border border-slate-200 bg-white/50 px-4 py-3 text-sm transition-all duration-200 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 focus:bg-white group-hover:border-slate-300"
+                  className="w-full rounded-xl border border-[var(--fog)] bg-white px-4 py-3 text-sm transition placeholder:text-[var(--ink-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--harbor)]/35 focus:border-[var(--harbor)]"
                   placeholder="Mike Willey"
                 />
               </div>
-              <div className="group">
-                <label className="block text-sm font-semibold text-slate-900 mb-2">
-                  Email
-                </label>
+              <div>
+                <label className="block text-sm font-semibold text-[var(--ink)] mb-2">Email</label>
                 <input
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   type="email"
-                  className="w-full rounded-xl border border-slate-200 bg-white/50 px-4 py-3 text-sm transition-all duration-200 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 focus:bg-white group-hover:border-slate-300"
+                  className="w-full rounded-xl border border-[var(--fog)] bg-white px-4 py-3 text-sm transition placeholder:text-[var(--ink-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--harbor)]/35 focus:border-[var(--harbor)]"
                   placeholder="you@example.com"
                 />
               </div>
             </div>
 
-            <div className="group">
-              <label className="block text-sm font-semibold text-slate-900 mb-2">
+            <div>
+              <label className="block text-sm font-semibold text-[var(--ink)] mb-2">
                 How can I help?
               </label>
               <textarea
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 rows={5}
-                className="w-full rounded-xl border border-slate-200 bg-white/50 px-4 py-3 text-sm transition-all duration-200 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 focus:bg-white group-hover:border-slate-300 resize-none"
+                className="w-full rounded-xl border border-[var(--fog)] bg-white px-4 py-3 text-sm transition placeholder:text-[var(--ink-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--harbor)]/35 focus:border-[var(--harbor)] resize-none"
                 placeholder="Tell me a little about your project, idea, or question…"
               />
             </div>
 
             {error && (
-              <div className="flex items-gap-2 gap-3 text-sm text-red-700 bg-gradient-to-r from-red-50 to-red-50/50 border border-red-200 rounded-xl px-4 py-3 animate-in fade-in">
+              <div className="flex gap-3 text-sm text-red-700 bg-red-50 border border-red-200 rounded-xl px-4 py-3">
                 <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
                 <span>{error}</span>
               </div>
             )}
 
             {isSuccess && (
-              <div className="flex items-center gap-3 text-sm text-green-700 bg-gradient-to-r from-green-50 to-green-50/50 border border-green-200 rounded-xl px-4 py-3 animate-in fade-in">
+              <div className="flex items-center gap-3 text-sm text-emerald-800 bg-emerald-50 border border-emerald-200 rounded-xl px-4 py-3">
                 <CheckCircle2 className="w-5 h-5 flex-shrink-0" />
                 <span>Thanks{name ? `, ${name}` : ""}! Your message was sent.</span>
               </div>
@@ -134,7 +123,7 @@ export default function ContactPage() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold px-6 py-3 shadow-lg shadow-blue-600/20 transition-all duration-200 hover:shadow-xl hover:shadow-blue-600/30 hover:-translate-y-0.5 disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:translate-y-0 active:translate-y-0"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--harbor)] px-5 py-3 text-sm font-semibold text-white transition hover:brightness-110 disabled:opacity-60"
             >
               <Send className="w-4 h-4" />
               {isSubmitting ? "Sending…" : "Send message"}
@@ -142,13 +131,12 @@ export default function ContactPage() {
           </form>
         </FadeIn>
 
-        {/* Footer note */}
-        <FadeIn delay={0.2}>
-          <p className="text-center text-sm text-slate-500 mt-8">
+        <FadeIn delay={0.15}>
+          <p className="text-center text-sm text-[var(--ink-muted)] mt-8">
             I typically respond within 24 hours
           </p>
         </FadeIn>
       </section>
-    </main>
+    </div>
   );
 }

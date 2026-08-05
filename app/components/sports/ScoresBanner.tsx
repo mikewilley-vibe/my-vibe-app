@@ -154,14 +154,14 @@ useEffect(() => {
     <FadeIn>
       <section
         className={[
-          "rounded-2xl border border-slate-200 bg-white shadow-sm",
-          "px-4 py-2", // thinner
+          "rounded-2xl border border-[var(--fog)] bg-white/90 shadow-sm",
+          "px-4 py-3",
           className ?? "",
         ].join(" ")}
       >
-        <div className="mt-2 flex flex-wrap items-center gap-2">
+        <div className="mt-1 flex flex-wrap items-center gap-2">
 <button
-  className="rounded-full border px-3 py-1 text-xs font-semibold hover:bg-slate-50"
+  className="rounded-lg border border-[var(--fog)] px-3 py-1 text-xs font-semibold text-[var(--ink)] hover:border-[var(--harbor)]/40 hover:bg-[var(--paper)] transition-colors"
   onClick={() => {
     setPreset("live");
     setDate("");
@@ -171,20 +171,20 @@ useEffect(() => {
 </button>
 
 <button
-  className="rounded-full border px-3 py-1 text-xs font-semibold hover:bg-slate-50"
+  className="rounded-lg border border-[var(--fog)] px-3 py-1 text-xs font-semibold text-[var(--ink)] hover:border-[var(--harbor)]/40 hover:bg-[var(--paper)] transition-colors"
   onClick={() => {
-    setPreset("nfl");   // ✅ matches API
-    setDate("");        // let server choose next Sunday
+    setPreset("nfl");
+    setDate("");
   }}
 >
   NFL Sunday
 </button>
 
 <button
-  className="rounded-full border px-3 py-1 text-xs font-semibold hover:bg-slate-50"
+  className="rounded-lg border border-[var(--fog)] px-3 py-1 text-xs font-semibold text-[var(--ink)] hover:border-[var(--harbor)]/40 hover:bg-[var(--paper)] transition-colors"
   onClick={() => {
-    setPreset("ncaa");  // ✅ matches API
-    setDate("");        // or set a date if you want
+    setPreset("ncaa");
+    setDate("");
   }}
 >
   NCAA
@@ -194,7 +194,7 @@ useEffect(() => {
   value={date}
   onChange={(e) => setDate(e.target.value)}
   placeholder="YYYY-MM-DD"
-  className="h-8 w-32 rounded-lg border px-2 text-xs"
+  className="h-8 w-32 rounded-lg border border-[var(--fog)] bg-white px-2 text-xs text-[var(--ink)]"
  />
 </div>
 
@@ -219,11 +219,11 @@ useEffect(() => {
                 target="_blank"
                 rel="noreferrer"
                 className={[
-                  "min-w-[260px] rounded-xl border border-slate-200 bg-slate-50",
+                  "min-w-[260px] rounded-xl border border-[var(--fog)] bg-[var(--paper)]",
                   "px-3 py-2",
                   "transition",
-                  "hover:-translate-y-0.5 hover:border-blue-300 hover:bg-white hover:shadow-sm",
-                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400",
+                  "hover:-translate-y-0.5 hover:border-[var(--harbor)]/40 hover:bg-white hover:shadow-sm",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--harbor)]/40",
                 ].join(" ")}
                 title="Open ESPN Gamecast"
               >

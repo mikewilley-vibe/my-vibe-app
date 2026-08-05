@@ -23,29 +23,29 @@ export default async function ProjectDetailPage({
   const details = project.longDescription?.trim();
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 via-blue-50/20 to-white px-4 py-10 sm:py-14">
+    <div className="min-h-screen pb-16 px-4 py-10 sm:py-14">
       <article className="mx-auto w-full max-w-3xl">
         <nav aria-label="Breadcrumb" className="mb-6">
           <Link
             href="/projects"
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-slate-600 transition hover:text-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 rounded-md"
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-[var(--ink-muted)] transition hover:text-[var(--harbor)]"
           >
             <ArrowLeft className="h-4 w-4" aria-hidden="true" />
             Back to Projects
           </Link>
         </nav>
 
-        <div className="overflow-hidden rounded-3xl border border-slate-200/80 bg-white/90 shadow-sm backdrop-blur-sm">
+        <div className="overflow-hidden rounded-2xl border border-[var(--fog)] bg-white/90 shadow-sm">
           {project.image ? (
-            <div className="border-b border-slate-100 bg-slate-50 px-4 py-6 sm:px-8">
-              <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white p-3 shadow-sm">
+            <div className="border-b border-[var(--fog)] bg-[var(--paper)] px-4 py-6 sm:px-8">
+              <div className="relative mx-auto aspect-[16/10] max-h-[420px] overflow-hidden rounded-xl ring-1 ring-[var(--fog)] bg-white">
                 <Image
                   src={project.image}
                   alt={`${project.title} preview`}
-                  width={1200}
-                  height={800}
-                  className="mx-auto max-h-[420px] w-auto object-contain"
+                  fill
+                  className="object-contain p-3"
                   priority
+                  sizes="(max-width: 768px) 100vw, 720px"
                 />
               </div>
             </div>
@@ -53,28 +53,22 @@ export default async function ProjectDetailPage({
 
           <div className="space-y-8 p-6 sm:p-8">
             <header className="space-y-3">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-600">
-                Project
-              </p>
-              <div className="flex items-start gap-3">
-                {project.emoji ? (
-                  <span className="text-3xl" aria-hidden="true">
-                    {project.emoji}
-                  </span>
-                ) : null}
-                <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-                  {project.title}
-                </h1>
-              </div>
+              <p className="label-xs">Project</p>
+              <h1 className="font-display text-3xl font-semibold tracking-tight text-[var(--ink)] sm:text-4xl">
+                {project.title}
+              </h1>
+              <div className="accent-rule" />
               {summary ? (
-                <p className="max-w-2xl text-base text-slate-600">{summary}</p>
+                <p className="max-w-2xl text-base text-[var(--ink-muted)] leading-relaxed">
+                  {summary}
+                </p>
               ) : null}
             </header>
 
             {details ? (
               <section className="space-y-3">
-                <h2 className="text-lg font-semibold text-slate-900">Details</h2>
-                <p className="whitespace-pre-line leading-relaxed text-slate-700">
+                <h2 className="font-display text-lg font-semibold text-[var(--ink)]">Details</h2>
+                <p className="whitespace-pre-line leading-relaxed text-[var(--ink-muted)]">
                   {details}
                 </p>
               </section>
@@ -86,7 +80,7 @@ export default async function ProjectDetailPage({
                   href={project.link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                  className="inline-flex items-center gap-2 rounded-xl bg-[var(--harbor)] px-5 py-2.5 text-sm font-semibold text-white transition hover:brightness-110"
                 >
                   {project.link.label}
                   <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />

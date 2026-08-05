@@ -2,8 +2,9 @@
 
 import Image from "next/image";
 import { useEffect, useId, useRef, useState } from "react";
-import { ImageIcon, X } from "lucide-react";
+import { X } from "lucide-react";
 import type { Photo, Tag } from "./page";
+import Link from "next/link";
 
 type Filter = "all" | Tag;
 
@@ -59,25 +60,38 @@ export default function GalleryClient({ initialPhotos }: Props) {
     };
   }, [selected]);
 
+  if (initialPhotos.length === 0) {
+    return (
+      <div className="min-h-screen bg-[var(--paper)] text-[var(--ink)]">
+        <div className="mx-auto max-w-6xl px-4 py-16 sm:py-20">
+          <p className="label-xs mb-2">Visuals</p>
+          <h1 className="headline-lg mb-3">Photo gallery</h1>
+          <div className="accent-rule mb-8" />
+          <div className="rounded-2xl border border-dashed border-[var(--fog)] bg-white/70 px-6 py-16 text-center">
+            <h2 className="font-display text-xl font-semibold text-[var(--ink)]">Coming soon</h2>
+            <p className="mx-auto mt-2 max-w-sm text-sm text-[var(--ink-muted)]">
+              This gallery is still being built. Photos will show up here once they&apos;re ready.
+            </p>
+            <Link
+              href="/"
+              className="mt-6 inline-flex rounded-xl bg-[var(--harbor)] px-5 py-2.5 text-sm font-semibold text-white transition hover:brightness-110"
+            >
+              Back home
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 via-blue-50/20 to-white text-slate-900">
+    <div className="min-h-screen bg-[var(--paper)] text-[var(--ink)]">
       <div className="mx-auto max-w-6xl px-4 py-10 sm:py-14">
         <header className="mb-8 flex flex-col justify-between gap-5 md:flex-row md:items-end">
           <div className="space-y-2">
-            <div className="flex items-center gap-3">
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 to-blue-600 text-white shadow-lg shadow-blue-500/20">
-                <ImageIcon className="h-5 w-5" aria-hidden="true" />
-              </div>
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-600">
-                  Visuals
-                </p>
-                <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-                  Photo gallery
-                </h1>
-              </div>
-            </div>
-            <p className="max-w-xl text-sm text-slate-600 sm:text-base">
+            <p className="label-xs">Visuals</p>
+            <h1 className="headline-lg">Photo gallery</h1>
+            <p className="max-w-xl text-sm text-[var(--ink-muted)] sm:text-base">
               A collection of people, travel, and sports moments. Click any photo
               for a closer look.
             </p>
@@ -96,10 +110,10 @@ export default function GalleryClient({ initialPhotos }: Props) {
                   type="button"
                   aria-pressed={isActive}
                   onClick={() => setActiveFilter(key)}
-                  className={`rounded-full border px-3.5 py-1.5 text-xs font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 ${
+                  className={`rounded-lg border px-3.5 py-1.5 text-xs font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--harbor)]/40 ${
                     isActive
-                      ? "border-blue-600 bg-blue-600 text-white"
-                      : "border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:bg-slate-50"
+                      ? "border-[var(--harbor)] bg-[var(--harbor)] text-white"
+                      : "border-[var(--fog)] bg-white text-[var(--ink-muted)] hover:border-[var(--harbor)]/40"
                   }`}
                 >
                   {label}
@@ -109,25 +123,18 @@ export default function GalleryClient({ initialPhotos }: Props) {
           </div>
         </header>
 
-        {initialPhotos.length === 0 ? (
-          <div className="rounded-3xl border border-dashed border-slate-300 bg-white/70 px-6 py-16 text-center shadow-sm">
-            <h2 className="text-xl font-semibold text-slate-900">No photos yet</h2>
-            <p className="mx-auto mt-2 max-w-sm text-sm text-slate-600">
-              Add images to the gallery folder to populate this page.
-            </p>
-          </div>
-        ) : filteredPhotos.length === 0 ? (
-          <div className="rounded-3xl border border-dashed border-slate-300 bg-white/70 px-6 py-16 text-center shadow-sm">
-            <h2 className="text-xl font-semibold text-slate-900">
+        {filteredPhotos.length === 0 ? (
+          <div className="rounded-2xl border border-dashed border-[var(--fog)] bg-white/70 px-6 py-16 text-center">
+            <h2 className="font-display text-xl font-semibold text-[var(--ink)]">
               No photos in {TAG_LABELS[activeFilter as Tag] ?? "this filter"}
             </h2>
-            <p className="mx-auto mt-2 max-w-sm text-sm text-slate-600">
+            <p className="mx-auto mt-2 max-w-sm text-sm text-[var(--ink-muted)]">
               Try another filter, or switch back to All.
             </p>
             <button
               type="button"
               onClick={() => setActiveFilter("all")}
-              className="mt-5 inline-flex rounded-full bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+              className="mt-5 inline-flex rounded-xl bg-[var(--ink)] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[var(--harbor)]"
             >
               Show all photos
             </button>

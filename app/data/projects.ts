@@ -13,6 +13,62 @@ export type Project = {
 };
 
 export const projects: Project[] = [
+  {
+    slug: "adale-martin",
+    title: "Dr. Adale Martin Campaign Site",
+    emoji: "🗳️",
+    message:
+      "Campaign site for Norfolk School Board — Ward 1.",
+    longDescription:
+      "Designed and built a modern campaign website for Dr. Adale Martin’s Norfolk Public Schools Board race. The site highlights her record, goals for students, parent voices, and ways to donate or volunteer — with a clear, accessible information architecture for voters.",
+    image: "/images/adale-martin.webp",
+    link: {
+      href: "https://www.adalemartin.com/",
+      label: "Adale Martin",
+    },
+  },
+  {
+    slug: "skoshie-shelties",
+    title: "Skoshie Shelties",
+    emoji: "🐕",
+    message:
+      "AKC Sheltie breeder site for an Indiana family kennel.",
+    longDescription:
+      "Built a warm, content-rich website for Skoshie Shelties — an Indianapolis-based AKC Shetland Sheepdog breeder. The site covers available puppies, the breeding program, applications, and family-facing education with a calm visual system built for trust and clarity.",
+    image: "/images/skoshie-shelties.jpg",
+    link: {
+      href: "https://skoshieshelties.com/",
+      label: "Skoshie Shelties",
+    },
+  },
+  {
+    slug: "vandy-dance",
+    title: "Vandy Dance Studio Website",
+    emoji: "💃",
+    message:
+      "Built a vibrant website for an independent dance studio.",
+    longDescription:
+      "Created a modern, engaging website for an independent dance studio to showcase their classes, schedule, and instructors. Features class calendars, registration information, and a welcoming design that captures the energy of the dance community.",
+    image: "/images/vandy.png",
+    link: {
+      href: "https://vandydancecompany.com/",
+      label: "Vandy Dance",
+    },
+  },
+  {
+    slug: "vandy-accounting",
+    title: "Vandy Accounting Website Redesign",
+    emoji: "💼",
+    message:
+      "Modernized a professional accounting firm's web presence.",
+    longDescription:
+      "My aunt Julie runs an Accounting Solutions company in Indianapolis, and her website needed a fresh look. I completely redesigned and rebuilt it with modern UI/UX, mobile responsiveness, service highlights, and an easy way for clients to learn about her offerings and get in touch.",
+    image: "/images/vandy-screenshot2.png",
+    link: {
+      href: "https://vandy-accounting-migration.vercel.app/",
+      label: "Vandy Accounting",
+    },
+  },
   // ...existing code...
     // ...existing code...
     {
@@ -157,34 +213,6 @@ export const projects: Project[] = [
       href: "https://www.mikewilley.app/shows",
       label: "Shows"},
    },
-  {
-    slug: "vandy-accounting",
-    title: "Vandy Accounting Website Redesign",
-    emoji: "💼",
-    message:
-      "Modernized a professional accounting firm's web presence.",
-    longDescription:
-      "My aunt Julie runs an Accounting Solutions company in Indianapolis, and her website needed a fresh look. I completely redesigned and rebuilt it with modern UI/UX, mobile responsiveness, service highlights, and an easy way for clients to learn about her offerings and get in touch.",
-      image: "/images/vandy-screenshot2.png",
-      link: {
-        href: "https://vandy-accounting-migration.vercel.app/",
-        label: "Vandy Accounting",
-      },
-  },
-  {
-    slug: "vandy-dance",
-    title: "Vandy Dance Studio Website",
-    emoji: "💃",
-    message:
-      "Built a vibrant website for an independent dance studio.",
-    longDescription:
-      "Created a modern, engaging website for an independent dance studio to showcase their classes, schedule, and instructors. Features class calendars, registration information, and a welcoming design that captures the energy of the dance community.",
-    image: "/images/vandy.png",
-    link: {
-      href: "https://vandy-dance.vercel.app/",
-      label: "Vandy Dance",
-    },
-  },
   {
     slug: "workout-timer",
     title: "HIIT Workout Timer",

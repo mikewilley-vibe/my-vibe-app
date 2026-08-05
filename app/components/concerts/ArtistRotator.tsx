@@ -45,37 +45,35 @@ export default function ArtistRotator({
   }, [artists, visibleCount, intervalMs]);
 
   return (
-    <div className="mt-8">
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {visible.map((artist) => (
-          <div key={artist.name} className="min-h-[300px] animate-fadeIn">
-            <Link
-              href={artist.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group block h-full overflow-hidden rounded-lg shadow-md transition hover:shadow-xl hover:-translate-y-1"
-            >
-              <div className="relative h-full w-full bg-slate-200">
-                {artist.image && (
-                  <Image
-                    src={artist.image}
-                    alt={artist.name}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                )}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end">
-                  <div className="p-4 w-full">
-                    <h3 className="text-lg font-bold text-white group-hover:text-blue-200 transition-colors">
-                      {artist.name}
-                    </h3>
-                  </div>
-                </div>
-              </div>
-            </Link>
+    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {visible.map((artist) => (
+        <Link
+          key={`${artist.name}-${start}`}
+          href={artist.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group relative block min-h-[280px] overflow-hidden rounded-2xl ring-1 ring-[var(--fog)] transition duration-300 hover:-translate-y-0.5 hover:shadow-md animate-fadeIn"
+        >
+          <div className="absolute inset-0 bg-[var(--paper)]">
+            {artist.image ? (
+              <Image
+                src={artist.image}
+                alt={artist.name}
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                sizes="(max-width: 1024px) 50vw, 33vw"
+              />
+            ) : null}
           </div>
-        ))}
-      </div>
+          <div className="absolute inset-0 bg-gradient-to-t from-[var(--ink)]/85 via-[var(--ink)]/20 to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 p-5">
+            <h3 className="font-display text-xl font-semibold text-white">{artist.name}</h3>
+            <span className="mt-2 inline-flex text-xs font-semibold uppercase tracking-wide text-white/85 transition-transform group-hover:translate-x-0.5">
+              View shows →
+            </span>
+          </div>
+        </Link>
+      ))}
     </div>
   );
 }

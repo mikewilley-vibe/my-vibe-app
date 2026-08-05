@@ -6,14 +6,12 @@ import FadeIn from "@/app/components/motion/FadeIn";
 import type { MyArtist } from "@/app/data/myArtists";
 import type { VenueRegion } from "@/app/data/localVenues";
 import { localVenuesByRegion } from "@/app/data/localVenues";
-import { __debug_localVenuesByRegion_exists } from "@/app/data/localVenues";
 import { myShows } from "@/app/data/myShows";
 
 type Tab = "artists" | "venues" | "myshows";
 
 type Props = {
   myArtists: MyArtist[];
-  // optional: if you ever want to pass venues in from page.tsx instead of importing
   venuesByRegion?: VenueRegion[];
 };
 
@@ -30,10 +28,10 @@ function TabButton({
     <button
       type="button"
       onClick={onClick}
-      className={`pb-3 text-sm font-semibold transition ${
+      className={`pb-3 text-sm font-semibold transition-colors ${
         active
-          ? "border-b-2 border-slate-900 text-slate-900"
-          : "border-b-2 border-transparent text-slate-500 hover:text-slate-700"
+          ? "border-b-2 border-[var(--harbor)] text-[var(--ink)]"
+          : "border-b-2 border-transparent text-[var(--ink-muted)] hover:text-[var(--ink)]"
       }`}
     >
       {children}
@@ -41,8 +39,17 @@ function TabButton({
   );
 }
 
+function formatShowDate(date: string) {
+  return new Date(`${date}T12:00:00`).toLocaleDateString("en-US", {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+}
+
 export default function ShowTabs({ myArtists, venuesByRegion }: Props) {
-  const [tab, setTab] = useState<Tab>("artists");
+  const [tab, setTab] = useState<Tab>("myshows");
 
   const artists = useMemo(
     () => (Array.isArray(myArtists) ? myArtists : []),
@@ -54,99 +61,156 @@ export default function ShowTabs({ myArtists, venuesByRegion }: Props) {
     return Array.isArray(v) ? v : [];
   }, [venuesByRegion]);
 
+  const today = useMemo(() => new Date().toISOString().slice(0, 10), []);
+
+  const upcomingShows = useMemo(
+    () =>
+      [...myShows]
+        .filter((s) => s.date >= today)
+        .sort((a, b) => a.date.localeCompare(b.date)),
+    [today]
+  );
+
+  const pastShows = useMemo(
+    () =>
+      [...myShows]
+        .filter((s) => s.date < today)
+        .sort((a, b) => b.date.localeCompare(a.date)),
+    [today]
+  );
+
   const artistCount = artists.length;
   const venueCount = venueGroups.reduce((acc, g) => acc + (g.venues?.length ?? 0), 0);
 
   return (
-    <div className="mt-6 space-y-4">
-      {/* Tabs */}
-      <div className="flex items-center justify-between border-b border-slate-200">
-        <div className="flex gap-6">
+    <div className="space-y-6">
+      <div className="flex items-center justify-between border-b border-[var(--fog)]">
+        <div className="flex gap-5 sm:gap-6 overflow-x-auto">
+          <TabButton active={tab === "myshows"} onClick={() => setTab("myshows")}>
+            My Shows{" "}
+            <span className="text-[var(--ink-muted)] font-medium">({upcomingShows.length})</span>
+          </TabButton>
+
           <TabButton active={tab === "artists"} onClick={() => setTab("artists")}>
-            My Artists <span className="text-slate-400">({artistCount})</span>
+            Artists{" "}
+            <span className="text-[var(--ink-muted)] font-medium">({artistCount})</span>
           </TabButton>
 
           <TabButton active={tab === "venues"} onClick={() => setTab("venues")}>
-            Local Venues <span className="text-slate-400">({venueCount})</span>
-          </TabButton>
-
-          <TabButton active={tab === "myshows"} onClick={() => setTab("myshows")}>
-            My Shows
+            Venues{" "}
+            <span className="text-[var(--ink-muted)] font-medium">({venueCount})</span>
           </TabButton>
         </div>
       </div>
 
-      {/* Content */}
       {tab === "artists" ? (
         <div className="grid gap-3 sm:grid-cols-2">
           {artists.length === 0 ? (
-            <div className="col-span-full rounded-xl border border-slate-200 bg-white p-4 text-sm text-slate-600">
+            <div className="col-span-full rounded-2xl border border-[var(--fog)] bg-white/90 p-5 text-sm text-[var(--ink-muted)]">
               Nothing to show yet.
             </div>
           ) : (
             artists.map((a, idx) => (
-              <FadeIn key={a.url ?? a.name} delay={idx * 0.05}>
-              <EntityCard
-                title={a.name}
-                href={a.url ?? "#"}
-                imageSrc={a.image}
-                subtitle={a.url ? "Shows →" : "Add a link →"}
-              />
+              <FadeIn key={a.url ?? a.name} delay={Math.min(idx * 0.03, 0.3)}>
+                <EntityCard
+                  title={a.name}
+                  href={a.url ?? "#"}
+                  imageSrc={a.image}
+                  subtitle={a.url ? "Shows →" : "Add a link →"}
+                />
               </FadeIn>
             ))
           )}
         </div>
       ) : tab === "myshows" ? (
-        <div className="space-y-3">
-          {myShows.length === 0 ? (
-            <div className="rounded-xl border border-slate-200 bg-white p-6 text-center text-sm text-slate-600">
-              <p className="mb-3">Your personal show calendar is empty.</p>
-              <p className="text-xs">Add shows you're planning to attend!</p>
+        <div className="space-y-8">
+          {upcomingShows.length === 0 ? (
+            <div className="rounded-2xl border border-dashed border-[var(--fog)] bg-white/70 px-6 py-12 text-center">
+              <p className="font-display text-xl font-semibold text-[var(--ink)]">No upcoming shows</p>
+              <p className="mx-auto mt-2 max-w-sm text-sm text-[var(--ink-muted)]">
+                When you add dates to your personal list, they&apos;ll show up here first.
+              </p>
             </div>
           ) : (
-            myShows.map((show, idx) => (
-              <FadeIn key={`${show.artist}-${show.date}`} delay={idx * 0.05}>
-                <div className="rounded-xl border border-slate-200 bg-white p-4 hover:shadow-md transition-shadow">
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <h3 className="font-semibold text-slate-900">{show.artist}</h3>
-                      <p className="text-sm text-slate-600">{show.venue}</p>
-                      <p className="text-xs text-slate-500">{show.location}</p>
-                      <p className="mt-2 text-xs font-medium text-slate-600">
-                        {new Date(show.date).toLocaleDateString("en-US", {
-                          weekday: "short",
-                          month: "short",
-                          day: "numeric",
-                          year: "numeric",
-                        })}
-                      </p>
+            <div className="space-y-3">
+              {upcomingShows.map((show, idx) => (
+                <FadeIn key={`${show.artist}-${show.date}-${show.venue}`} delay={Math.min(idx * 0.04, 0.28)}>
+                  <article className="rounded-2xl border border-[var(--fog)] bg-white/90 p-4 sm:p-5 transition hover:border-[var(--harbor)]/30 hover:shadow-sm">
+                    <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                      <div className="min-w-0 flex gap-4">
+                        <div className="hidden sm:flex h-14 w-14 shrink-0 flex-col items-center justify-center rounded-xl bg-[var(--paper)] ring-1 ring-[var(--fog)]">
+                          <span className="text-[10px] font-semibold uppercase tracking-wider text-[var(--harbor)]">
+                            {new Date(`${show.date}T12:00:00`).toLocaleDateString("en-US", {
+                              month: "short",
+                            })}
+                          </span>
+                          <span className="font-display text-xl font-semibold text-[var(--ink)] leading-none">
+                            {new Date(`${show.date}T12:00:00`).getDate()}
+                          </span>
+                        </div>
+                        <div className="min-w-0">
+                          <h3 className="font-display text-lg font-semibold text-[var(--ink)] truncate">
+                            {show.artist}
+                          </h3>
+                          <p className="mt-0.5 text-sm text-[var(--ink-muted)]">
+                            {show.venue}
+                            {show.location ? ` · ${show.location}` : ""}
+                          </p>
+                          <p className="mt-2 text-xs font-medium text-[var(--ink-muted)] sm:hidden">
+                            {formatShowDate(show.date)}
+                          </p>
+                        </div>
+                      </div>
+
+                      {show.ticketUrl ? (
+                        <a
+                          href={show.ticketUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex shrink-0 items-center justify-center rounded-xl bg-[var(--harbor)] px-4 py-2 text-xs font-semibold text-white transition hover:brightness-110"
+                        >
+                          Tickets
+                        </a>
+                      ) : null}
                     </div>
-                    {show.ticketUrl && (
-                      <a
-                        href={show.ticketUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="px-3 py-1 rounded-md bg-blue-500 text-white text-xs font-semibold hover:bg-blue-600 transition-colors whitespace-nowrap"
-                      >
-                        Tickets
-                      </a>
-                    )}
-                  </div>
-                </div>
-              </FadeIn>
-            ))
+                  </article>
+                </FadeIn>
+              ))}
+            </div>
           )}
+
+          {pastShows.length > 0 ? (
+            <div>
+              <p className="label-xs mb-3">Recently passed</p>
+              <div className="space-y-2">
+                {pastShows.slice(0, 6).map((show) => (
+                  <div
+                    key={`${show.artist}-${show.date}-past`}
+                    className="flex items-center justify-between gap-3 rounded-xl border border-[var(--fog)]/80 bg-white/50 px-4 py-3 text-sm"
+                  >
+                    <div className="min-w-0">
+                      <span className="font-medium text-[var(--ink)]">{show.artist}</span>
+                      <span className="text-[var(--ink-muted)]"> · {show.venue}</span>
+                    </div>
+                    <span className="shrink-0 text-xs text-[var(--ink-muted)]">
+                      {formatShowDate(show.date)}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : null}
         </div>
       ) : (
-        <div className="space-y-6">
+        <div className="space-y-8">
           {venueGroups.length === 0 ? (
-            <div className="rounded-xl border border-slate-200 bg-white p-4 text-sm text-slate-600">
+            <div className="rounded-2xl border border-[var(--fog)] bg-white/90 p-5 text-sm text-[var(--ink-muted)]">
               No venues configured yet.
             </div>
           ) : (
             venueGroups.map((group) => (
               <div key={group.region}>
-                <h3 className="mb-3 text-sm font-bold uppercase tracking-wide text-slate-600">
+                <h3 className="mb-3 text-xs font-semibold uppercase tracking-widest text-[var(--harbor)]">
                   {group.region}
                 </h3>
 

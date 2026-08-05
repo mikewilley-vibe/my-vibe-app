@@ -7,6 +7,7 @@ type Props = {
   locationLabel?: string; // display label
   latitude?: number;      // override if provided
   longitude?: number;     // override if provided
+  variant?: "card" | "strip";
 };
 
 type WeatherData = {
@@ -112,14 +113,14 @@ function weatherLabel(code: number) {
 }
 
 function vibeClasses(code: number) {
-  if (code === 0) return { wrap: "bg-blue-50/70", badge: "bg-amber-100" };
-  if ([1, 2, 3].includes(code)) return { wrap: "bg-slate-50", badge: "bg-sky-100" };
-  if ([45, 48].includes(code)) return { wrap: "bg-slate-50", badge: "bg-slate-200" };
-  if ([51, 53, 55, 56, 57].includes(code)) return { wrap: "bg-sky-50/70", badge: "bg-sky-100" };
-  if ([61, 63, 65, 66, 67, 80, 81, 82].includes(code)) return { wrap: "bg-sky-50/70", badge: "bg-blue-100" };
-  if ([71, 73, 75, 77, 85, 86].includes(code)) return { wrap: "bg-slate-50", badge: "bg-indigo-100" };
-  if ([95, 96, 99].includes(code)) return { wrap: "bg-slate-50", badge: "bg-purple-100" };
-  return { wrap: "bg-slate-50", badge: "bg-slate-200" };
+  if (code === 0) return { wrap: "bg-[color-mix(in_srgb,var(--harbor)_8%,white)]", badge: "bg-amber-100" };
+  if ([1, 2, 3].includes(code)) return { wrap: "bg-[var(--paper)]", badge: "bg-[color-mix(in_srgb,var(--harbor)_12%,white)]" };
+  if ([45, 48].includes(code)) return { wrap: "bg-[var(--paper)]", badge: "bg-[var(--fog)]" };
+  if ([51, 53, 55, 56, 57].includes(code)) return { wrap: "bg-[color-mix(in_srgb,var(--harbor)_6%,white)]", badge: "bg-sky-100" };
+  if ([61, 63, 65, 66, 67, 80, 81, 82].includes(code)) return { wrap: "bg-[color-mix(in_srgb,var(--harbor)_8%,white)]", badge: "bg-sky-100" };
+  if ([71, 73, 75, 77, 85, 86].includes(code)) return { wrap: "bg-[var(--paper)]", badge: "bg-[var(--fog)]" };
+  if ([95, 96, 99].includes(code)) return { wrap: "bg-[var(--paper)]", badge: "bg-[color-mix(in_srgb,var(--signal)_16%,white)]" };
+  return { wrap: "bg-[var(--paper)]", badge: "bg-[var(--fog)]" };
 }
 
 function formatTime(iso: string) {
@@ -132,6 +133,7 @@ export default function WeatherCard({
   locationLabel,
   latitude,
   longitude,
+  variant = "card",
 }: Props) {
   // default fallback (Richmond)
   const fallback = { label: "Richmond, VA", lat: 37.5407, lon: -77.436 };
@@ -241,15 +243,27 @@ setWeather({
 const weatherUrl = `https://forecast.weather.gov/MapClick.php?lat=${coords.lat}&lon=${coords.lon}`;
   
   if (!weather) {
+    if (variant === "strip") {
+      return (
+        <a href={weatherUrl} target="_blank" rel="noreferrer" className="block">
+          <div className="rounded-xl border border-white/20 bg-white/15 backdrop-blur-md px-4 py-3">
+            <p className="text-sm text-white/80">
+              Loading weather{geoStatus === "requesting" ? "…" : "…"}
+            </p>
+          </div>
+        </a>
+      );
+    }
+
     return (
       <a href={weatherUrl} target="_blank" rel="noreferrer" className="block">
         <FadeIn>
-        <section className="rounded-2xl border border-slate-200 bg-white px-4 py-3 shadow-sm">
-          <p className="text-sm text-slate-600">
-            Loading weather{geoStatus === "requesting" ? " (getting your location…)" : "…"}
-          </p>
-        </section>
-      </FadeIn>
+          <section className="rounded-2xl border border-[var(--fog)] bg-white px-4 py-3 shadow-sm">
+            <p className="text-sm text-[var(--ink-muted)]">
+              Loading weather{geoStatus === "requesting" ? " (getting your location…)" : "…"}
+            </p>
+          </section>
+        </FadeIn>
       </a>
     );
   }
@@ -257,12 +271,40 @@ const weatherUrl = `https://forecast.weather.gov/MapClick.php?lat=${coords.lat}&
   const label = weatherLabel(weather.weathercode);
   const vibe = vibeClasses(weather.weathercode);
 
+  if (variant === "strip") {
+    return (
+      <a href={weatherUrl} target="_blank" rel="noreferrer" className="block group">
+        <div className="rounded-xl border border-white/20 bg-white/15 backdrop-blur-md px-4 py-3 transition group-hover:bg-white/22">
+          <div className="flex items-center justify-between gap-4">
+            <div className="min-w-0">
+              <div className="text-[11px] font-semibold uppercase tracking-wider text-white/70 truncate">
+                {coords.label}
+              </div>
+              <div className="text-sm text-white truncate">
+                <span className="font-semibold">{Math.round(weather.tempF)}°F</span>{" "}
+                <span className="text-white/80">{label}</span>
+              </div>
+            </div>
+            {weather.tomorrow && (
+              <div className="text-right shrink-0">
+                <div className="text-[11px] uppercase tracking-wider text-white/60">Tomorrow</div>
+                <div className="text-sm font-semibold text-white">
+                  {Math.round(weather.tomorrow.highF ?? 0)}° / {Math.round(weather.tomorrow.lowF ?? 0)}°
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </a>
+    );
+  }
+
   return (
       <a href={weatherUrl} target="_blank" rel="noreferrer" className="block">
     <FadeIn>
       <section
         className={[
-          "rounded-2xl border border-slate-200 shadow-sm",
+          "rounded-2xl border border-[var(--fog)] shadow-sm",
           "px-4 py-3",
           vibe.wrap,
         ].join(" ")}
@@ -272,7 +314,7 @@ const weatherUrl = `https://forecast.weather.gov/MapClick.php?lat=${coords.lat}&
   <div className="flex items-center gap-3 min-w-0">
     <div
       className={[
-        "flex h-10 w-10 flex-none items-center justify-center rounded-xl border border-slate-200",
+        "flex h-10 w-10 flex-none items-center justify-center rounded-xl border border-[var(--fog)]",
         vibe.badge,
       ].join(" ")}
       aria-hidden="true"
@@ -281,14 +323,14 @@ const weatherUrl = `https://forecast.weather.gov/MapClick.php?lat=${coords.lat}&
     </div>
 
     <div className="min-w-0">
-      <div className="text-xs font-semibold uppercase tracking-wide text-slate-700 truncate">
+      <div className="text-xs font-semibold uppercase tracking-wide text-[var(--ink-muted)] truncate">
         Weather · {coords.label}
       </div>
-      <div className="text-sm text-slate-700 truncate">
-        <span className="font-semibold text-slate-900">
+      <div className="text-sm text-[var(--ink-muted)] truncate">
+        <span className="font-semibold text-[var(--ink)]">
           {Math.round(weather.tempF)}°F
         </span>{" "}
-        <span className="text-slate-600">({label})</span>
+        <span>({label})</span>
       </div>
     </div>
   </div>
@@ -301,12 +343,12 @@ const weatherUrl = `https://forecast.weather.gov/MapClick.php?lat=${coords.lat}&
           {weatherEmoji(weather.tomorrow.weathercode ?? 0)}
         </span>
         <div>
-          <div className="text-[11px] uppercase tracking-wide text-slate-500">
+          <div className="text-[11px] uppercase tracking-wide text-[var(--ink-muted)]">
             Tomorrow
           </div>
-          <div className="text-base font-bold text-slate-900">
+          <div className="text-base font-bold text-[var(--ink)]">
             {Math.round(weather.tomorrow.highF ?? 0)}°
-            <span className="mx-1 text-slate-400">/</span>
+            <span className="mx-1 text-[var(--ink-muted)]">/</span>
             {Math.round(weather.tomorrow.lowF ?? 0)}°
           </div>
         </div>
@@ -315,24 +357,24 @@ const weatherUrl = `https://forecast.weather.gov/MapClick.php?lat=${coords.lat}&
   )}
 
   {/* DETAILS: grid on mobile so it doesn't overflow */}
-  <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs text-slate-700 sm:flex sm:flex-wrap sm:justify-end sm:text-right">
+  <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs text-[var(--ink-muted)] sm:flex sm:flex-wrap sm:justify-end sm:text-right">
     <span>
-      Feels <span className="font-semibold">{Math.round(weather.feelsF)}°</span>
+      Feels <span className="font-semibold text-[var(--ink)]">{Math.round(weather.feelsF)}°</span>
     </span>
     <span>
-      Dew <span className="font-semibold">{Math.round(weather.dewpointF)}°</span>
+      Dew <span className="font-semibold text-[var(--ink)]">{Math.round(weather.dewpointF)}°</span>
     </span>
     <span>
-      Hum <span className="font-semibold">{Math.round(weather.humidity)}%</span>
+      Hum <span className="font-semibold text-[var(--ink)]">{Math.round(weather.humidity)}%</span>
     </span>
     <span>
-      Wind <span className="font-semibold">{Math.round(weather.windMph)} mph</span>
+      Wind <span className="font-semibold text-[var(--ink)]">{Math.round(weather.windMph)} mph</span>
     </span>
 
     {weather.sunrise && weather.sunset && (
       <span className="col-span-2 whitespace-nowrap sm:col-span-1">
-        🌅 <span className="font-semibold">{formatTime(weather.sunrise)}</span>{" "}
-        · 🌇 <span className="font-semibold">{formatTime(weather.sunset)}</span>
+        Rise <span className="font-semibold text-[var(--ink)]">{formatTime(weather.sunrise)}</span>{" "}
+        · Set <span className="font-semibold text-[var(--ink)]">{formatTime(weather.sunset)}</span>
       </span>
     )}
   </div>

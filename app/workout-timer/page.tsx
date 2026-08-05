@@ -42,7 +42,7 @@ const formatTime = (totalSeconds: number) => {
 };
 
 const inputClassName =
-  "w-full rounded-xl border border-slate-600/80 bg-slate-950/70 px-3 py-2.5 text-sm text-slate-100 outline-none transition focus:border-blue-400 focus:ring-2 focus:ring-blue-500/40 disabled:cursor-not-allowed disabled:opacity-60";
+  "w-full rounded-xl border border-slate-600/80 bg-slate-950/70 px-3 py-2.5 text-sm text-slate-100 outline-none transition focus:border-[color:var(--harbor)] focus:ring-2 focus:ring-[color:var(--harbor)]/40 disabled:cursor-not-allowed disabled:opacity-60";
 
 export default function WorkoutTimerPage() {
   const baseId = useId();
@@ -510,11 +510,11 @@ export default function WorkoutTimerPage() {
           <div className="rounded-3xl border border-white/10 bg-slate-900/70 p-6 shadow-xl backdrop-blur-sm">
             <div className="mb-5 flex items-start justify-between gap-3">
               <div className="flex items-center gap-3">
-                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-blue-600 text-white shadow-lg shadow-blue-900/40">
+                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[var(--harbor)] text-white shadow-lg shadow-black/30">
                   <Timer className="h-5 w-5" aria-hidden="true" />
                 </div>
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-300">
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[color:var(--signal)]">
                     Training tool
                   </p>
                   <h1 className="text-xl font-bold tracking-tight text-white sm:text-2xl">
@@ -526,7 +526,7 @@ export default function WorkoutTimerPage() {
               <button
                 type="button"
                 onClick={() => setSoundEnabled((v) => !v)}
-                className="inline-flex items-center gap-1.5 rounded-full border border-slate-600 bg-slate-950/50 px-3 py-1.5 text-xs font-semibold text-slate-200 transition hover:border-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+                className="inline-flex items-center gap-1.5 rounded-full border border-slate-600 bg-slate-950/50 px-3 py-1.5 text-xs font-semibold text-slate-200 transition hover:border-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--harbor)]"
                 aria-pressed={soundEnabled}
                 aria-label={soundEnabled ? "Mute beeps" : "Enable beeps"}
               >
@@ -752,7 +752,7 @@ export default function WorkoutTimerPage() {
 
             <p className="mt-5 text-xs text-slate-500">
               Prefer the full site?{" "}
-              <Link href="/" className="font-medium text-blue-300 hover:text-blue-200">
+              <Link href="/" className="font-medium text-[color:var(--signal)] hover:brightness-110">
                 Back home
               </Link>
             </p>
@@ -817,7 +817,7 @@ export default function WorkoutTimerPage() {
                 type="button"
                 onClick={startTimer}
                 disabled={(timer.isRunning && !timer.isPaused) || !!configError}
-                className="min-w-[112px] rounded-full bg-blue-500 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-900/30 transition hover:bg-blue-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 disabled:cursor-not-allowed disabled:opacity-50"
+                className="min-w-[112px] rounded-full bg-[var(--harbor)] px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-black/30 transition hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--harbor)] disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {isFinished ? "Restart" : "Start"}
               </button>
@@ -825,7 +825,7 @@ export default function WorkoutTimerPage() {
                 type="button"
                 onClick={pauseOrResume}
                 disabled={!timer.isRunning}
-                className="min-w-[112px] rounded-full border border-slate-600 bg-slate-950/50 px-6 py-3 text-sm font-semibold text-slate-100 transition hover:border-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 disabled:cursor-not-allowed disabled:opacity-50"
+                className="min-w-[112px] rounded-full border border-slate-600 bg-slate-950/50 px-6 py-3 text-sm font-semibold text-slate-100 transition hover:border-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--harbor)] disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {timer.isPaused ? "Resume" : "Pause"}
               </button>

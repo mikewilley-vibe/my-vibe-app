@@ -14,9 +14,9 @@ export default function DynamicBackground({ children }: { children: React.ReactN
 
   return (
     <div
-      className="min-h-screen flex flex-col bg-slate-50 relative"
+      className="min-h-screen flex flex-col bg-[var(--paper)] relative"
       style={{
-        backgroundImage: `url('${backgroundImage}')`,
+        backgroundImage: `linear-gradient(180deg, color-mix(in srgb, var(--paper) 78%, transparent), color-mix(in srgb, var(--paper) 92%, transparent)), url('${backgroundImage}')`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundAttachment: "fixed",

@@ -9,24 +9,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { CalendarDays, ExternalLink } from "lucide-react";
 import { supabaseServer } from "@/lib/supabaseServer";
+import { getClosestShowsPerVenue } from "@/lib/venueUpcoming";
 
 export const dynamic = "force-dynamic";
-
-type VenueRel = { name: string } | { name: string }[] | null;
-
-type UpcomingVenueEvent = {
-  id: string;
-  title: string;
-  event_date: string | null;
-  event_url: string | null;
-  venues: VenueRel;
-};
-
-function venueName(venues: VenueRel): string {
-  if (!venues) return "Unknown venue";
-  if (Array.isArray(venues)) return venues[0]?.name ?? "Unknown venue";
-  return venues.name || "Unknown venue";
-}
 
 function formatEventDate(value: string | null): string {
   if (!value) return "Date TBA";
@@ -43,19 +28,14 @@ export default async function ShowsPage() {
   const supabase = supabaseServer();
   const today = new Date().toISOString().slice(0, 10);
 
-  const [{ data: venues }, { data: unseenCounts }, { data: nextVenueShows }] = await Promise.all([
+  const [{ data: venues }, { data: unseenCounts }, perVenue] = await Promise.all([
     supabase
       .from("venues")
       .select("id, name, url, last_checked_at, active")
       .eq("active", true)
       .order("name"),
     supabase.from("venue_events").select("venue_id").eq("seen", false),
-    supabase
-      .from("venue_events")
-      .select("id, title, event_date, event_url, venues(name)")
-      .gte("event_date", today)
-      .order("event_date", { ascending: true })
-      .limit(3),
+    getClosestShowsPerVenue({ perVenue: 3, days: 120 }).catch(() => []),
   ]);
 
   const unseenByVenue = new Map<string, number>();
@@ -65,7 +45,7 @@ export default async function ShowsPage() {
 
   const totalUnseen = unseenCounts?.length ?? 0;
   const upcomingCount = myShows.filter((s) => s.date >= today).length;
-  const upcomingVenueEvents = (nextVenueShows ?? []) as UpcomingVenueEvent[];
+  const venuesWithShows = perVenue.filter((g) => g.shows.length > 0);
 
   return (
     <div className="min-h-screen pb-16">
@@ -141,71 +121,81 @@ export default async function ShowsPage() {
       </section>
 
       <div className="mx-auto max-w-6xl px-4 space-y-16 pt-12 sm:pt-16">
-        {upcomingVenueEvents.length > 0 && (
+        {venuesWithShows.length > 0 && (
           <ScrollReveal>
             <section>
-              <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-                <SectionHeader
-                  eyebrow="Coming up"
-                  title="Next from venues"
-                  description="The next three dated shows across every monitored room."
-                  className="mb-0"
-                />
-                <Link
-                  href="/shows/new"
-                  className="inline-flex shrink-0 items-center self-start rounded-xl border border-[var(--fog)] bg-white px-4 py-2.5 text-sm font-semibold text-[var(--harbor)] transition hover:border-[var(--harbor)]/35"
-                >
-                  All venue listings →
-                </Link>
-              </div>
+              <SectionHeader
+                eyebrow="Calendars"
+                title="Closest at each room"
+                description="Next three dated shows per venue — Ticketmaster where they sell there, your scrape monitor everywhere else."
+              />
 
-              <ul className="space-y-3" aria-label="Next three venue shows">
-                {upcomingVenueEvents.map((event, idx) => {
-                  const venue = venueName(event.venues);
-                  return (
-                    <li key={event.id}>
-                      <article className="rounded-2xl border border-[var(--fog)] bg-white/90 p-4 shadow-sm sm:p-5">
-                        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-                          <div className="min-w-0 space-y-2">
-                            <div className="flex flex-wrap items-center gap-2">
-                              {idx === 0 ? (
-                                <span className="rounded-md bg-[var(--signal)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">
-                                  Next
-                                </span>
-                              ) : null}
-                              <span className="text-xs font-semibold uppercase tracking-wide text-[var(--harbor)]">
-                                {venue}
-                              </span>
+              <div className="space-y-8">
+                {venuesWithShows.map((group) => (
+                  <div key={`${group.venue.region}-${group.venue.name}`}>
+                    <div className="mb-3 flex flex-wrap items-end justify-between gap-2">
+                      <div>
+                        <p className="text-xs font-semibold uppercase tracking-widest text-[var(--harbor)]">
+                          {group.venue.region}
+                          <span className="mx-2 text-[var(--fog)]">·</span>
+                          <span className="font-medium normal-case tracking-normal text-[var(--ink-muted)]">
+                            via {group.venue.source === "ticketmaster" ? "Ticketmaster" : "venue scrape"}
+                          </span>
+                        </p>
+                        <h3 className="font-display text-xl font-semibold text-[var(--ink)]">
+                          {group.venue.name}
+                        </h3>
+                      </div>
+                      <a
+                        href={group.venue.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-sm font-semibold text-[var(--harbor)] hover:underline"
+                      >
+                        Full calendar →
+                      </a>
+                    </div>
+
+                    <ul className="space-y-2">
+                      {group.shows.map((show, idx) => (
+                        <li key={show.id}>
+                          <article className="flex flex-col gap-3 rounded-xl border border-[var(--fog)] bg-white/90 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+                            <div className="min-w-0">
+                              <div className="flex flex-wrap items-center gap-2">
+                                {idx === 0 ? (
+                                  <span className="rounded-md bg-[var(--signal)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">
+                                    Next
+                                  </span>
+                                ) : null}
+                                <p className="inline-flex items-center gap-1.5 text-xs font-semibold text-[var(--ink-muted)]">
+                                  <CalendarDays className="h-3.5 w-3.5" aria-hidden="true" />
+                                  <time dateTime={show.date ?? undefined}>
+                                    {formatEventDate(show.date)}
+                                  </time>
+                                </p>
+                              </div>
+                              <h4 className="mt-1 truncate font-display text-base font-semibold text-[var(--ink)]">
+                                {show.title}
+                              </h4>
                             </div>
-                            <h3 className="font-display text-lg font-semibold leading-snug text-[var(--ink)]">
-                              {event.title}
-                            </h3>
-                            <p className="inline-flex items-center gap-1.5 text-sm text-[var(--ink-muted)]">
-                              <CalendarDays className="h-4 w-4 shrink-0" aria-hidden="true" />
-                              <time dateTime={event.event_date ?? undefined}>
-                                {formatEventDate(event.event_date)}
-                              </time>
-                            </p>
-                          </div>
-
-                          {event.event_url ? (
-                            <a
-                              href={event.event_url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="inline-flex shrink-0 items-center justify-center gap-1.5 self-start rounded-xl bg-[var(--harbor)] px-4 py-2 text-sm font-semibold text-white transition hover:brightness-110"
-                              aria-label={`Open ${event.title} (opens in a new tab)`}
-                            >
-                              Open event
-                              <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
-                            </a>
-                          ) : null}
-                        </div>
-                      </article>
-                    </li>
-                  );
-                })}
-              </ul>
+                            {show.url ? (
+                              <a
+                                href={show.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex shrink-0 items-center gap-1.5 self-start rounded-xl bg-[var(--harbor)] px-3.5 py-2 text-xs font-semibold text-white transition hover:brightness-110 sm:self-center"
+                              >
+                                Open
+                                <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+                              </a>
+                            ) : null}
+                          </article>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
             </section>
           </ScrollReveal>
         )}

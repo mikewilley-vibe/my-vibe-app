@@ -110,20 +110,49 @@ export default function SiteHeader() {
           )}
         </div>
 
-        <button
-          onClick={() => setMobileOpen(!mobileOpen)}
-          className="md:hidden p-2 rounded-lg text-[var(--ink)] hover:bg-white/70 transition-colors"
-          aria-label="Toggle menu"
-        >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d={mobileOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"}
-            />
-          </svg>
-        </button>
+        <div className="flex md:hidden items-center gap-1.5">
+          {isPersonal === true && (
+            <>
+              <Link
+                href="/shows"
+                className={[
+                  "rounded-lg px-2.5 py-1.5 text-sm font-semibold transition-colors",
+                  pathname === "/shows" || pathname.startsWith("/shows/")
+                    ? "bg-white text-[var(--harbor)] ring-1 ring-[var(--fog)]"
+                    : "text-[var(--ink)] hover:bg-white/70 hover:text-[var(--harbor)]",
+                ].join(" ")}
+              >
+                Shows
+              </Link>
+              <Link
+                href="/uva"
+                className={[
+                  "rounded-lg px-2.5 py-1.5 text-sm font-semibold transition-colors",
+                  pathname === "/uva" || pathname.startsWith("/uva/")
+                    ? "bg-white text-[var(--harbor)] ring-1 ring-[var(--fog)]"
+                    : "text-[var(--ink)] hover:bg-white/70 hover:text-[var(--harbor)]",
+                ].join(" ")}
+              >
+                UVA
+              </Link>
+            </>
+          )}
+          <button
+            onClick={() => setMobileOpen(!mobileOpen)}
+            className="p-2 rounded-lg text-[var(--ink)] hover:bg-white/70 transition-colors"
+            aria-label="Toggle menu"
+            aria-expanded={mobileOpen}
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d={mobileOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"}
+              />
+            </svg>
+          </button>
+        </div>
       </nav>
 
       {mobileOpen && (

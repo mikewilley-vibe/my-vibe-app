@@ -12,7 +12,7 @@ type TabConfig = {
 };
 
 const tabs: TabConfig[] = [
-  { label: "Basketball Schedule", shortLabel: "Schedule", href: "/uva", id: "schedule" },
+  { label: "Schedules", shortLabel: "Schedules", href: "/uva", id: "schedule" },
   {
     label: "Basketball Results",
     shortLabel: "BB Results",

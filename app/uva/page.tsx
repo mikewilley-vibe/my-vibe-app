@@ -80,10 +80,6 @@ export default async function UvaPage() {
           }
         />
 
-        <div className="mb-10">
-          <ScoresBanner />
-        </div>
-
         <UvaScheduleSection
           sportLabel="Football"
           title="Next 5 games"
@@ -97,6 +93,10 @@ export default async function UvaPage() {
           games={basketballUpcoming}
           resultsHref="/uva/basketball/results"
         />
+
+        <div className="mt-2 mb-4">
+          <ScoresBanner />
+        </div>
       </section>
     </div>
   );

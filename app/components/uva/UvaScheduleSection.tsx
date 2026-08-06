@@ -71,7 +71,9 @@ export default function UvaScheduleSection({
           </h2>
         </div>
         <div className="flex items-center gap-3 text-sm">
-          <span className="text-slate-600 tabular-nums">{games.length} listed</span>
+          <span className="text-slate-600 tabular-nums">
+            {games.length === 0 ? "0 shown" : `${games.length} shown`}
+          </span>
           {resultsHref ? (
             <a
               href={resultsHref}

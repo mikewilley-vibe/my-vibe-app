@@ -10,14 +10,17 @@ import { UVA_BLUE, uvaPageBg } from "@/app/components/uva/uvaTheme";
 
 export const dynamic = "force-dynamic";
 
-function upcomingFrom(games: ScheduleGame[] | undefined) {
+const UPCOMING_LIMIT = 5;
+
+function upcomingFrom(games: ScheduleGame[] | undefined, limit = UPCOMING_LIMIT) {
   const now = new Date();
   return (games ?? [])
     .filter((g) => {
       const d = new Date(g.date);
       return !Number.isNaN(d.getTime()) && d > now;
     })
-    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+    .slice(0, limit);
 }
 
 export default async function UvaPage() {
@@ -36,7 +39,7 @@ export default async function UvaPage() {
           <UvaTabs />
           <div role="alert" className="rounded-2xl border border-rose-200 bg-rose-50/80 p-6 sm:p-8">
             <h1 className="font-display text-3xl font-semibold" style={{ color: UVA_BLUE }}>
-              UVA Schedules
+              UVA Schedule
             </h1>
             <p className="mt-3 max-w-xl text-sm text-slate-600 sm:text-base">
               Upcoming games are temporarily unavailable. Please try again in a few minutes.
@@ -52,8 +55,15 @@ export default async function UvaPage() {
     );
   }
 
-  const nextGame = footballUpcoming[0] ?? basketballUpcoming[0];
-  const nextSport = footballUpcoming[0] ? "Football" : basketballUpcoming[0] ? "Basketball" : null;
+  const nextCandidates = [
+    footballUpcoming[0] ? { sport: "Football" as const, game: footballUpcoming[0] } : null,
+    basketballUpcoming[0] ? { sport: "Basketball" as const, game: basketballUpcoming[0] } : null,
+  ].filter(Boolean) as Array<{ sport: "Football" | "Basketball"; game: ScheduleGame }>;
+
+  nextCandidates.sort(
+    (a, b) => new Date(a.game.date).getTime() - new Date(b.game.date).getTime()
+  );
+  const next = nextCandidates[0];
 
   return (
     <div className="min-h-screen pb-16" style={{ backgroundImage: uvaPageBg() }}>
@@ -62,11 +72,11 @@ export default async function UvaPage() {
 
         <UvaPageHeader
           eyebrow="Athletics"
-          title="UVA Schedules"
+          title="UVA Schedule"
           description={
-            nextGame && nextSport
-              ? `Next up (${nextSport}): vs ${nextGame.opponent}`
-              : "Upcoming Cavaliers football and basketball"
+            next
+              ? `Next up (${next.sport}): vs ${next.game.opponent}`
+              : "Next five football and basketball games"
           }
         />
 
@@ -76,14 +86,14 @@ export default async function UvaPage() {
 
         <UvaScheduleSection
           sportLabel="Football"
-          title="Upcoming games"
+          title="Next 5 games"
           games={footballUpcoming}
           resultsHref="/uva/football/results"
         />
 
         <UvaScheduleSection
           sportLabel="Basketball"
-          title="Upcoming games"
+          title="Next 5 games"
           games={basketballUpcoming}
           resultsHref="/uva/basketball/results"
         />

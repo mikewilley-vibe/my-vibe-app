@@ -7,23 +7,56 @@ import ScrollReveal from "@/app/components/motion/ScrollReveal";
 import SectionHeader from "@/app/components/ui/SectionHeader";
 import Image from "next/image";
 import Link from "next/link";
+import { CalendarDays, ExternalLink } from "lucide-react";
 import { supabaseServer } from "@/lib/supabaseServer";
 
 export const dynamic = "force-dynamic";
 
+type VenueRel = { name: string } | { name: string }[] | null;
+
+type UpcomingVenueEvent = {
+  id: string;
+  title: string;
+  event_date: string | null;
+  event_url: string | null;
+  venues: VenueRel;
+};
+
+function venueName(venues: VenueRel): string {
+  if (!venues) return "Unknown venue";
+  if (Array.isArray(venues)) return venues[0]?.name ?? "Unknown venue";
+  return venues.name || "Unknown venue";
+}
+
+function formatEventDate(value: string | null): string {
+  if (!value) return "Date TBA";
+  const parsed = new Date(value.length <= 10 ? `${value}T12:00:00` : value);
+  if (Number.isNaN(parsed.getTime())) return value;
+  return parsed.toLocaleDateString("en-US", {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+  });
+}
+
 export default async function ShowsPage() {
   const supabase = supabaseServer();
+  const today = new Date().toISOString().slice(0, 10);
 
-  const { data: venues } = await supabase
-    .from("venues")
-    .select("id, name, url, last_checked_at, active")
-    .eq("active", true)
-    .order("name");
-
-  const { data: unseenCounts } = await supabase
-    .from("venue_events")
-    .select("venue_id")
-    .eq("seen", false);
+  const [{ data: venues }, { data: unseenCounts }, { data: nextVenueShows }] = await Promise.all([
+    supabase
+      .from("venues")
+      .select("id, name, url, last_checked_at, active")
+      .eq("active", true)
+      .order("name"),
+    supabase.from("venue_events").select("venue_id").eq("seen", false),
+    supabase
+      .from("venue_events")
+      .select("id, title, event_date, event_url, venues(name)")
+      .gte("event_date", today)
+      .order("event_date", { ascending: true })
+      .limit(3),
+  ]);
 
   const unseenByVenue = new Map<string, number>();
   (unseenCounts ?? []).forEach((e: { venue_id: string }) => {
@@ -31,8 +64,8 @@ export default async function ShowsPage() {
   });
 
   const totalUnseen = unseenCounts?.length ?? 0;
-  const today = new Date().toISOString().slice(0, 10);
   const upcomingCount = myShows.filter((s) => s.date >= today).length;
+  const upcomingVenueEvents = (nextVenueShows ?? []) as UpcomingVenueEvent[];
 
   return (
     <div className="min-h-screen pb-16">
@@ -108,6 +141,75 @@ export default async function ShowsPage() {
       </section>
 
       <div className="mx-auto max-w-6xl px-4 space-y-16 pt-12 sm:pt-16">
+        {upcomingVenueEvents.length > 0 && (
+          <ScrollReveal>
+            <section>
+              <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+                <SectionHeader
+                  eyebrow="Coming up"
+                  title="Next from venues"
+                  description="The next three dated shows across every monitored room."
+                  className="mb-0"
+                />
+                <Link
+                  href="/shows/new"
+                  className="inline-flex shrink-0 items-center self-start rounded-xl border border-[var(--fog)] bg-white px-4 py-2.5 text-sm font-semibold text-[var(--harbor)] transition hover:border-[var(--harbor)]/35"
+                >
+                  All venue listings →
+                </Link>
+              </div>
+
+              <ul className="space-y-3" aria-label="Next three venue shows">
+                {upcomingVenueEvents.map((event, idx) => {
+                  const venue = venueName(event.venues);
+                  return (
+                    <li key={event.id}>
+                      <article className="rounded-2xl border border-[var(--fog)] bg-white/90 p-4 shadow-sm sm:p-5">
+                        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                          <div className="min-w-0 space-y-2">
+                            <div className="flex flex-wrap items-center gap-2">
+                              {idx === 0 ? (
+                                <span className="rounded-md bg-[var(--signal)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">
+                                  Next
+                                </span>
+                              ) : null}
+                              <span className="text-xs font-semibold uppercase tracking-wide text-[var(--harbor)]">
+                                {venue}
+                              </span>
+                            </div>
+                            <h3 className="font-display text-lg font-semibold leading-snug text-[var(--ink)]">
+                              {event.title}
+                            </h3>
+                            <p className="inline-flex items-center gap-1.5 text-sm text-[var(--ink-muted)]">
+                              <CalendarDays className="h-4 w-4 shrink-0" aria-hidden="true" />
+                              <time dateTime={event.event_date ?? undefined}>
+                                {formatEventDate(event.event_date)}
+                              </time>
+                            </p>
+                          </div>
+
+                          {event.event_url ? (
+                            <a
+                              href={event.event_url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex shrink-0 items-center justify-center gap-1.5 self-start rounded-xl bg-[var(--harbor)] px-4 py-2 text-sm font-semibold text-white transition hover:brightness-110"
+                              aria-label={`Open ${event.title} (opens in a new tab)`}
+                            >
+                              Open event
+                              <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+                            </a>
+                          ) : null}
+                        </div>
+                      </article>
+                    </li>
+                  );
+                })}
+              </ul>
+            </section>
+          </ScrollReveal>
+        )}
+
         {venues && venues.length > 0 && (
           <ScrollReveal>
             <section>

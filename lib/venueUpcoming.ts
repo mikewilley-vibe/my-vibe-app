@@ -2,6 +2,7 @@
 import { fetchTMEvents } from "@/lib/ticketmaster";
 import type { Concert } from "@/lib/concerts/types";
 import { supabaseServer } from "@/lib/supabaseServer";
+import { scrapeAnnexUpcoming } from "@/lib/annexScraper";
 import {
   venueSources,
   type VenueRegionName,
@@ -178,10 +179,9 @@ export async function getClosestShowsPerVenue(opts?: {
   const days = opts?.days ?? 120;
 
   const tmVenues = venueSources.filter((v) => v.source === "ticketmaster");
-  const scrapeVenues = venueSources.filter((v) => v.source === "scrape");
   const regions = Array.from(new Set(tmVenues.map((v) => v.region)));
 
-  const [regionResults, idResults, scraped] = await Promise.all([
+  const [regionResults, idResults, scraped, annexLive] = await Promise.all([
     Promise.allSettled(regions.map((r) => fetchRegionTmEvents(r, days))),
     Promise.allSettled(
       tmVenues
@@ -189,6 +189,7 @@ export async function getClosestShowsPerVenue(opts?: {
         .map(async (v) => ({ venue: v.name, events: await fetchTmForVenueId(v, days) }))
     ),
     loadScrapedByVenueName(perVenue).catch(() => new Map<string, VenueUpcomingShow[]>()),
+    scrapeAnnexUpcoming(perVenue).catch(() => [] as VenueUpcomingShow[]),
   ]);
 
   const regionalConcerts: Concert[] = [];
@@ -237,6 +238,17 @@ export async function getClosestShowsPerVenue(opts?: {
       }
 
       return { venue, shows };
+    }
+
+    // Live scrape for Annex — their calendar is Etix/RHP, not Ticketmaster inventory.
+    if (norm(venue.name).includes("annex")) {
+      return {
+        venue,
+        shows: (annexLive.length ? annexLive : findScrapedMatches(scraped, venue)).slice(
+          0,
+          perVenue
+        ),
+      };
     }
 
     return {

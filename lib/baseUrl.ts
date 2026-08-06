@@ -8,12 +8,15 @@ export async function getBaseUrl() {
   }
 
   const h = await headers();
-  const proto = h.get("x-forwarded-proto") ?? "https";
   const forwardedHost = h.get("x-forwarded-host");
   const host = h.get("host");
 
   // Prefer forwarded host (custom domain) over direct host
-  const useHost = forwardedHost || host;
+  const useHost = forwardedHost || host || "localhost:3000";
+  const isLocal =
+    useHost.includes("localhost") || useHost.startsWith("127.0.0.1");
+  // Local Next doesn't terminate TLS; defaulting to https hangs self-fetches.
+  const proto = h.get("x-forwarded-proto") ?? (isLocal ? "http" : "https");
 
   return `${proto}://${useHost}`.replace(/\/$/, "");
 }

@@ -142,16 +142,19 @@ export function WorkoutScreen() {
           remainingSeconds={timer.remainingSeconds}
           progress={progress}
           currentPhaseLabel={currentPhaseLabel}
-        />
-
-        <ControlButtons
-          isRunning={timer.isRunning}
-          isPaused={timer.isPaused}
-          isFinished={isFinished}
-          disabledStart={(timer.isRunning && !timer.isPaused) || !!configError}
-          onStart={startTimer}
-          onPauseResume={pauseOrResume}
-          onReset={resetTimer}
+          controls={
+            <ControlButtons
+              isRunning={timer.isRunning}
+              isPaused={timer.isPaused}
+              isFinished={isFinished}
+              disabledStart={
+                (timer.isRunning && !timer.isPaused) || !!configError
+              }
+              onStart={startTimer}
+              onPauseResume={pauseOrResume}
+              onReset={resetTimer}
+            />
+          }
         />
       </ScrollView>
     </View>

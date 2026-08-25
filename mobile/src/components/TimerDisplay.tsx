@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Phase } from "../types";
 import { colors, phasePill, progressBar } from "../theme";
@@ -12,6 +13,7 @@ type Props = {
   remainingSeconds: number;
   progress: number;
   currentPhaseLabel: string;
+  controls?: ReactNode;
 };
 
 export function TimerDisplay({
@@ -23,6 +25,7 @@ export function TimerDisplay({
   remainingSeconds,
   progress,
   currentPhaseLabel,
+  controls,
 }: Props) {
   const cue =
     phase === "idle"
@@ -77,10 +80,15 @@ export function TimerDisplay({
 
       <View style={styles.clockBlock}>
         <Text style={styles.cue}>{cue}</Text>
-        <Text style={styles.clock} accessibilityLabel={`${formatTime(remainingSeconds)} remaining`}>
+        <Text
+          style={styles.clock}
+          accessibilityLabel={`${formatTime(remainingSeconds)} remaining`}
+        >
           {isIdle ? "00:00" : formatTime(remainingSeconds)}
         </Text>
       </View>
+
+      {controls ? <View style={styles.controls}>{controls}</View> : null}
     </View>
   );
 }
@@ -93,6 +101,8 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(15, 23, 42, 0.7)",
     padding: 24,
     gap: 20,
+    minHeight: 420,
+    justifyContent: "space-between",
   },
   topRow: {
     flexDirection: "row",
@@ -138,6 +148,8 @@ const styles = StyleSheet.create({
   clockBlock: {
     alignItems: "center",
     paddingVertical: 12,
+    flexGrow: 1,
+    justifyContent: "center",
   },
   cue: {
     marginBottom: 12,
@@ -152,5 +164,8 @@ const styles = StyleSheet.create({
     fontVariant: ["tabular-nums"],
     letterSpacing: -1,
     color: colors.white,
+  },
+  controls: {
+    marginTop: 8,
   },
 });

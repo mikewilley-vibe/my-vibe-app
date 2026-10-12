@@ -1,3 +1,8 @@
+/** True when this deployment should not run scheduled jobs. */
+export function cronUnconfigured(): boolean {
+  return !process.env.CRON_SECRET?.trim();
+}
+
 export function cronAuthorized(req: Request): boolean {
   const secret = process.env.CRON_SECRET;
   if (!secret) return false;

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { cronAuthorized } from "@/lib/cronAuth";
+import { cronAuthorized, cronUnconfigured } from "@/lib/cronAuth";
 import { syncOfficialHolidays } from "@/lib/holidays/googleSync";
 import { createSnapshotStore } from "@/lib/snapshots/snapshotStore";
 import { refreshUvaSchedules, type RefreshResult } from "@/lib/uva/refreshSchedules";
@@ -37,6 +37,13 @@ function summarizeUva(result: RefreshResult) {
 }
 
 export async function GET(req: Request) {
+  if (cronUnconfigured()) {
+    return NextResponse.json({
+      ok: true,
+      skipped: true,
+      reason: "CRON_SECRET is not set on this deployment",
+    });
+  }
   if (!cronAuthorized(req)) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }

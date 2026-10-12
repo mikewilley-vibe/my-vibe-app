@@ -39,7 +39,7 @@ const personalCards = [
   },
   {
     title: "HIIT Timer",
-    subtitle: "Work \u2022 rest \u2022 repeat",
+    subtitle: "Work • rest • repeat",
     href: "/workout-timer",
     cta: "Start session",
     image: "/images/hiit.png",
@@ -89,7 +89,7 @@ export default function HomePage() {
               <SectionHeader
                 eyebrow="Today"
                 title="Family calendar"
-                description="What\u2019s ahead at home \u2014 plus the school calendars in one place."
+                description="What’s ahead at home — plus the school calendars in one place."
               />
 
               <div className="overflow-hidden rounded-2xl ring-1 ring-[var(--fog)] bg-white shadow-sm">
@@ -125,7 +125,7 @@ export default function HomePage() {
                           aria-hidden="true"
                           className="mt-0.5 text-[var(--harbor)] transition-transform group-hover:translate-x-0.5"
                         >
-                          \u2192
+                          →
                         </span>
                       </Link>
                     </li>
@@ -140,7 +140,7 @@ export default function HomePage() {
               <SectionHeader
                 eyebrow="Watch"
                 title="Scores"
-                description="Live and upcoming \u2014 UVA stays pinned when it matters."
+                description="Live and upcoming — UVA stays pinned when it matters."
               />
               <ScoresBanner />
             </section>

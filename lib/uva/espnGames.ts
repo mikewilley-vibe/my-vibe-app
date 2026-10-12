@@ -177,7 +177,7 @@ export function parseEspnSchedule(
       ...(venue ? { venue } : {}),
       ...(network ? { network } : {}),
       ...(timeUnknown ? { timeUnknown: true } : {}),
-      ...(headline || venue ? { note: [headline, venue].filter(Boolean).join(" \u00b7 ") } : {}),
+      ...(headline || venue ? { note: [headline, venue].filter(Boolean).join(" · ") } : {}),
       ...(sourceUrl ? { sourceUrl } : {}),
       timeZone: UVA_TIME_ZONE,
     });

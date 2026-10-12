@@ -145,7 +145,7 @@ test("family calendar links use the configured school year and official hosts", 
   const links = familyCalendarLinks();
   assert.deepEqual(links.map((link) => link.id), ["nps", "rps", "orchard-house", "federal", "virginia"]);
   assert.equal(links.every((link) => link.href.startsWith("https://")), true);
-  assert.match(links[0].label, /2026\u20132027/);
+  assert.match(links[0].label, /2026–2027/);
   assert.match(links[3].label, /2026/);
   assert.match(links[3].href, /opm\.gov/);
   assert.match(links[4].href, /dhrm\.virginia\.gov/);

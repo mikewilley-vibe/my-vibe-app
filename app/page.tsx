@@ -18,6 +18,7 @@ import SponsorRotator from "@/app/components/ui/SponsorRotator";
 import { sponsors } from "@/app/data/sponsors";
 import { isPersonalMode } from "@/lib/appConfig";
 import PersonalCardGrid from "@/app/components/ui/PersonalCardGrid";
+import { FAMILY_CALENDAR_CONFIG, familyCalendarLinks } from "@/lib/familyCalendars";
 
 const personalCards = [
   {
@@ -64,23 +65,7 @@ const personalCards = [
   },
 ];
 
-const schoolLinks = [
-  {
-    name: "Katie",
-    detail: "Norfolk Public Schools · 2025–26",
-    href: "https://www.npsk12.com/our-division/academic-calendar/2025-2026-academic-calendar",
-  },
-  {
-    name: "Bea",
-    detail: "Richmond Public Schools",
-    href: "https://resources.finalsite.net/images/v1760363929/rvaschoolsnet/pivmboyjibodqzoiiqx8/ENG_2025-26RPS200Calendar1.pdf",
-  },
-  {
-    name: "Mary",
-    detail: "Orchard House academic calendar",
-    href: "https://bloomerang-bee.s3.amazonaws.com/images/clapton_cysx6cjdvalm_us_west_2_rds_amazonaws_com_orchardhouse/Documents%20to%20Link/Calendar%20-%20Academic%20Calendar%2025-26%20%288.11.25%29.pdf?blm_aid=128083",
-  },
-];
+const calendarLinks = familyCalendarLinks();
 
 export default function HomePage() {
   const [isPersonal, setIsPersonal] = useState<boolean | null>(null);
@@ -107,51 +92,45 @@ export default function HomePage() {
                 description="What’s ahead at home — plus the school calendars in one place."
               />
 
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
-                <div className="lg:col-span-8 overflow-hidden rounded-2xl ring-1 ring-[var(--fog)] bg-white shadow-sm">
-                  <CalendarEmbed
-                    title="Family Calendar"
-                    description="Public events I've shared"
-                    src="https://calendar.google.com/calendar/embed?src=mikewilley%40gmail.com&ctz=America%2FNew_York"
-                    view="MONTH"
-                    height={520}
-                    showHeader={false}
-                  />
-                </div>
+              <div className="overflow-hidden rounded-2xl ring-1 ring-[var(--fog)] bg-white shadow-sm">
+                <CalendarEmbed
+                  title="Family Calendar"
+                  description="Public events I've shared"
+                  src="https://calendar.google.com/calendar/embed?src=mikewilley%40gmail.com&ctz=America%2FNew_York"
+                  view="MONTH"
+                  height={520}
+                  showHeader={false}
+                />
+              </div>
 
-                <aside className="lg:col-span-4">
-                  <div className="rounded-2xl border border-[var(--fog)] bg-white/80 p-5 sm:p-6">
-                    <p className="label-xs mb-1">School year</p>
-                    <h3 className="font-display text-2xl font-semibold text-[var(--ink)] mb-5">
-                      Calendars
-                    </h3>
-                    <ul className="space-y-3">
-                      {schoolLinks.map((school) => (
-                        <li key={school.name}>
-                          <Link
-                            href={school.href}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="group flex items-start justify-between gap-3 rounded-xl border border-transparent bg-[var(--paper)] px-4 py-3.5 transition hover:border-[var(--harbor)]/30 hover:bg-white"
-                          >
-                            <div>
-                              <div className="font-semibold text-[var(--ink)]">{school.name}</div>
-                              <div className="mt-0.5 text-sm text-[var(--ink-muted)]">
-                                {school.detail}
-                              </div>
-                            </div>
-                            <span
-                              aria-hidden="true"
-                              className="mt-0.5 text-[var(--harbor)] transition-transform group-hover:translate-x-0.5"
-                            >
-                              →
-                            </span>
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </aside>
+              <div className="mt-6 rounded-2xl border border-[var(--fog)] bg-white/80 p-5 sm:p-6">
+                <p className="label-xs mb-1">School year {FAMILY_CALENDAR_CONFIG.schoolYearLabel}</p>
+                <h3 className="font-display text-2xl font-semibold text-[var(--ink)] mb-5">
+                  School calendars and holidays
+                </h3>
+                <ul className="grid gap-3 sm:grid-cols-2">
+                  {calendarLinks.map((link) => (
+                    <li key={link.id}>
+                      <Link
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group flex items-start justify-between gap-3 rounded-xl border border-transparent bg-[var(--paper)] px-4 py-3.5 transition hover:border-[var(--harbor)]/30 hover:bg-white"
+                      >
+                        <div>
+                          <div className="font-semibold text-[var(--ink)]">{link.label}</div>
+                          <div className="mt-0.5 text-sm text-[var(--ink-muted)]">{link.detail}</div>
+                        </div>
+                        <span
+                          aria-hidden="true"
+                          className="mt-0.5 text-[var(--harbor)] transition-transform group-hover:translate-x-0.5"
+                        >
+                          →
+                        </span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </section>
           </ScrollReveal>

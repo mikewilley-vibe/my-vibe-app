@@ -3,6 +3,10 @@
     {
       "path": "/api/cron/check-shows?secret=${CRON_SECRET}",
       "schedule": "0 * * * *"
+    },
+    {
+      "path": "/api/cron/monday?secret=${CRON_SECRET}",
+      "schedule": "0 13 * * 1"
     }
   ]
 }

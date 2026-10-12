@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { cronUnconfigured } from "@/lib/cronAuth";
 import { supabaseServer } from "@/lib/supabaseServer";
 import { extractEventsFromHtml } from "@/lib/showExtractor";
 import { Resend } from "resend";
@@ -19,7 +20,13 @@ async function fetchHtml(url: string) {
 }
 
 export async function GET(req: Request) {
-  // simple auth guard for cron
+  if (cronUnconfigured()) {
+    return NextResponse.json({
+      ok: true,
+      skipped: true,
+      reason: "CRON_SECRET is not set on this deployment",
+    });
+  }
   const { searchParams } = new URL(req.url);
   const secret = searchParams.get("secret");
   if (!secret || secret !== process.env.CRON_SECRET) {

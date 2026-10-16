@@ -75,7 +75,6 @@ export default function SiteHeader() {
                       <DropdownLink href="https://accessibility-ruby.vercel.app/">Accessibility Audit</DropdownLink>
                       <DropdownLink href="https://st-patricks-wolfhounds.vercel.app/">St. Patrick&apos;s Basketball</DropdownLink>
                       <DropdownLink href="https://howlett-law.vercel.app/">Howlett Law</DropdownLink>
-                      <DropdownLink href="https://www.adalemartin.com/">Adale Martin</DropdownLink>
                       <DropdownLink href="https://skoshieshelties.com/">Skoshie Shelties</DropdownLink>
                       <DropdownLink href="https://vandydancecompany.com/">Vandy Dance</DropdownLink>
                       <DropdownLink href="https://vandy-accounting-migration.vercel.app/">Vandy Accounting</DropdownLink>
@@ -196,7 +195,6 @@ export default function SiteHeader() {
                     <MobileNavLink href="https://accessibility-ruby.vercel.app/">Accessibility Audit</MobileNavLink>
                     <MobileNavLink href="https://st-patricks-wolfhounds.vercel.app/">St. Patrick&apos;s Basketball</MobileNavLink>
                     <MobileNavLink href="https://howlett-law.vercel.app/">Howlett Law</MobileNavLink>
-                    <MobileNavLink href="https://www.adalemartin.com/">Adale Martin</MobileNavLink>
                     <MobileNavLink href="https://skoshieshelties.com/">Skoshie Shelties</MobileNavLink>
                     <MobileNavLink href="https://vandydancecompany.com/">Vandy Dance</MobileNavLink>
                     <MobileNavLink href="https://vandy-accounting-migration.vercel.app/">Vandy Accounting</MobileNavLink>

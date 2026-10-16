@@ -14,20 +14,6 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    slug: "adale-martin",
-    title: "Dr. Adale Martin Campaign Site",
-    emoji: "🗳️",
-    message:
-      "Campaign site for Norfolk School Board — Ward 1.",
-    longDescription:
-      "Designed and built a modern campaign website for Dr. Adale Martin’s Norfolk Public Schools Board race. The site highlights her record, goals for students, parent voices, and ways to donate or volunteer — with a clear, accessible information architecture for voters.",
-    image: "/images/adale-martin.webp",
-    link: {
-      href: "https://www.adalemartin.com/",
-      label: "Adale Martin",
-    },
-  },
-  {
     slug: "skoshie-shelties",
     title: "Skoshie Shelties",
     emoji: "🐕",
